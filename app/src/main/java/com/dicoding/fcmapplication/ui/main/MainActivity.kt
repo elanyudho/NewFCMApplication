@@ -1,7 +1,8 @@
-package com.dicoding.fcmapplication
+package com.dicoding.fcmapplication.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.dicoding.fcmapplication.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

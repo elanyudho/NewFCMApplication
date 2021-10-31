@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FCM Application</string>
+    <string name="fcm">FCM</string>
+    <string name="next">Next</string>
 </resources>

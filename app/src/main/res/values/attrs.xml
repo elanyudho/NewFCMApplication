@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomSearchBar">
+        <attr name="android:queryHint" format="string"/>
+        <attr name="queryHint" format="string"/>
+        <attr name="defaultQueryHint" format="string"/>
+        <attr name="additionalButtonSrc" format="reference"/>
+        <attr name="useAdditionalButton" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="BottomNavigationViewWithIndicator">
+        <attr name="dotBottomOffset" format="dimension"/>
+        <attr name="dotSize" format="dimension"/>
+        <attr name="dotColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomButton">
+        <attr name="isLoading" format="boolean"/>
+        <attr name="text" format="string"/>
+        <attr name="buttonColor" format="color"/>
+        <attr name="textSizeButton" format="integer"/>
+        <attr name="paddingButtonTop" format="dimension"/>
+        <attr name="paddingButtonBottom" format="dimension"/>
+        <attr name="paddingButtonLeft" format="dimension"/>
+        <attr name="paddingButtonRight" format="dimension"/>
+    </declare-styleable>
+</resources>
