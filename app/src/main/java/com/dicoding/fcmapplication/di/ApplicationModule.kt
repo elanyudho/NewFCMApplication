@@ -2,7 +2,6 @@ package com.dicoding.fcmapplication.di
 
 
 import android.content.Context
-import androidx.viewbinding.BuildConfig
 import com.dicoding.fcmapplication.data.pref.EncryptedPreferences
 import com.dicoding.fcmapplication.data.pref.Session
 import com.google.gson.Gson
@@ -18,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import com.dicoding.fcmapplication.data.remote.service.ApiService
-import com.dicoding.fcmapplication.utils.api.ApiURL.BASE_URL
+import com.dicoding.fcmapplication.utils.api.ApiVariabel.BASE_URL
 import com.dicoding.fcmapplication.utils.network.NetworkInterceptor
 import dagger.hilt.android.qualifiers.ApplicationContext
 

@@ -15,7 +15,7 @@ buildscript {
         retrofit2_version = "2.9.0"
         coroutines_version = "1.4.3"
         glide_version = '4.12.0'
-        fancy_toast_version = "0.1.8"
+        fancy_toast_version = "2.0.1"
         crypto_version = "1.0.0-alpha02"
     }
 

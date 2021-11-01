@@ -2,4 +2,11 @@
     <string name="app_name">FCM Application</string>
     <string name="fcm">FCM</string>
     <string name="next">Next</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login_now">Login Now!</string>
+    <string name="get_started">Get Started</string>
+    <string name="welcome">Welcome To</string>
+    <string name="boarding2">Future of Fiber Core Management, Expert with visions, More than manage.</string>
 </resources>

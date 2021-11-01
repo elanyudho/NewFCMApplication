@@ -77,7 +77,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
 
     // FancyToast
-    implementation "com.github.Shashank02051997:FancyToast-Android:$fancy_toast_version"
+    implementation "io.github.shashank02051997:FancyToast:$fancy_toast_version"
 
     // Crypto Security
     implementation "androidx.security:security-crypto:$crypto_version"
