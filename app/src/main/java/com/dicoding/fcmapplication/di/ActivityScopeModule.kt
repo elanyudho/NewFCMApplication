@@ -2,8 +2,12 @@ package com.dicoding.fcmapplication.di
 
 import com.dicoding.core.dispatcher.DispatcherProvider
 import com.dicoding.fcmapplication.data.dispatcher.DispatcherProviderImpl
+import com.dicoding.fcmapplication.data.remote.mapper.LoginMapper
 import com.dicoding.fcmapplication.data.remote.service.ApiService
 import com.dicoding.fcmapplication.data.remote.source.RemoteDataSource
+import com.dicoding.fcmapplication.data.repository.AuthRepositoryImpl
+import com.dicoding.fcmapplication.domain.repository.AuthRepository
+import com.dicoding.fcmapplication.domain.usecase.auth.GetLoginUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -25,11 +29,19 @@ object DataSourceModule {
 @InstallIn(ActivityComponent::class)
 object MapperModule {
 
+    @Provides
+    @ActivityScoped
+    fun provideLoginMapper() = LoginMapper()
+
 }
 
 @Module
 @InstallIn(ActivityComponent::class)
 abstract class RepositoryModule {
+
+    @Binds
+    @ActivityScoped
+    abstract fun bindAuthRepository(repositoryImpl: AuthRepositoryImpl): AuthRepository
 
 }
 
@@ -46,5 +58,9 @@ abstract class CoroutinesDispatcherModule {
 @Module
 @InstallIn(ActivityComponent::class)
 object UseCaseModule {
+    @Provides
+    @ActivityScoped
+    fun provideLoginUseCase(repository: AuthRepository) = GetLoginUseCase(repository)
+
 
 }

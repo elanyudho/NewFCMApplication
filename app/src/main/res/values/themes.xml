@@ -15,6 +15,12 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="splashScreen" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="SearchViewText" parent="Widget.AppCompat.SearchView">
         <item name="android:textSize">14sp</item>
     </style>

@@ -29,3 +29,19 @@ fun Context.fancyToast(message: String,type:Int){
 fun Context.toast(message: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, message, duration).show()
 }
+
+fun enable(view: View) {
+    with(view) {
+        isFocusable = true
+        isClickable = true
+        isEnabled = true
+    }
+}
+
+fun disable(view: View) {
+    with(view) {
+        isFocusable = false
+        isClickable = false
+        isEnabled = false
+    }
+}

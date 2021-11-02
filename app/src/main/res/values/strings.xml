@@ -9,4 +9,6 @@
     <string name="get_started">Get Started</string>
     <string name="welcome">Welcome To</string>
     <string name="boarding2">Future of Fiber Core Management, Expert with visions, More than manage.</string>
+    <string name="error_unstable_network">No Network Connection</string>
+    <string name="error_unknown_error">There is an error. Please try again</string>
 </resources>

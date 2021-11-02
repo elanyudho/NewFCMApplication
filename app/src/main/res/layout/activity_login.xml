@@ -11,7 +11,7 @@
         android:id="@+id/materialTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="48dp"
         android:text="@string/login_now"
         android:textColor="@color/white"
         android:textSize="24sp"
@@ -37,6 +37,7 @@
         android:hint="@string/username"
         android:textColorHint="@color/white"
         android:inputType="text"
+        android:textColor="@color/white"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
@@ -49,6 +50,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/password"
         android:inputType="textPassword"
+        android:textColor="@color/white"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/white"
         android:textColorHint="@color/white"
@@ -57,7 +59,7 @@
         app:layout_constraintTop_toBottomOf="@+id/et_username" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnBoardingNext"
+        android:id="@+id/btnLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"

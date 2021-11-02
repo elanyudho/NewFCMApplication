@@ -10,12 +10,15 @@ import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.ActivityOnBoardingBinding
+import com.dicoding.fcmapplication.ui.login.LoginActivity
 import com.dicoding.fcmapplication.ui.main.MainActivity
 import com.dicoding.fcmapplication.ui.onboarding.adapter.OnBoardingPagerAdapter
 import com.dicoding.fcmapplication.ui.onboarding.model.BoardingItem
 import com.dicoding.fcmapplication.utils.extensions.dp
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class OnBoardingActivity : BaseActivityBinding<ActivityOnBoardingBinding>() {
 
     @Inject
@@ -54,7 +57,7 @@ class OnBoardingActivity : BaseActivityBinding<ActivityOnBoardingBinding>() {
                         btnBoardingNext.text = getString(R.string.get_started)
                         btnBoardingNext.setOnClickListener {
                             session.isFirstTime = false
-                            startActivity(Intent(this@OnBoardingActivity, MainActivity::class.java))
+                            startActivity(Intent(this@OnBoardingActivity, LoginActivity::class.java))
                             finish()
                         }
                     } else {
@@ -88,7 +91,7 @@ class OnBoardingActivity : BaseActivityBinding<ActivityOnBoardingBinding>() {
 
         val boarding2 = BoardingItem(
             R.drawable.ic_undraw_internet_on_the_go_re_vben_2,
-            getString(R.string.welcome)
+            getString(R.string.boarding2)
         )
 
         boardingItems = listOf(boarding1, boarding2)
