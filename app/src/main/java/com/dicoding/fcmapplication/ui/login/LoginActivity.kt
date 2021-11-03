@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.WindowManager
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.core.exception.Failure
@@ -118,6 +119,11 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finishAffinity()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
     }
 
 }

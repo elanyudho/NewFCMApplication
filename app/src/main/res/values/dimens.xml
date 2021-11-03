@@ -2,4 +2,5 @@
 <resources>
     <dimen name="dot_indicator_default_size">4dp</dimen>
     <dimen name="dot_indicator_bottom_margin">8dp</dimen>
+
 </resources>

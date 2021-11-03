@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuFdt"
+        android:icon="@drawable/ic_server"
+        android:title="@string/fdt" />
+
+    <item
+        android:id="@+id/menuFat"
+        android:icon="@drawable/ic_fat"
+        android:title="@string/fat"/>
+
+    <item
+        android:id="@+id/menuOther"
+        android:icon="@drawable/ic_other"
+        android:title="@string/other"/>
+
+</menu>

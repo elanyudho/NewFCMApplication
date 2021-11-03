@@ -6,13 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/containerMain"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btmNavMain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.dicoding.fcmapplication.utils.widget.BottomNavigationViewWithIndicator
+        android:id="@+id/btmNavMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:minHeight="?actionBarSize"
+        android:paddingBottom="9dp"
+        app:dotBottomOffset="@dimen/dot_indicator_bottom_margin"
+        app:dotColor="@color/yellow_selective"
+        app:dotSize="@dimen/dot_indicator_default_size"
+        app:elevation="8dp"
+        android:background="@drawable/bg_bottom_nav"
+        app:itemIconTint="@drawable/selector_bottom_nav"
+        app:itemTextColor="@drawable/selector_bottom_nav"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/containerMain"
+        app:menu="@menu/bottom_nav_menu" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
