@@ -2,6 +2,7 @@ package com.dicoding.fcmapplication.di
 
 
 import android.content.Context
+import com.dicoding.fcmapplication.BuildConfig
 import com.dicoding.fcmapplication.data.pref.EncryptedPreferences
 import com.dicoding.fcmapplication.data.pref.Session
 import com.google.gson.Gson
@@ -34,18 +35,26 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideNetworkInterceptor(encryptedPreferences: EncryptedPreferences) = NetworkInterceptor(encryptedPreferences)
+    fun provideNetworkInterceptor(encryptedPreferences: EncryptedPreferences, session: Session) = NetworkInterceptor(encryptedPreferences, session)
 
     @Provides
     @Singleton
     fun provideOkHttpClient(networkInterceptor: NetworkInterceptor): OkHttpClient {
+        val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        }
+
         val timeOut = 60L
 
         return OkHttpClient.Builder()
             .connectTimeout(timeOut, TimeUnit.SECONDS)
             .readTimeout(timeOut, TimeUnit.SECONDS)
             .writeTimeout(timeOut, TimeUnit.SECONDS)
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .addInterceptor(httpLoggingInterceptor)
             .addInterceptor(networkInterceptor)
             .build()
     }

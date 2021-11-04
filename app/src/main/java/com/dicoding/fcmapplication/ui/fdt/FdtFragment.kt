@@ -1,60 +1,77 @@
 package com.dicoding.fcmapplication.ui.fdt
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import com.dicoding.core.abstraction.BaseFragmentBinding
 import com.dicoding.fcmapplication.R
+import com.dicoding.fcmapplication.databinding.FragmentFdtBinding
+import com.dicoding.fcmapplication.ui.fdt.adapter.FdtGridAdapter
+import com.dicoding.fcmapplication.utils.extensions.fancyToast
+import com.dicoding.fcmapplication.utils.extensions.setStatusBar
+import com.shashank.sony.fancytoastlib.FancyToast
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+@AndroidEntryPoint
+class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
+    Observer<FdtViewModel.FdtUiState> {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FdtFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class FdtFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    @Inject
+    lateinit var mViewModel: FdtViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val fdtGridAdapter: FdtGridAdapter by lazy { FdtGridAdapter() }
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentFdtBinding
+        get() = { layoutInflater, viewGroup, b ->
+            FragmentFdtBinding.inflate(layoutInflater, viewGroup, b)
+        }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        requireContext().setStatusBar(R.color.blue_dim, activity)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun setupView() {
+        callOnceWhenCreated {
+            mViewModel.uiState.observe(viewLifecycleOwner, this@FdtFragment)
+
+            setFdtActions()
+        }
+
+        callOnceWhenDisplayed {
+            mViewModel.getFdtList()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fdt, container, false)
+    override fun onChanged(state: FdtViewModel.FdtUiState?) {
+        when(state){
+            is FdtViewModel.FdtUiState.FdtLoaded -> {
+                fdtGridAdapter.submitList(state.list)
+            }
+            is FdtViewModel.FdtUiState.LoadingFdt -> {
+                // TODO: 03/11/2021 make loading view
+            }
+            is FdtViewModel.FdtUiState.FailedLoadFdt -> {
+                requireActivity().fancyToast(getString(R.string.error_unknown_error), FancyToast.ERROR)
+            }
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FdtFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FdtFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun setFdtActions() {
+        with(binding.rvMoreEbook) {
+            adapter = fdtGridAdapter
+            setHasFixedSize(true)
+
+            fdtGridAdapter.setOnClickData {  }
+        }
     }
+
 }

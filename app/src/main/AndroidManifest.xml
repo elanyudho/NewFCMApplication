@@ -17,13 +17,13 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.login.LoginActivity"
-            android:theme="@style/splashScreen" />
+            android:theme="@style/clearScreen.blueLoch" />
         <activity
             android:name=".ui.onboarding.OnBoardingActivity"
-            android:theme="@style/splashScreen" />
+            android:theme="@style/clearScreen.blueLoch" />
         <activity
             android:name=".ui.splash.SplashActivity"
-            android:theme="@style/splashScreen">
+            android:theme="@style/clearScreen.blueLoch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,7 +32,7 @@
         </activity>
         <activity
             android:name=".ui.main.MainActivity"
-            android:theme="@style/splashScreen" />
+            android:theme="@style/clearScreen.blueDim" />
     </application>
 
 </manifest>

@@ -15,10 +15,18 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="splashScreen" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="clearScreen.blueLoch" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:statusBarColor">@color/blue_lochmara</item>
+    </style>
+
+    <style name="clearScreen.blueDim" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:statusBarColor">@color/blue_dim</item>
     </style>
 
     <style name="SearchViewText" parent="Widget.AppCompat.SearchView">

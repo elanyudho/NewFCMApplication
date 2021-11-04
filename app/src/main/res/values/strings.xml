@@ -16,4 +16,5 @@
     <string name="fdt">FDT</string>
     <string name="fat">FAT</string>
     <string name="other">Other</string>
+    <string name="search_fdt">Search FDT</string>
 </resources>

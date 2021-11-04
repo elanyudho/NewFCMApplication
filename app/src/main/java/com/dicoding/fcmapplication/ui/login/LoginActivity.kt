@@ -18,6 +18,7 @@ import com.dicoding.fcmapplication.ui.main.MainActivity
 import com.dicoding.fcmapplication.utils.extensions.disable
 import com.dicoding.fcmapplication.utils.extensions.enable
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
+import com.dicoding.fcmapplication.utils.network.NetworkInterceptor
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -112,9 +113,9 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
     }
 
     private fun saveStateUser(user: User) {
+        encryptedPreferences.encryptedToken = user.token
         session.isLogin = true
         session.user = user
-        encryptedPreferences.encryptedToken = user.token
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)

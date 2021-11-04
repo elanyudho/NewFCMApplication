@@ -11,7 +11,9 @@ import com.dicoding.fcmapplication.ui.main.adapter.MainMenuAdapter
 import com.dicoding.fcmapplication.ui.other.OtherFragment
 import com.dicoding.fcmapplication.utils.extensions.setStatusBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BaseActivityBinding<ActivityMainBinding>() {
 
     private val fdtFragment: FdtFragment by lazy { FdtFragment() }
@@ -26,7 +28,7 @@ class MainActivity : BaseActivityBinding<ActivityMainBinding>() {
         BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menuFdt -> {
-                    setStatusBar(R.color.yellow_selective, this)
+                    setStatusBar(R.color.blue_dim, this)
                     binding.containerMain.setCurrentItem(fragments.indexOf(fdtFragment), false)
                     true
                 }
@@ -36,7 +38,7 @@ class MainActivity : BaseActivityBinding<ActivityMainBinding>() {
                     true
                 }
                 R.id.menuOther -> {
-                    setStatusBar(R.color.white, this)
+                    setStatusBar(R.color.blue_dim, this)
                     binding.containerMain.setCurrentItem(fragments.indexOf(otherFragment), false)
                     true
                 }
