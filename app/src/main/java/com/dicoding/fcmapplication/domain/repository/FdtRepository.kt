@@ -6,5 +6,5 @@ import com.dicoding.fcmapplication.domain.model.Fdt
 
 interface FdtRepository {
 
-    suspend fun fdtList(): Either<Failure, List<Fdt>>
+    suspend fun fdtList(page: String): Either<Failure, List<Fdt>>
 }

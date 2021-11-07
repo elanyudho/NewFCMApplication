@@ -14,8 +14,8 @@ class FdtRepositoryImpl @Inject constructor(
     private val fdtListMapper: FdtListMapper
 ) : FdtRepository {
 
-    override suspend fun fdtList(): Either<Failure, List<Fdt>> {
-        return when(val response = remoteDataSource.fdtList()){
+    override suspend fun fdtList(page: String): Either<Failure, List<Fdt>> {
+        return when(val response = remoteDataSource.fdtList(page)){
             is Either.Success -> {
                 val fdtList = fdtListMapper.mapToDomain(response.body)
                 Either.Success(fdtList)

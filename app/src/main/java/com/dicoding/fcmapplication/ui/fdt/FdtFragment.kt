@@ -11,7 +11,10 @@ import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.FragmentFdtBinding
 import com.dicoding.fcmapplication.ui.fdt.adapter.FdtGridAdapter
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
+import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.setStatusBar
+import com.dicoding.fcmapplication.utils.extensions.visible
+import com.dicoding.fcmapplication.utils.pagination.RecyclerViewPaginator
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -24,6 +27,8 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
     lateinit var mViewModel: FdtViewModel
 
     private val fdtGridAdapter: FdtGridAdapter by lazy { FdtGridAdapter() }
+
+    private var paginator: RecyclerViewPaginator? = null
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentFdtBinding
         get() = { layoutInflater, viewGroup, b ->
@@ -43,21 +48,27 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
         callOnceWhenCreated {
             mViewModel.uiState.observe(viewLifecycleOwner, this@FdtFragment)
 
-            setFdtActions()
         }
 
         callOnceWhenDisplayed {
-            mViewModel.getFdtList()
+            mViewModel.getFdtList(1)
+
+            setFdtActions()
+            setFdtPagination()
         }
     }
 
     override fun onChanged(state: FdtViewModel.FdtUiState?) {
         when(state){
             is FdtViewModel.FdtUiState.FdtLoaded -> {
-                fdtGridAdapter.submitList(state.list)
+                stopLoading()
+                fdtGridAdapter.appendList(state.list)
             }
-            is FdtViewModel.FdtUiState.LoadingFdt -> {
-                // TODO: 03/11/2021 make loading view
+            is FdtViewModel.FdtUiState.InitialLoading -> {
+                startInitialLoading()
+            }
+            is FdtViewModel.FdtUiState.PagingLoading -> {
+                startPagingLoading()
             }
             is FdtViewModel.FdtUiState.FailedLoadFdt -> {
                 requireActivity().fancyToast(getString(R.string.error_unknown_error), FancyToast.ERROR)
@@ -65,13 +76,34 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
         }
     }
 
+    private fun setFdtPagination() {
+        paginator = RecyclerViewPaginator(binding.rvFdt.layoutManager as GridLayoutManager)
+        paginator?.setOnLoadMoreListener { page ->
+            mViewModel.getFdtList(page)
+        }
+        paginator?.let { binding.rvFdt.addOnScrollListener(it) }
+    }
+
     private fun setFdtActions() {
-        with(binding.rvMoreEbook) {
+        with(binding.rvFdt) {
             adapter = fdtGridAdapter
             setHasFixedSize(true)
 
             fdtGridAdapter.setOnClickData {  }
         }
+    }
+
+    private fun startInitialLoading() {
+        binding.rvFdt.gone()
+    }
+
+    private fun stopLoading() {
+        binding.rvFdt.visible()
+        binding.progressFdt.gone()
+    }
+
+    private fun startPagingLoading() {
+        binding.progressFdt.visible()
     }
 
 }

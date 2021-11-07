@@ -19,25 +19,29 @@ class FdtViewModel @Inject constructor(
 ) : BaseViewModel<FdtViewModel.FdtUiState>() {
 
     sealed class FdtUiState {
-        data class LoadingFdt(val isLoading: Boolean) : FdtUiState()
+        object InitialLoading: FdtUiState()
+        object PagingLoading: FdtUiState()
         data class FdtLoaded(val list: List<Fdt>) : FdtUiState()
         data class FailedLoadFdt(val failure: Failure) : FdtUiState()
     }
 
-    fun getFdtList() {
-        _uiState.value = FdtUiState.LoadingFdt(true)
+    fun getFdtList(page: Long) {
+        _uiState.value = if (page == 1L) {
+            FdtUiState.InitialLoading
+        }else{
+            FdtUiState.PagingLoading
+        }
+
         viewModelScope.launch(dispatcherProvider.io) {
-            fdtListUseCase.run(UseCase.None)
+            fdtListUseCase.run(page)
                 .onSuccess {
                     withContext(dispatcherProvider.main) {
                         _uiState.value = FdtUiState.FdtLoaded(it)
-                        _uiState.value = FdtUiState.LoadingFdt(false)
                     }
                 }
                 .onError {
                     withContext(dispatcherProvider.main) {
                         _uiState.value = FdtUiState.FailedLoadFdt(it)
-                        _uiState.value = FdtUiState.LoadingFdt(false)
                     }
                 }
         }

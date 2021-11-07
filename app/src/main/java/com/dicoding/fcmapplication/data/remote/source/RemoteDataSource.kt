@@ -16,8 +16,8 @@ class RemoteDataSource
             api.login(loginData)
         }
 
-    suspend fun fdtList(): Either<Failure, List<FdtListResponse.FdtListResponseItem>> =
+    suspend fun fdtList(page: String): Either<Failure, List<FdtListResponse.FdtListResponseItem>> =
         request {
-            api.getFdtList()
+            api.getFdtList(page)
         }
 }

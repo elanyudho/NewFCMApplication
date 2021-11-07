@@ -17,4 +17,9 @@
     <string name="fat">FAT</string>
     <string name="other">Other</string>
     <string name="search_fdt">Search FDT</string>
+    <string name="repair_list">Repair List</string>
+    <string name="hi">Hi,</string>
+    <string name="exclamation_mark">!</string>
+    <string name="company_profile">Company Profile</string>
+    <string name="logout">Logout</string>
 </resources>
