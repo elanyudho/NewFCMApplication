@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue_dim"
-    tools:context=".ui.fdt.FdtFragment">
+    tools:context=".ui.fdt.main.FdtFragment">
 
     <com.dicoding.fcmapplication.utils.widget.CustomSearchBar
         android:id="@+id/searchFdt"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue_dim"
-    tools:context=".ui.fat.FatFragment">
+    tools:context=".ui.fat.main.FatFragment">
 
     <com.dicoding.fcmapplication.utils.widget.CustomSearchBar
         android:id="@+id/searchFat"
@@ -41,5 +41,16 @@
         app:reverseLayout="false"
         app:spanCount="3"
         tools:listitem="@layout/item_fdt" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressFat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

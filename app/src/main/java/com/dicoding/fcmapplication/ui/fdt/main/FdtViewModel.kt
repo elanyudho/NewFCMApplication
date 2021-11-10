@@ -1,8 +1,7 @@
-package com.dicoding.fcmapplication.ui.fdt
+package com.dicoding.fcmapplication.ui.fdt.main
 
 import androidx.lifecycle.viewModelScope
 import com.dicoding.core.abstraction.BaseViewModel
-import com.dicoding.core.abstraction.UseCase
 import com.dicoding.core.dispatcher.DispatcherProvider
 import com.dicoding.core.exception.Failure
 import com.dicoding.core.extension.onError

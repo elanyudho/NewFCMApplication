@@ -1,5 +1,6 @@
 package com.dicoding.fcmapplication.data.remote.service
 
+import com.dicoding.fcmapplication.data.remote.response.FatListResponse
 import com.dicoding.fcmapplication.data.remote.response.FdtListResponse
 import com.dicoding.fcmapplication.data.remote.response.LoginResponse
 import okhttp3.RequestBody
@@ -15,4 +16,7 @@ interface ApiService{
 
     @GET("fdts/page/{page}")
     suspend fun getFdtList(@Path("page") page: String): Response<List<FdtListResponse.FdtListResponseItem>>
+
+    @GET("fats/page/{page}")
+    suspend fun getFatList(@Path("page") page: String): Response<List<FatListResponse.FatListResponseItem>>
 }

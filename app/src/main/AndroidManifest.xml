@@ -15,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FCMApplication"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.fat.fatdetail.FatDetailActivity"></activity>
+        <activity android:name=".ui.other.companyprofile.CompanyProfileActivity" />
+        <activity android:name=".ui.fdt.MoreFatCoveredActivity" />
+        <activity
+            android:name=".ui.fdt.fdtdetail.FatDetailActivity"
+            android:theme="@style/clearScreen.blueLoch" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:theme="@style/clearScreen.blueLoch" />

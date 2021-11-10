@@ -1,0 +1,7 @@
+package com.dicoding.fcmapplication.domain.model
+
+data class Fat(
+    val fatName: String = "",
+    val uuid: String = "",
+    val fatImage: String = ""
+)

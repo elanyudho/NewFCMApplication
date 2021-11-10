@@ -82,4 +82,7 @@ dependencies {
 
     // Crypto Security
     implementation "androidx.security:security-crypto:$crypto_version"
+
+    // Lottie
+    implementation "com.airbnb.android:lottie:$lottie_version"
 }

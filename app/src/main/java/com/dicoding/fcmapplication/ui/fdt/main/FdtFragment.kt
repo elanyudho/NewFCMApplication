@@ -1,9 +1,10 @@
-package com.dicoding.fcmapplication.ui.fdt
+package com.dicoding.fcmapplication.ui.fdt.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dicoding.core.abstraction.BaseFragmentBinding
@@ -52,17 +53,16 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
 
         callOnceWhenDisplayed {
             mViewModel.getFdtList(1)
-
-            setFdtActions()
-            setFdtPagination()
         }
     }
 
     override fun onChanged(state: FdtViewModel.FdtUiState?) {
-        when(state){
+        when (state) {
             is FdtViewModel.FdtUiState.FdtLoaded -> {
                 stopLoading()
                 fdtGridAdapter.appendList(state.list)
+                setFdtActions()
+                setFdtPagination()
             }
             is FdtViewModel.FdtUiState.InitialLoading -> {
                 startInitialLoading()
@@ -71,7 +71,10 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
                 startPagingLoading()
             }
             is FdtViewModel.FdtUiState.FailedLoadFdt -> {
-                requireActivity().fancyToast(getString(R.string.error_unknown_error), FancyToast.ERROR)
+                requireActivity().fancyToast(
+                    getString(R.string.error_unknown_error),
+                    FancyToast.ERROR
+                )
             }
         }
     }
@@ -89,7 +92,13 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
             adapter = fdtGridAdapter
             setHasFixedSize(true)
 
-            fdtGridAdapter.setOnClickData {  }
+            fdtGridAdapter.setOnClickData {
+                Toast.makeText(
+                    requireContext(),
+                    it.fdtName,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

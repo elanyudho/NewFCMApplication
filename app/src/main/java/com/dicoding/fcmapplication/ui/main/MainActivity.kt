@@ -5,8 +5,8 @@ import android.view.WindowManager
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.ActivityMainBinding
-import com.dicoding.fcmapplication.ui.fat.FatFragment
-import com.dicoding.fcmapplication.ui.fdt.FdtFragment
+import com.dicoding.fcmapplication.ui.fat.main.FatFragment
+import com.dicoding.fcmapplication.ui.fdt.main.FdtFragment
 import com.dicoding.fcmapplication.ui.main.adapter.MainMenuAdapter
 import com.dicoding.fcmapplication.ui.other.OtherFragment
 import com.dicoding.fcmapplication.utils.extensions.setStatusBar
