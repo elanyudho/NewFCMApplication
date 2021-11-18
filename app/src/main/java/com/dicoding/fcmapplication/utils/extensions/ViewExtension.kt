@@ -46,6 +46,16 @@ fun ImageView.glide(view: View, image: Any) {
     }
 }
 
+fun ImageView.glide(context: Context, image: Any) {
+    try {
+        Glide.with(context)
+            .load(image)
+            .error(R.drawable.ic_baseline_broken_image_24)
+            .into(this)
+    } catch (ignored: Throwable) {
+    }
+}
+
 fun Context.fancyToast(message: String,type:Int){
     FancyToast.makeText(this,message,
         FancyToast.LENGTH_SHORT,

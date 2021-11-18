@@ -2,9 +2,7 @@ package com.dicoding.fcmapplication.data.remote.source
 
 import com.dicoding.core.exception.Failure
 import com.dicoding.core.vo.Either
-import com.dicoding.fcmapplication.data.remote.response.FatListResponse
-import com.dicoding.fcmapplication.data.remote.response.FdtListResponse
-import com.dicoding.fcmapplication.data.remote.response.LoginResponse
+import com.dicoding.fcmapplication.data.remote.response.*
 import com.dicoding.fcmapplication.data.remote.service.ApiService
 import okhttp3.RequestBody
 import javax.inject.Inject
@@ -25,5 +23,15 @@ class RemoteDataSource
     suspend fun fatList(page: String): Either<Failure, List<FatListResponse.FatListResponseItem>> =
         request {
             api.getFatList(page)
+        }
+
+    suspend fun fdtDetail(uuid: String): Either<Failure, FdtDetailResponse> =
+        request {
+            api.getFdtDetail(uuid)
+        }
+
+    suspend fun fatDetail(uuid: String): Either<Failure, FatDetailResponse> =
+        request {
+            api.getFatDetail(uuid)
         }
 }

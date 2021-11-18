@@ -2,9 +2,7 @@ package com.dicoding.fcmapplication.di
 
 import com.dicoding.core.dispatcher.DispatcherProvider
 import com.dicoding.fcmapplication.data.dispatcher.DispatcherProviderImpl
-import com.dicoding.fcmapplication.data.remote.mapper.FatListMapper
-import com.dicoding.fcmapplication.data.remote.mapper.FdtListMapper
-import com.dicoding.fcmapplication.data.remote.mapper.LoginMapper
+import com.dicoding.fcmapplication.data.remote.mapper.*
 import com.dicoding.fcmapplication.data.remote.service.ApiService
 import com.dicoding.fcmapplication.data.remote.source.RemoteDataSource
 import com.dicoding.fcmapplication.data.repository.AuthRepositoryImpl
@@ -14,7 +12,9 @@ import com.dicoding.fcmapplication.domain.repository.AuthRepository
 import com.dicoding.fcmapplication.domain.repository.FatRepository
 import com.dicoding.fcmapplication.domain.repository.FdtRepository
 import com.dicoding.fcmapplication.domain.usecase.auth.GetLoginUseCase
+import com.dicoding.fcmapplication.domain.usecase.fat.GetFatDetailUseCase
 import com.dicoding.fcmapplication.domain.usecase.fat.GetFatListUseCase
+import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtDetailUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListUseCase
 import dagger.Binds
 import dagger.Module
@@ -48,6 +48,14 @@ object MapperModule {
     @Provides
     @ActivityScoped
     fun provideFatListMapper() = FatListMapper()
+
+    @Provides
+    @ActivityScoped
+    fun provideFdtDetailMapper() = FdtDetailMapper()
+
+    @Provides
+    @ActivityScoped
+    fun provideFatDetailMapper() = FatDetailMapper()
 
 }
 
@@ -94,5 +102,11 @@ object UseCaseModule {
     @ActivityScoped
     fun provideFatListUseCase(repository: FatRepository) = GetFatListUseCase(repository)
 
+    @Provides
+    @ActivityScoped
+    fun provideFdtDetailUseCase(repository: FdtRepository) = GetFdtDetailUseCase(repository)
 
+    @Provides
+    @ActivityScoped
+    fun provideFatDetailUseCase(repository: FatRepository) = GetFatDetailUseCase(repository)
 }

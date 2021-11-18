@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue_dim"
     tools:context=".ui.main.MainActivity">
 
     <androidx.viewpager2.widget.ViewPager2
@@ -17,9 +18,11 @@
 
     <com.dicoding.fcmapplication.utils.widget.BottomNavigationViewWithIndicator
         android:id="@+id/btmNavMain"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:elevation="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
         android:minHeight="?actionBarSize"
         android:paddingBottom="9dp"
         app:dotBottomOffset="@dimen/dot_indicator_bottom_margin"

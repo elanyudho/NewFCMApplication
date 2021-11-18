@@ -42,7 +42,7 @@
     </style>
 
     <style name="RoundedImageView10">
-        <item name="cornerSize">10%</item>
+        <item name="cornerSize">16dp</item>
     </style>
 
     <style name="Theme.BUMNCerdas.DotIndicatorTabLayout" parent="Widget.MaterialComponents.TabLayout">

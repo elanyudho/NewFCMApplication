@@ -1,8 +1,6 @@
 package com.dicoding.fcmapplication.data.remote.service
 
-import com.dicoding.fcmapplication.data.remote.response.FatListResponse
-import com.dicoding.fcmapplication.data.remote.response.FdtListResponse
-import com.dicoding.fcmapplication.data.remote.response.LoginResponse
+import com.dicoding.fcmapplication.data.remote.response.*
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -19,4 +17,10 @@ interface ApiService{
 
     @GET("fats/page/{page}")
     suspend fun getFatList(@Path("page") page: String): Response<List<FatListResponse.FatListResponseItem>>
+
+    @GET("fdtdetails/{uuid}")
+    suspend fun getFdtDetail(@Path("uuid") uuid: String): Response<FdtDetailResponse>
+
+    @GET("fatdetails/{uuid}")
+    suspend fun getFatDetail(@Path("uuid") uuid: String): Response<FatDetailResponse>
 }

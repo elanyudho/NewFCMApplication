@@ -3,6 +3,7 @@ package com.dicoding.fcmapplication
 import android.app.Application
 import androidx.lifecycle.LiveData
 import com.dicoding.fcmapplication.data.network.NetworkConnection
+import com.mapbox.mapboxsdk.Mapbox
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

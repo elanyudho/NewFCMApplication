@@ -33,6 +33,7 @@
                 android:layout_marginHorizontal="24dp"
                 app:cardCornerRadius="12dp"
                 android:layout_marginTop="24dp"
+                android:background="@color/blue_dim"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -41,16 +42,17 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@color/blue_dim">
 
                     <ImageView
-                        android:id="@+id/imageView3"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
+                        android:id="@+id/ic_repair"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="24dp"
-                        android:visibility="invisible"
                         android:src="@drawable/ic_service_detail"
+                        android:visibility="invisible"
                         app:layout_constraintBottom_toTopOf="@+id/materialTextView4"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -61,6 +63,7 @@
                         android:layout_width="0dp"
                         android:layout_height="100dp"
                         android:layout_marginStart="16dp"
+                        android:scaleType="centerCrop"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintDimensionRatio="w,1:1"
                         app:layout_constraintStart_toStartOf="parent"
@@ -72,13 +75,14 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tvNameDetail"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintEnd_toStartOf="@+id/ic_repair"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toEndOf="@+id/imageDetail"
                         app:layout_constraintTop_toTopOf="@+id/imageDetail"
@@ -92,9 +96,8 @@
                         android:layout_marginTop="24dp"
                         android:text="@string/total_core"
                         android:textColor="@color/blue_lochmara"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         app:layout_constraintEnd_toStartOf="@+id/materialTextView3"
-                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
                         app:layout_constraintStart_toEndOf="@+id/imageDetail"
                         app:layout_constraintTop_toBottomOf="@+id/tvNameDetail" />
@@ -103,11 +106,10 @@
                         android:id="@+id/materialTextView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
                         android:layout_marginTop="24dp"
                         android:text="@string/used"
                         android:textColor="@color/blue_lochmara"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         app:layout_constraintEnd_toStartOf="@+id/materialTextView4"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/materialTextView2"
@@ -117,24 +119,22 @@
                         android:id="@+id/materialTextView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
                         android:layout_marginTop="24dp"
                         android:layout_marginEnd="24dp"
                         android:text="@string/backup"
                         android:textColor="@color/blue_lochmara"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/materialTextView3"
                         app:layout_constraintTop_toBottomOf="@+id/tvNameDetail" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/materialTextView5"
+                        android:id="@+id/tvCoreTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="4dp"
                         android:textColor="@color/blue_lochmara"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@+id/materialTextView2"
                         app:layout_constraintStart_toStartOf="@+id/materialTextView2"
@@ -142,12 +142,12 @@
                         tools:text="24" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/materialTextView7"
+                        android:id="@+id/tvCoreUsed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="4dp"
                         android:textColor="@color/blue_lochmara"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@+id/materialTextView3"
                         app:layout_constraintStart_toStartOf="@+id/materialTextView3"
@@ -155,12 +155,12 @@
                         tools:text="20" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/materialTextView6"
+                        android:id="@+id/tvCoreRemaining"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="4dp"
                         android:textColor="@color/blue_lochmara"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@+id/materialTextView4"
                         app:layout_constraintStart_toStartOf="@+id/materialTextView4"
@@ -193,6 +193,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="12dp"
+                    app:cardBackgroundColor="@color/blue_dim"
                     app:cardCornerRadius="12dp"
                     app:strokeColor="@color/blue_lochmara"
                     app:strokeWidth="2dp">
@@ -200,15 +201,17 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/blue_dim"
                         android:layout_gravity="center">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_gravity="center"
                             android:text="@string/fdt_loss_is"
                             android:textColor="@color/blue_lochmara"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -216,9 +219,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
+                            android:layout_gravity="center"
                             android:layout_weight="1"
                             android:textColor="@color/blue_lochmara"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:textStyle="bold"
                             tools:text="5 dB" />
 
@@ -240,7 +244,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rowFatCovered"
                 tools:itemCount="5"
-                tools:listitem="@layout/item_fdt" />
+                tools:listitem="@layout/item_rectangle" />
 
             <LinearLayout
                 android:id="@+id/rowFatCovered"
@@ -258,12 +262,13 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    app:srcCompat="@drawable/ic_fat_detail" />
+                    app:srcCompat="@drawable/ic_home" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="12dp"
+                    app:cardBackgroundColor="@color/blue_dim"
                     app:cardCornerRadius="12dp"
                     app:strokeColor="@color/blue_lochmara"
                     app:strokeWidth="2dp">
@@ -271,6 +276,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/blue_dim"
                         android:layout_gravity="center">
 
                         <TextView
@@ -278,9 +284,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_gravity="center"
                             android:text="20"
                             android:textColor="@color/blue_lochmara"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -288,9 +295,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
                             android:layout_weight="1"
+                            android:layout_gravity="center"
                             android:text="@string/fat_covered"
                             android:textColor="@color/blue_lochmara"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <ImageView
@@ -384,12 +392,14 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="12dp"
                     app:cardCornerRadius="12dp"
+                    app:cardBackgroundColor="@color/blue_dim"
                     app:strokeColor="@color/blue_lochmara"
                     app:strokeWidth="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/blue_dim"
                         android:layout_gravity="center">
 
                         <TextView
@@ -397,9 +407,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_weight="1"
+                            android:layout_gravity="center"
                             android:text="@string/repair_notes"
                             android:textColor="@color/blue_lochmara"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>

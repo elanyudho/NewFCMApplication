@@ -25,10 +25,10 @@
     <string name="others">Others</string>
     <string name="used">Used</string>
     <string name="total_core">Total Core</string>
-    <string name="fat_covered">FAT Covered</string>
     <string name="fdt_loss_is">FDT Loss is</string>
     <string name="backup">Backup</string>
     <string name="fdt_location">FDT Location</string>
+    <string name="fat_location">FAT Location</string>
     <string name="repair_notes">Repair Notes</string>
     <string name="are_you_sure_want_to_exit">Are you sure want to exit?</string>
     <string name="cancel">Cancel</string>
@@ -36,4 +36,8 @@
     <string name="no">No</string>
     <string name="home_covered">Home Covered</string>
     <string name="fat_loss_is">Fat Loss is</string>
+    <string name="fdt_profile">FDT Profile</string>
+    <string name="fat_covered">FAT Covered</string>
+    <string name="fat_profile">FAT Profile</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoiZWxhbnl1ZGhvIiwiYSI6ImNrdzN0NTlvbjI4ZHIybnFpOHVzbjNwajIifQ.GxYOr2Bs5kVHosgFDQgjAQ</string>
 </resources>

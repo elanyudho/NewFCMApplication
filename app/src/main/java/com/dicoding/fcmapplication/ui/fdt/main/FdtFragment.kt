@@ -1,5 +1,6 @@
 package com.dicoding.fcmapplication.ui.fdt.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.dicoding.core.abstraction.BaseFragmentBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.FragmentFdtBinding
 import com.dicoding.fcmapplication.ui.fdt.adapter.FdtGridAdapter
+import com.dicoding.fcmapplication.ui.fdt.fdtdetail.FdtDetailActivity
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.setStatusBar
@@ -49,6 +51,8 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
         callOnceWhenCreated {
             mViewModel.uiState.observe(viewLifecycleOwner, this@FdtFragment)
 
+            setFdtActions()
+            setFdtPagination()
         }
 
         callOnceWhenDisplayed {
@@ -61,8 +65,6 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
             is FdtViewModel.FdtUiState.FdtLoaded -> {
                 stopLoading()
                 fdtGridAdapter.appendList(state.list)
-                setFdtActions()
-                setFdtPagination()
             }
             is FdtViewModel.FdtUiState.InitialLoading -> {
                 startInitialLoading()
@@ -93,11 +95,10 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
             setHasFixedSize(true)
 
             fdtGridAdapter.setOnClickData {
-                Toast.makeText(
-                    requireContext(),
-                    it.fdtName,
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), it.fdtName, Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), FdtDetailActivity::class.java)
+                intent.putExtra(FdtDetailActivity.EXTRA_DETAIL_FDT, it.uuid)
+                startActivity(intent)
             }
         }
     }

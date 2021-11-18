@@ -8,7 +8,7 @@ import com.dicoding.fcmapplication.databinding.ActivityMainBinding
 import com.dicoding.fcmapplication.ui.fat.main.FatFragment
 import com.dicoding.fcmapplication.ui.fdt.main.FdtFragment
 import com.dicoding.fcmapplication.ui.main.adapter.MainMenuAdapter
-import com.dicoding.fcmapplication.ui.other.OtherFragment
+import com.dicoding.fcmapplication.ui.other.main.OtherFragment
 import com.dicoding.fcmapplication.utils.extensions.setStatusBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint

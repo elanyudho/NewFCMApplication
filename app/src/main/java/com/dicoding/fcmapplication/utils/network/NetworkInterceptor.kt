@@ -12,19 +12,12 @@ class NetworkInterceptor @Inject constructor(
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
+        val newRequest =
+            chain.request().newBuilder().apply {
+                if(encryptedPreferences.encryptedToken.isNotEmpty())
+                addHeader("Authorization", "Bearer ${encryptedPreferences.encryptedToken}")
+            }.build()
 
-        return if (!session.isLogin) {
-            val newRequest =
-                chain.request().newBuilder()
-                    .addHeader("Authorization", encryptedPreferences.encryptedToken)
-                    .build()
-            chain.proceed(newRequest)
-        }else {
-            val newRequest =
-                chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer ${encryptedPreferences.encryptedToken}")
-                    .build()
-            chain.proceed(newRequest)
-        }
+        return chain.proceed(newRequest)
     }
 }

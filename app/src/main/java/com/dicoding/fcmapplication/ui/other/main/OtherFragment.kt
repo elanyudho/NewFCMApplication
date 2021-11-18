@@ -1,4 +1,4 @@
-package com.dicoding.fcmapplication.ui.other
+package com.dicoding.fcmapplication.ui.other.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,7 @@ import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.FragmentOtherBinding
 import com.dicoding.fcmapplication.ui.login.LoginActivity
+import com.dicoding.fcmapplication.ui.other.dialog.LogoutDialogFragment
 import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.invisible
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,13 +35,15 @@ class OtherFragment : BaseFragmentBinding<FragmentOtherBinding>() {
                 headerOther.btnBack.invisible()
                 headerOther.tvTitleHeader.text = getString(R.string.others)
 
+                tvUserName.text = session.user?.username
+
                 rowCompanyProfile.setOnClickListener { Toast.makeText(requireContext(), "Company Profile", Toast.LENGTH_SHORT).show() }
 
                 rowRepairList.setOnClickListener { Toast.makeText(requireContext(), "Repair List", Toast.LENGTH_SHORT).show() }
 
                 btnLogOut.setOnClickListener {
-                    session.clear()
-                    startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    val dialogFragment = LogoutDialogFragment()
+                    dialogFragment.show(childFragmentManager, "dialog")
                 }
         }
 

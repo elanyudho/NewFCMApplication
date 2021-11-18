@@ -23,11 +23,10 @@
         app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ivImageFdt"
+            android:id="@+id/ivImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            tools:src="@drawable/ic_launcher_background" />
+            android:scaleType="centerCrop" />
 
         <View
             android:layout_width="match_parent"
@@ -39,7 +38,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tvFdtName"
+        android:id="@+id/tvName"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_gravity="bottom"
