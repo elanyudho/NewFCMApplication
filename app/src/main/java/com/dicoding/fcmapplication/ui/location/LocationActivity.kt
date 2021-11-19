@@ -1,18 +1,45 @@
 package com.dicoding.fcmapplication.ui.location
 
+import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+import android.view.animation.BounceInterpolator
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.ActivityLocationBinding
+import com.dicoding.fcmapplication.utils.extensions.visible
+import com.mapbox.android.core.permissions.PermissionsListener
+import com.mapbox.android.core.permissions.PermissionsManager
+import com.mapbox.api.directions.v5.models.DirectionsResponse
+import com.mapbox.api.directions.v5.models.DirectionsRoute
+import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.annotations.MarkerOptions
+import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.camera.CameraUpdate
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory.newCameraPosition
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.location.LocationComponent
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
+import com.mapbox.mapboxsdk.location.LocationComponentOptions
+import com.mapbox.mapboxsdk.location.modes.CameraMode
+import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions
+import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute
+import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute
 import dagger.hilt.android.AndroidEntryPoint
+import retrofit2.Call
+import retrofit2.Response
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
@@ -26,7 +53,19 @@ class LocationActivity : AppCompatActivity() {
 
     private var mapboxMap: MapboxMap? = null
 
-    private  var symbolManager: SymbolManager? = null
+    private lateinit var locationComponent: LocationComponent
+
+    private lateinit var mylocation: LatLng
+
+    private lateinit var permissionsManager: PermissionsManager
+
+    private var navigationMapRoute: NavigationMapRoute? = null
+
+    private var currentRoute: DirectionsRoute? = null
+
+    private lateinit var origin: Point
+
+    private lateinit var destination: Point
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +79,7 @@ class LocationActivity : AppCompatActivity() {
 
         binding.btnBack.setOnClickListener { onBackPressed() }
 
-        when(dataType){
+        when (dataType) {
             1 -> {
                 binding.tvTitleHeader.text = getString(R.string.fdt_location)
             }
@@ -53,56 +92,153 @@ class LocationActivity : AppCompatActivity() {
         binding.mapView.getMapAsync { mapboxMap ->
             this.mapboxMap = mapboxMap
             mapboxMap.setStyle(Style.MAPBOX_STREETS) { style ->
-                /*symbolManager = SymbolManager(binding.mapView, mapboxMap, style)
-                symbolManager?.iconAllowOverlap = true
 
-                style.addImage(
-                    ICON_ID,
-                    BitmapFactory.decodeResource(resources, R.drawable.ic_baseline_location_on_24)
-                )
+                showMyLocation(style)
 
-                showPosition(dataLocation, deviceName)*/
+                val latLng = dataLocation.split(",")
+                showPosition(latLng[1].toDouble(), latLng[0].toDouble(), deviceName)
+                val startPoint = Point.fromLngLat(mylocation.longitude, mylocation.latitude)
+                val endPoint = Point.fromLngLat(latLng[1].toDouble(), latLng[0].toDouble())
+                getRoute(startPoint,endPoint, mapboxMap)
+                destination = Point.fromLngLat(latLng[1].toDouble(),latLng[0].toDouble())
+                showNavigation()
             }
         }
 
     }
 
-    private fun showPosition(location: String, deviceName: String) {
-        val latLng = location.split(",")
-        val locationDevice = LatLng(latLng[0].toDouble(),latLng[1].toDouble())
-        symbolManager?.create(
-            SymbolOptions()
-                .withLatLng(LatLng(locationDevice.latitude,locationDevice.longitude))
-                .withIconImage(ICON_ID)
-                .withIconSize(1.5f)
-                .withIconOffset(arrayOf(0f, -1.5f))
-                .withTextField(deviceName)
-                .withTextHaloColor("rgba(255, 255, 255, 100)")
-                .withTextHaloWidth(5.0f)
-                .withTextAnchor("top")
-                .withTextOffset(arrayOf(0f, 1.5f))
-                .withDraggable(false)
-        )
+    private fun showPosition( long: Double, lat: Double, deviceName: String) {
+        val locationDevice = LatLng(lat, long)
+        val position = CameraPosition.Builder()
+            .target(LatLng(lat, long))
+            .zoom(8.0)
+            .tilt(10.0)
+            .bearing(5.0)
+            .build()
 
-        mapboxMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(locationDevice, 8.0))
+        mapboxMap?.animateCamera(newCameraPosition(position), 5000)
+        mapboxMap?.addMarker(MarkerOptions().setPosition(locationDevice).title(deviceName))
     }
+
+    @SuppressLint("MissingPermission")
+    private fun showMyLocation(style: Style) {
+        if (PermissionsManager.areLocationPermissionsGranted(this)) {
+            val locationComponentOptions = LocationComponentOptions.builder(this)
+                .pulseEnabled(true)
+                .pulseColor(Color.BLUE)
+                .pulseAlpha(.4f)
+                .pulseInterpolator(BounceInterpolator())
+                .build()
+            val locationComponentActivationOptions = LocationComponentActivationOptions
+                .builder(this, style)
+                .locationComponentOptions(locationComponentOptions)
+                .build()
+            locationComponent = mapboxMap?.locationComponent!!
+            locationComponent.activateLocationComponent(locationComponentActivationOptions)
+            locationComponent.isLocationComponentEnabled = true
+            locationComponent.cameraMode = CameraMode.TRACKING
+            locationComponent.renderMode = RenderMode.COMPASS
+            mylocation = LatLng(
+                locationComponent.lastKnownLocation?.latitude as Double,
+                locationComponent.lastKnownLocation?.longitude as Double
+            )
+            mapboxMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(mylocation, 12.0))
+        } else {
+            permissionsManager = PermissionsManager(object : PermissionsListener {
+                override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
+                    Toast.makeText(
+                        this@LocationActivity,
+                        "Anda harus mengizinkan location permission untuk menggunakan aplikasi ini",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                override fun onPermissionResult(granted: Boolean) {
+                    if (granted) {
+                        mapboxMap?.getStyle { style ->
+                            showMyLocation(style)
+                        }
+                    } else {
+                        finish()
+                    }
+                }
+            })
+            permissionsManager.requestLocationPermissions(this)
+        }
+    }
+
+    private fun getRoute(originPoint: Point, endPoint: Point, mapboxMap: MapboxMap) {
+        NavigationRoute.builder(this) //1
+            .accessToken(Mapbox.getAccessToken()!!) //2
+            .origin(originPoint) //3
+            .destination(endPoint) //4
+            .build() //5
+            .getRoute(object : retrofit2.Callback<DirectionsResponse> { //6
+                override fun onFailure(call: Call<DirectionsResponse>, t: Throwable) {
+                    Timber.d(t.localizedMessage)
+
+                }
+
+                override fun onResponse(call: Call<DirectionsResponse>,
+                                        response: Response<DirectionsResponse>
+                ) {
+
+                    if (navigationMapRoute != null) {
+                        navigationMapRoute?.updateRouteVisibilityTo(false)
+                    } else {
+                        navigationMapRoute = NavigationMapRoute(
+                            null,
+                            binding.mapView,
+                            mapboxMap,
+                            R.style.NavigationMapRoute
+                        )
+
+                    }
+
+                    currentRoute = response.body()?.routes()?.first()
+                    if (currentRoute != null) {
+                        navigationMapRoute?.addRoute(currentRoute)
+                    }
+
+                }
+            })
+    }
+
+    private fun showNavigation() {
+        binding.btnStartNavigation.visible()
+        binding.btnStartNavigation.setOnClickListener {
+            val simulateRoute = true
+
+            val options = NavigationLauncherOptions.builder()
+                .directionsRoute(currentRoute)
+                .shouldSimulateRoute(simulateRoute)
+                .build()
+
+            NavigationLauncher.startNavigation(this, options)
+        }
+    }
+
 
     override fun onStart() {
         super.onStart()
         binding.mapView.onStart()
     }
+
     override fun onResume() {
         super.onResume()
         binding.mapView.onResume()
     }
+
     override fun onPause() {
         super.onPause()
         binding.mapView.onPause()
     }
+
     override fun onStop() {
         super.onStop()
         binding.mapView.onStop()
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         binding.mapView.onSaveInstanceState(outState)
