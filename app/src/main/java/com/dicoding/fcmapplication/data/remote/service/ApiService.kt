@@ -23,4 +23,7 @@ interface ApiService{
 
     @GET("fatdetails/{uuid}")
     suspend fun getFatDetail(@Path("uuid") uuid: String): Response<FatDetailResponse>
+
+    @GET("companyprofile")
+    suspend fun getCompanyProfile(): Response<CompanyProfileResponse>
 }

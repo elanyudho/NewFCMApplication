@@ -34,4 +34,9 @@ class RemoteDataSource
         request {
             api.getFatDetail(uuid)
         }
+
+    suspend fun companyProfile(): Either<Failure, CompanyProfileResponse> =
+        request {
+            api.getCompanyProfile()
+        }
 }

@@ -8,14 +8,17 @@ import com.dicoding.fcmapplication.data.remote.source.RemoteDataSource
 import com.dicoding.fcmapplication.data.repository.AuthRepositoryImpl
 import com.dicoding.fcmapplication.data.repository.FatRepositoryImpl
 import com.dicoding.fcmapplication.data.repository.FdtRepositoryImpl
+import com.dicoding.fcmapplication.data.repository.OtherRepositoryImpl
 import com.dicoding.fcmapplication.domain.repository.AuthRepository
 import com.dicoding.fcmapplication.domain.repository.FatRepository
 import com.dicoding.fcmapplication.domain.repository.FdtRepository
+import com.dicoding.fcmapplication.domain.repository.OtherRepository
 import com.dicoding.fcmapplication.domain.usecase.auth.GetLoginUseCase
 import com.dicoding.fcmapplication.domain.usecase.fat.GetFatDetailUseCase
 import com.dicoding.fcmapplication.domain.usecase.fat.GetFatListUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtDetailUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListUseCase
+import com.dicoding.fcmapplication.domain.usecase.other.GetCompanyProfileUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -57,6 +60,11 @@ object MapperModule {
     @ActivityScoped
     fun provideFatDetailMapper() = FatDetailMapper()
 
+    @Provides
+    @ActivityScoped
+    fun provideCompanyProfileMapper() = CompanyProfileMapper()
+
+
 }
 
 @Module
@@ -74,6 +82,10 @@ abstract class RepositoryModule {
     @Binds
     @ActivityScoped
     abstract fun bindFatRepository(repositoryImpl: FatRepositoryImpl): FatRepository
+
+    @Binds
+    @ActivityScoped
+    abstract fun bindOtherRepository(repositoryImpl: OtherRepositoryImpl): OtherRepository
 
 }
 
@@ -109,4 +121,8 @@ object UseCaseModule {
     @Provides
     @ActivityScoped
     fun provideFatDetailUseCase(repository: FatRepository) = GetFatDetailUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun provideCompanyProfileUseCase(repository: OtherRepository) = GetCompanyProfileUseCase(repository)
 }
