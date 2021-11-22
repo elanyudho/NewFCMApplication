@@ -262,7 +262,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    app:srcCompat="@drawable/ic_home" />
+                    app:srcCompat="@drawable/ic_fat_detail" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"

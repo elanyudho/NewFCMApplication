@@ -14,8 +14,14 @@ class NetworkInterceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val newRequest =
             chain.request().newBuilder().apply {
-                if(encryptedPreferences.encryptedToken.isNotEmpty())
-                addHeader("Authorization", "Bearer ${encryptedPreferences.encryptedToken}")
+                if (session.isLogin){
+                    addHeader("Authorization", "Bearer ${encryptedPreferences.encryptedToken}")
+                }
+                if (!session.isLogin) {
+                    if (!session.isFirstTime) {
+                        removeHeader("Authorization")
+                    }
+                }
             }.build()
 
         return chain.proceed(newRequest)

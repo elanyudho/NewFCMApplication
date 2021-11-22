@@ -108,18 +108,18 @@ class RecyclerViewPaginator : RecyclerView.OnScrollListener {
 
         val totalItemCount = layoutManager.itemCount
         val lastVisibleItem = when(layoutManager) {
-            is LinearLayoutManager -> {
-                (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-            }
-            is GridLayoutManager -> {
-                (layoutManager as GridLayoutManager).findLastVisibleItemPosition()
-            }
             is StaggeredGridLayoutManager -> {
                 val lastVisibleItemPositions =
                     (layoutManager as StaggeredGridLayoutManager).findLastVisibleItemPositions(null)
 
                 // get maximum element within the list
                 getLastVisibleItem(lastVisibleItemPositions)
+            }
+            is GridLayoutManager -> {
+                (layoutManager as GridLayoutManager).findLastVisibleItemPosition()
+            }
+            is LinearLayoutManager -> {
+                (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
             }
             else -> 0
         }

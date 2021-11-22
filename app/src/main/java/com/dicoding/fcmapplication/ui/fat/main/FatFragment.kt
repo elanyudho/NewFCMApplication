@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.core.abstraction.BaseFragmentBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.FragmentFatBinding
@@ -79,7 +80,7 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
     }
 
     private fun setFatPagination() {
-        paginator = RecyclerViewPaginator(binding.rvFat.layoutManager as GridLayoutManager)
+        paginator = RecyclerViewPaginator(binding.rvFat.layoutManager as LinearLayoutManager)
         paginator?.setOnLoadMoreListener { page ->
             mViewModel.getFatList(page)
         }

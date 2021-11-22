@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.dicoding.core.abstraction.BaseFragmentBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.FragmentFdtBinding
@@ -91,6 +93,7 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
 
     private fun setFdtActions() {
         with(binding.rvFdt) {
+            layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = fdtGridAdapter
             setHasFixedSize(true)
 
