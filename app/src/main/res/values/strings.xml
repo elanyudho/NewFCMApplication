@@ -40,4 +40,6 @@
     <string name="fat_covered">FAT Covered</string>
     <string name="fat_profile">FAT Profile</string>
     <string name="mapbox_access_token">pk.eyJ1IjoiZWxhbnl1ZGhvIiwiYSI6ImNrdzN0NTlvbjI4ZHIybnFpOHVzbjNwajIifQ.GxYOr2Bs5kVHosgFDQgjAQ</string>
+    <string name="activated_on">Activated on</string>
+    <string name="start">Start</string>
 </resources>

@@ -28,12 +28,12 @@
         android:layout_gravity="center"
         android:layout_marginTop="38dp"
         android:background="@drawable/bg_text_header"
+        android:elevation="4dp"
         android:gravity="center"
         android:paddingHorizontal="32dp"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/btnBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.373"
@@ -49,24 +49,55 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:mapbox_cameraZoom="6.0"/>
+        app:mapbox_cameraZoom="6.0" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnStartNavigation"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:backgroundTint="@color/yellow_selective"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:text="Start Navigation"
-        android:textAllCaps="false"
-        android:textSize="14sp"
-        android:visibility="gone"
-        app:cornerRadius="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline15"
-        app:layout_constraintStart_toStartOf="@+id/guideline13" />
+        android:layout_height="0dp"
+        app:cardBackgroundColor="@color/black"
+        android:alpha="0.64"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="4dp"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/mapView"
+        app:layout_constraintEnd_toEndOf="@+id/mapView"
+        app:layout_constraintStart_toStartOf="@+id/mapView"
+        app:layout_constraintTop_toTopOf="@+id/guideline17">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvDeviceName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="FDTYK.AA01" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnStartNavigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:paddingVertical="4dp"
+                android:drawableLeft="@drawable/ic_navigate_location"
+                android:text="@string/start"
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                app:backgroundTint="@color/yellow_selective"
+                app:cornerRadius="6dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline13"
@@ -80,7 +111,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.67
-" />
+        app:layout_constraintGuide_percent="0.67" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.86" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,9 +18,7 @@ class NetworkInterceptor @Inject constructor(
                     addHeader("Authorization", "Bearer ${encryptedPreferences.encryptedToken}")
                 }
                 if (!session.isLogin) {
-                    if (!session.isFirstTime) {
-                        removeHeader("Authorization")
-                    }
+                    removeHeader("Authorization")
                 }
             }.build()
 
