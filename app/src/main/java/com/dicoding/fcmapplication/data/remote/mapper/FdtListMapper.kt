@@ -8,7 +8,7 @@ class FdtListMapper : BaseMapper<List<FdtListResponse.FdtListResponseItem>, List
     override fun mapToDomain(raw: List<FdtListResponse.FdtListResponseItem>): List<Fdt> {
         val listData = mutableListOf<Fdt>()
         for (i in raw) {
-            val data = Fdt(fdtName = i.fdtName, uuid = i.uuid, fdtImage = i.fdtImage)
+            val data = Fdt(fdtName = i.fdtName, uuid = i.uuid, fdtImage = i.fdtImage, fdtActivateDate = i.fdtActivateDate, fdtIsService = i.fdtIsService)
             listData.add(data)
         }
         return listData

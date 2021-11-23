@@ -43,6 +43,7 @@
         android:text="@string/next"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:textAllCaps="false"
         app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
@@ -54,13 +55,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.24" />
+        app:layout_constraintGuide_percent="0.33" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.76885647" />
+        app:layout_constraintGuide_percent="0.67
+" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

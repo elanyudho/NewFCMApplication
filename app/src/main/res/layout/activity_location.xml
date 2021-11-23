@@ -51,6 +51,37 @@
         app:layout_constraintTop_toTopOf="parent"
         app:mapbox_cameraZoom="6.0" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvDeviceName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:elevation="@dimen/mapbox_internalMinSpan23"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnStartNavigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9850"
+        tools:text="FDTYK.AA01" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStartNavigation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:drawableLeft="@drawable/ic_navigate_location"
+        android:paddingVertical="4dp"
+        android:text="@string/start"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:backgroundTint="@color/yellow_selective"
+        app:cornerRadius="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.96" />
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -63,39 +94,6 @@
         app:layout_constraintEnd_toEndOf="@+id/mapView"
         app:layout_constraintStart_toStartOf="@+id/mapView"
         app:layout_constraintTop_toTopOf="@+id/guideline17">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tvDeviceName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="FDTYK.AA01" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnStartNavigation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
-                android:paddingVertical="4dp"
-                android:drawableLeft="@drawable/ic_navigate_location"
-                android:text="@string/start"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                app:backgroundTint="@color/yellow_selective"
-                app:cornerRadius="6dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 

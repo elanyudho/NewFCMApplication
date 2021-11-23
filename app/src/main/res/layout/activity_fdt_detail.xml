@@ -430,13 +430,13 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rowRepair"
-                app:strokeColor="@color/blue_lochmara"
-                app:strokeWidth="2dp">
+                app:layout_constraintTop_toBottomOf="@+id/rowRepair">
 
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="12dp"
+                    android:layout_marginHorizontal="12dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -445,9 +445,7 @@
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/tvRepairNotes"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="8dp"
-                            android:layout_marginVertical="8dp"
+                            android:layout_height="match_parent"
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Dignissim cras tincidunt lobortis feugiat vivamus at augue. Eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus. Erat nam at lectus urna duis convallis convallis tellus id. Egestas purus viverra accumsan in nisl nisi. Sed libero enim sed faucibus turpis. Bibendum enim facilisis gravida neque convallis a. At elementum eu facilisis sed odio. Aliquam nulla facilisi cras fermentum odio eu feugiat pretium. A condimentum vitae sapien pellentesque. Ac ut consequat semper viverra. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. Montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Purus ut faucibus pulvinar elementum integer enim neque volutpat ac."

@@ -39,4 +39,9 @@ class RemoteDataSource
         request {
             api.getCompanyProfile()
         }
+
+    suspend fun repairList(page: String): Either<Failure, List<RepairListResponse.RepairListResponseItem>> =
+        request {
+            api.getRepairList(page)
+        }
 }

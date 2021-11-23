@@ -410,13 +410,13 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rowRepair"
-                app:strokeColor="@color/blue_lochmara"
-                app:strokeWidth="2dp">
+                app:layout_constraintTop_toBottomOf="@+id/rowRepair">
 
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="12dp"
+                    android:layout_marginHorizontal="12dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"

@@ -26,4 +26,7 @@ interface ApiService{
 
     @GET("companyprofile")
     suspend fun getCompanyProfile(): Response<CompanyProfileResponse>
+
+    @GET("servicelists/page/{page}")
+    suspend fun getRepairList(@Path("page") page: String): Response<List<RepairListResponse.RepairListResponseItem>>
 }

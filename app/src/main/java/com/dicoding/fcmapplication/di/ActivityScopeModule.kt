@@ -19,6 +19,7 @@ import com.dicoding.fcmapplication.domain.usecase.fat.GetFatListUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtDetailUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListUseCase
 import com.dicoding.fcmapplication.domain.usecase.other.GetCompanyProfileUseCase
+import com.dicoding.fcmapplication.domain.usecase.other.GetRepairListUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -63,6 +64,10 @@ object MapperModule {
     @Provides
     @ActivityScoped
     fun provideCompanyProfileMapper() = CompanyProfileMapper()
+
+    @Provides
+    @ActivityScoped
+    fun provideRepairListMapper() = RepairListMapper()
 
 
 }
@@ -125,4 +130,8 @@ object UseCaseModule {
     @Provides
     @ActivityScoped
     fun provideCompanyProfileUseCase(repository: OtherRepository) = GetCompanyProfileUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun provideRepairListUseCase(repository: OtherRepository) = GetRepairListUseCase(repository)
 }

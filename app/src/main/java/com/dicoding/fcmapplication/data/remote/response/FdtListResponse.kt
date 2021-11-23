@@ -10,6 +10,11 @@ class FdtListResponse : ArrayList<FdtListResponse.FdtListResponseItem>(){
         @SerializedName("fdt_name")
         val fdtName: String = "",
         @SerializedName("uuid")
-        val uuid: String = ""
+        val uuid: String = "",
+        @SerializedName("fdt_activate_date")
+        val fdtActivateDate: String = "",
+        @SerializedName("fdt_isService")
+        val fdtIsService: Boolean = false,
+
     )
 }

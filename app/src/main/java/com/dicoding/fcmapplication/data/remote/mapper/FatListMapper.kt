@@ -8,7 +8,7 @@ class FatListMapper : BaseMapper<List<FatListResponse.FatListResponseItem>, List
     override fun mapToDomain(raw: List<FatListResponse.FatListResponseItem>): List<Fat> {
         val listData = mutableListOf<Fat>()
         for (i in raw) {
-            val data = Fat(fatName = i.fatName, uuid = i.uuid, fatImage = i.fatImage)
+            val data = Fat(fatName = i.fatName, uuid = i.uuid, fatImage = i.fatImage, fatActivateDate = i.fatActivateDate, fatIsService = i.fatIsService)
             listData.add(data)
         }
         return listData

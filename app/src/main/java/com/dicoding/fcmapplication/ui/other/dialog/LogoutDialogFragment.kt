@@ -54,7 +54,7 @@ class LogoutDialogFragment : DialogFragment() {
         binding.btnCancel.setOnClickListener { dismiss() }
 
         binding.btnYes.setOnClickListener {
-            session.clear()
+            session.isLogin = false
             encryptedPreferences.clear()
             startActivity(Intent(requireContext(), LoginActivity::class.java))
             dismiss()

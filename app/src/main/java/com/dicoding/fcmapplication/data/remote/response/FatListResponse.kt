@@ -10,6 +10,10 @@ class FatListResponse : ArrayList<FatListResponse.FatListResponseItem>(){
         @SerializedName("fat_image")
         val fatImage: String = "",
         @SerializedName("uuid")
-        val uuid: String = ""
+        val uuid: String = "",
+        @SerializedName("fat_activate_date")
+        val fatActivateDate: String = "",
+        @SerializedName("fat_isService")
+        val fatIsService: Boolean = false,
     )
 }

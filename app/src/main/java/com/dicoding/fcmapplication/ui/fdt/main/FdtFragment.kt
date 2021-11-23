@@ -14,6 +14,7 @@ import com.dicoding.core.abstraction.BaseFragmentBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.FragmentFdtBinding
 import com.dicoding.fcmapplication.ui.fdt.adapter.FdtGridAdapter
+import com.dicoding.fcmapplication.ui.fdt.adapter.FdtVerticalAdapter
 import com.dicoding.fcmapplication.ui.fdt.fdtdetail.FdtDetailActivity
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
@@ -31,7 +32,7 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
     @Inject
     lateinit var mViewModel: FdtViewModel
 
-    private val fdtGridAdapter: FdtGridAdapter by lazy { FdtGridAdapter() }
+    private val fdtVerticalAdapter: FdtVerticalAdapter by lazy { FdtVerticalAdapter() }
 
     private var paginator: RecyclerViewPaginator? = null
 
@@ -66,7 +67,7 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
         when (state) {
             is FdtViewModel.FdtUiState.FdtLoaded -> {
                 stopLoading()
-                fdtGridAdapter.appendList(state.list)
+                fdtVerticalAdapter.appendList(state.list)
             }
             is FdtViewModel.FdtUiState.InitialLoading -> {
                 startInitialLoading()
@@ -84,7 +85,7 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
     }
 
     private fun setFdtPagination() {
-        paginator = RecyclerViewPaginator(binding.rvFdt.layoutManager as GridLayoutManager)
+        paginator = RecyclerViewPaginator(binding.rvFdt.layoutManager as LinearLayoutManager)
         paginator?.setOnLoadMoreListener { page ->
             mViewModel.getFdtList(page)
         }
@@ -93,12 +94,10 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
 
     private fun setFdtActions() {
         with(binding.rvFdt) {
-            layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = fdtGridAdapter
+            adapter = fdtVerticalAdapter
             setHasFixedSize(true)
 
-            fdtGridAdapter.setOnClickData {
-                Toast.makeText(requireContext(), it.fdtName, Toast.LENGTH_SHORT).show()
+            fdtVerticalAdapter.setOnClickData {
                 val intent = Intent(requireContext(), FdtDetailActivity::class.java)
                 intent.putExtra(FdtDetailActivity.EXTRA_DETAIL_FDT, it.uuid)
                 startActivity(intent)
@@ -108,6 +107,7 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
 
     private fun startInitialLoading() {
         binding.rvFdt.gone()
+        binding.progressFdt.visible()
     }
 
     private fun stopLoading() {

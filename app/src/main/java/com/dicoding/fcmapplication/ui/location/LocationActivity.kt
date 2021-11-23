@@ -79,6 +79,8 @@ class LocationActivity : AppCompatActivity() {
 
         binding.btnBack.setOnClickListener { onBackPressed() }
 
+        binding.tvDeviceName.text = deviceName
+
         when (dataType) {
             1 -> {
                 binding.tvTitleHeader.text = getString(R.string.fdt_location)
@@ -111,7 +113,7 @@ class LocationActivity : AppCompatActivity() {
         val locationDevice = LatLng(lat, long)
         val position = CameraPosition.Builder()
             .target(LatLng(lat, long))
-            .zoom(8.0)
+            .zoom(10.0)
             .tilt(10.0)
             .bearing(5.0)
             .build()

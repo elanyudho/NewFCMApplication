@@ -1,20 +1,15 @@
 package com.dicoding.fcmapplication.ui.other.main
 
 import android.content.Intent
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.dicoding.core.abstraction.BaseFragmentBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.FragmentOtherBinding
-import com.dicoding.fcmapplication.ui.login.LoginActivity
 import com.dicoding.fcmapplication.ui.other.companyprofile.CompanyProfileActivity
 import com.dicoding.fcmapplication.ui.other.dialog.LogoutDialogFragment
-import com.dicoding.fcmapplication.utils.extensions.gone
+import com.dicoding.fcmapplication.ui.other.repairlist.RepairListActivity
 import com.dicoding.fcmapplication.utils.extensions.invisible
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -42,7 +37,9 @@ class OtherFragment : BaseFragmentBinding<FragmentOtherBinding>() {
                     startActivity(Intent(requireContext(), CompanyProfileActivity::class.java))
                 }
 
-                rowRepairList.setOnClickListener { Toast.makeText(requireContext(), "Repair List", Toast.LENGTH_SHORT).show() }
+                rowRepairList.setOnClickListener {
+                    startActivity(Intent(requireContext(), RepairListActivity::class.java))
+                }
 
                 btnLogOut.setOnClickListener {
                     val dialogFragment = LogoutDialogFragment()

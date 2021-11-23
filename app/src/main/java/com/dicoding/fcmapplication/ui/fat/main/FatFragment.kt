@@ -6,12 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.core.abstraction.BaseFragmentBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.FragmentFatBinding
-import com.dicoding.fcmapplication.ui.fat.adapter.FatGridAdapter
+import com.dicoding.fcmapplication.ui.fat.adapter.FatVerticalAdapter
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
@@ -28,7 +27,7 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
     @Inject
     lateinit var mViewModel: FatViewModel
 
-    private val fatGridAdapter: FatGridAdapter by lazy { FatGridAdapter() }
+    private val fatVerticalAdapter: FatVerticalAdapter by lazy { FatVerticalAdapter() }
 
     private var paginator: RecyclerViewPaginator? = null
 
@@ -61,7 +60,7 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
         when (state) {
             is FatViewModel.FatUiState.FatLoaded -> {
                 stopLoading()
-                fatGridAdapter.appendList(state.list)
+                fatVerticalAdapter.appendList(state.list)
 
             }
             is FatViewModel.FatUiState.InitialLoading -> {
@@ -89,10 +88,10 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
 
     private fun setFatActions() {
         with(binding.rvFat) {
-            adapter = fatGridAdapter
+            adapter = fatVerticalAdapter
             setHasFixedSize(true)
 
-            fatGridAdapter.setOnClickData { val intent = Intent(requireContext(), FatDetailActivity::class.java)
+            fatVerticalAdapter.setOnClickData { val intent = Intent(requireContext(), FatDetailActivity::class.java)
                 intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.uuid)
                 startActivity(intent) }
         }
@@ -100,6 +99,7 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
 
     private fun startInitialLoading() {
         binding.rvFat.gone()
+        binding.progressFat.visible()
     }
 
     private fun stopLoading() {
