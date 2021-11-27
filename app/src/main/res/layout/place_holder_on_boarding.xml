@@ -17,7 +17,7 @@
         android:paddingHorizontal="16dp"
         android:textColor="@color/white"
         android:textSize="24sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/inter_bold"
         app:layout_constraintBottom_toTopOf="@+id/ivBoardingIllustration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

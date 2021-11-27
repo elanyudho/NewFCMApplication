@@ -13,10 +13,7 @@ import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
 import com.dicoding.fcmapplication.ui.fdt.adapter.FatHorizontalAdapter
 import com.dicoding.fcmapplication.ui.fdt.more.MoreFatCoveredActivity
 import com.dicoding.fcmapplication.ui.location.LocationActivity
-import com.dicoding.fcmapplication.utils.extensions.fancyToast
-import com.dicoding.fcmapplication.utils.extensions.glide
-import com.dicoding.fcmapplication.utils.extensions.invisible
-import com.dicoding.fcmapplication.utils.extensions.visible
+import com.dicoding.fcmapplication.utils.extensions.*
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -51,6 +48,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
         when (state) {
             is FdtDetailViewModel.FdtDetailUiState.FdtDetailLoaded -> {
                 initFdtDetailView(state.data)
+
                 fatHorizontalAdapter.submitList(state.data.fdtCoveredList)
                 setFdtActions()
 
@@ -63,7 +61,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                 }
             }
             is FdtDetailViewModel.FdtDetailUiState.LoadingFdtDetail -> {
-                // TODO: 12/11/2021  add shimmer
+
             }
             is FdtDetailViewModel.FdtDetailUiState.FailedLoadFdtDetail -> {
                 state.failure.throwable.printStackTrace()

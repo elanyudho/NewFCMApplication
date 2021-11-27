@@ -5,17 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.dicoding.core.abstraction.BaseFragmentBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.FragmentFdtBinding
-import com.dicoding.fcmapplication.ui.fdt.adapter.FdtGridAdapter
 import com.dicoding.fcmapplication.ui.fdt.adapter.FdtVerticalAdapter
 import com.dicoding.fcmapplication.ui.fdt.fdtdetail.FdtDetailActivity
+import com.dicoding.fcmapplication.ui.fdt.searchresult.SearchResultFdtActivity
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.setStatusBar
@@ -56,6 +54,24 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
 
             setFdtActions()
             setFdtPagination()
+
+            with(binding) {
+                searchFdt.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        val intent = Intent(requireContext(), SearchResultFdtActivity::class.java)
+                        intent.putExtra(SearchResultFdtActivity.EXTRA_NAME, query)
+                        startActivity(intent)
+                        searchFdt.setQuery("")
+                        searchFdt.clearFocus()
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        return false
+                    }
+
+                })
+            }
         }
 
         callOnceWhenDisplayed {

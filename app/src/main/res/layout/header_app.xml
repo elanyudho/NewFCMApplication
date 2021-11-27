@@ -11,14 +11,11 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="8dp"
         android:background="@color/blue_lochmara"
         app:contentPadding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTitleHeader"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintTop_toTopOf="@+id/tvTitleHeader"
         app:shapeAppearanceOverlay="@style/CircleImageView"
         app:srcCompat="@drawable/ic_back" />
 
@@ -28,17 +25,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/bg_text_header"
         android:gravity="center"
         android:paddingHorizontal="32dp"
         android:textColor="@color/white"
         android:textSize="24sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/inter_semi_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.373"
         app:layout_constraintStart_toEndOf="@+id/btnBack"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Header" />
 
 

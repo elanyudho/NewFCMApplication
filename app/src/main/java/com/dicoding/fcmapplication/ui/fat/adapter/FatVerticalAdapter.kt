@@ -6,7 +6,6 @@ import com.dicoding.core.abstraction.BaseViewHolder
 import com.dicoding.core.abstraction.PagingRecyclerViewAdapter
 import com.dicoding.fcmapplication.databinding.ItemDeviceLinearLayoutBinding
 import com.dicoding.fcmapplication.domain.model.Fat
-import com.dicoding.fcmapplication.domain.model.Fdt
 import com.dicoding.fcmapplication.utils.extensions.glide
 import com.dicoding.fcmapplication.utils.extensions.invisible
 import com.dicoding.fcmapplication.utils.extensions.visible

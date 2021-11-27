@@ -17,8 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FCMApplication"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.other.repairlist.RepairListActivity"
-            android:theme="@style/clearScreen.blueDim"/>
+        <activity
+            android:name=".ui.fat.searchresult.SearchResultFatActivity"
+            android:theme="@style/clearScreen.blueDim" />
+        <activity
+            android:name=".ui.fdt.searchresult.SearchResultFdtActivity"
+            android:theme="@style/clearScreen.blueDim" />
+        <activity
+            android:name=".ui.other.repairlist.RepairListActivity"
+            android:theme="@style/clearScreen.blueDim" />
         <activity
             android:name=".ui.location.LocationActivity"
             android:theme="@style/clearScreen.blueDim" />

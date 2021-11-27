@@ -42,4 +42,17 @@ class FatRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun fatSearchResult(queries: Map<String, String>): Either<Failure, List<Fat>> {
+        return when(val response = remoteDataSource.fatSearchResult(queries)){
+            is Either.Success -> {
+                val fatList = fatListMapper.mapToDomain(response.body)
+                Either.Success(fatList)
+            }
+            is Either.Error -> {
+                Timber.e(response.failure.throwable.message.toString())
+                Either.Error(response.failure)
+            }
+        }
+    }
 }

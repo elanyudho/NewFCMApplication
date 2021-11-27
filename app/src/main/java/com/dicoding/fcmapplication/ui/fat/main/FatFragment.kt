@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.core.abstraction.BaseFragmentBinding
@@ -12,6 +13,7 @@ import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.FragmentFatBinding
 import com.dicoding.fcmapplication.ui.fat.adapter.FatVerticalAdapter
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
+import com.dicoding.fcmapplication.ui.fat.searchresult.SearchResultFatActivity
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.setStatusBar
@@ -48,6 +50,24 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
     override fun setupView() {
         callOnceWhenCreated {
             mViewModel.uiState.observe(viewLifecycleOwner, this@FatFragment)
+
+            with(binding) {
+                searchFat.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        val intent = Intent(requireContext(), SearchResultFatActivity::class.java)
+                        intent.putExtra(SearchResultFatActivity.EXTRA_NAME, query)
+                        startActivity(intent)
+                        searchFat.setQuery("")
+                        searchFat.clearFocus()
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        return false
+                    }
+
+                })
+            }
 
             setFatActions()
             setFatPagination()

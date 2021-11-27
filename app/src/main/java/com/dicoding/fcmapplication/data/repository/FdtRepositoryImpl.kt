@@ -9,6 +9,7 @@ import com.dicoding.fcmapplication.data.remote.source.RemoteDataSource
 import com.dicoding.fcmapplication.domain.model.Fdt
 import com.dicoding.fcmapplication.domain.model.FdtDetail
 import com.dicoding.fcmapplication.domain.repository.FdtRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 class FdtRepositoryImpl @Inject constructor(
@@ -24,7 +25,7 @@ class FdtRepositoryImpl @Inject constructor(
                 Either.Success(fdtList)
             }
             is Either.Error -> {
-                Log.d("failed get fdtList :", response.failure.throwable.message.toString())
+                Timber.e(response.failure.throwable.message.toString())
                 Either.Error(response.failure)
             }
         }
@@ -37,7 +38,20 @@ class FdtRepositoryImpl @Inject constructor(
                 Either.Success(fdtDetail)
             }
             is Either.Error -> {
-                Log.d("failed get fdtDetail :", response.failure.throwable.message.toString())
+                Timber.e(response.failure.throwable.message.toString())
+                Either.Error(response.failure)
+            }
+        }
+    }
+
+    override suspend fun fdtSearchResult(queries: Map<String, String>): Either<Failure, List<Fdt>> {
+        return when(val response = remoteDataSource.fdtSearchResult(queries)){
+            is Either.Success -> {
+                val fdtList = fdtListMapper.mapToDomain(response.body)
+                Either.Success(fdtList)
+            }
+            is Either.Error -> {
+                Timber.e(response.failure.throwable.message.toString())
                 Either.Error(response.failure)
             }
         }

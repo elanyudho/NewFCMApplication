@@ -10,10 +10,7 @@ import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.ActivityFatDetailBinding
 import com.dicoding.fcmapplication.domain.model.FatDetail
 import com.dicoding.fcmapplication.ui.location.LocationActivity
-import com.dicoding.fcmapplication.utils.extensions.fancyToast
-import com.dicoding.fcmapplication.utils.extensions.glide
-import com.dicoding.fcmapplication.utils.extensions.invisible
-import com.dicoding.fcmapplication.utils.extensions.visible
+import com.dicoding.fcmapplication.utils.extensions.*
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -49,7 +46,7 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                 initFdtDetailView(state.data)
             }
             is FatDetailViewModel.FatDetailUiState.LoadingFatDetail -> {
-                // TODO: 13/11/2021 add Shimmer
+
             }
             is FatDetailViewModel.FatDetailUiState.FailedLoadFatDetail -> {
                 state.failure.throwable.printStackTrace()

@@ -51,7 +51,7 @@
             android:maxLines="1"
             android:textColor="@color/blue_lochmara"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/inter_semi_bold"
             app:layout_constraintBottom_toTopOf="@+id/tvTagCondition"
             app:layout_constraintEnd_toStartOf="@+id/imageIsService"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -69,11 +69,12 @@
             android:maxLines="1"
             android:textColor="@color/blue_lochmara"
             android:textSize="12sp"
+            android:fontFamily="@font/inter_regular"
             app:layout_constraintEnd_toEndOf="@+id/tvDeviceName"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tvDeviceName"
             app:layout_constraintTop_toBottomOf="@+id/tvDeviceName"
-            android:text="Need Service" />
+            android:text="@string/need_service" />
 
         <TextView
             android:id="@+id/tvDeviceNote"
@@ -86,6 +87,7 @@
             android:textSize="12sp"
             android:ellipsize="end"
             android:maxLines="2"
+            android:fontFamily="@font/inter_regular"
             app:layout_constraintEnd_toStartOf="@+id/imageIsService"
             app:layout_constraintStart_toEndOf="@+id/imageDevice"
             app:layout_constraintTop_toBottomOf="@+id/tvTagCondition" />

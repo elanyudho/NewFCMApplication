@@ -15,7 +15,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fdt">FDT</string>
     <string name="fat">FAT</string>
-    <string name="other">Other</string>
+    <string name="other">Others</string>
     <string name="search_fdt">Search FDT</string>
     <string name="repair_list">Repair List</string>
     <string name="hi">Hi,</string>
@@ -42,4 +42,9 @@
     <string name="mapbox_access_token">pk.eyJ1IjoiZWxhbnl1ZGhvIiwiYSI6ImNrdzN0NTlvbjI4ZHIybnFpOHVzbjNwajIifQ.GxYOr2Bs5kVHosgFDQgjAQ</string>
     <string name="activated_on">Activated on</string>
     <string name="start">Start</string>
+    <string name="search_result">Search Result</string>
+    <string name="search_fat">Search FAT</string>
+    <string name="sorry_no_result_found">Sorry, No Result Found</string>
+    <string name="we_cannot_find_what_are_you_looking_for_please_try_another_keyword">We Cannot Find What Are You Looking For. Please Try Another Keyword.</string>
+    <string name="need_service">Need Service</string>
 </resources>

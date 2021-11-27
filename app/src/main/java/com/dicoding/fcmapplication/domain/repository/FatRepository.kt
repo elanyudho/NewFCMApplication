@@ -10,4 +10,6 @@ interface FatRepository {
     suspend fun fatList(page: String): Either<Failure, List<Fat>>
 
     suspend fun fatDetail(uuid: String): Either<Failure, FatDetail>
+
+    suspend fun fatSearchResult(queries: Map<String, String>) : Either<Failure, List<Fat>>
 }

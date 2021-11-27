@@ -16,8 +16,10 @@ import com.dicoding.fcmapplication.domain.repository.OtherRepository
 import com.dicoding.fcmapplication.domain.usecase.auth.GetLoginUseCase
 import com.dicoding.fcmapplication.domain.usecase.fat.GetFatDetailUseCase
 import com.dicoding.fcmapplication.domain.usecase.fat.GetFatListUseCase
+import com.dicoding.fcmapplication.domain.usecase.fat.GetFatSearchResultUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtDetailUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListUseCase
+import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtSearchResultUseCase
 import com.dicoding.fcmapplication.domain.usecase.other.GetCompanyProfileUseCase
 import com.dicoding.fcmapplication.domain.usecase.other.GetRepairListUseCase
 import dagger.Binds
@@ -134,4 +136,12 @@ object UseCaseModule {
     @Provides
     @ActivityScoped
     fun provideRepairListUseCase(repository: OtherRepository) = GetRepairListUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun provideFdtSearchResultUseCase(repository: FdtRepository) = GetFdtSearchResultUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun provideFatSearchResultUseCase(repository: FatRepository) = GetFatSearchResultUseCase(repository)
 }

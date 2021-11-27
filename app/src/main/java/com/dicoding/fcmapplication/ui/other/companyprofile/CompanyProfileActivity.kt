@@ -8,6 +8,8 @@ import com.dicoding.fcmapplication.databinding.ActivityCompanyProfileBinding
 import com.dicoding.fcmapplication.domain.model.CompanyProfile
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.glide
+import com.dicoding.fcmapplication.utils.extensions.gone
+import com.dicoding.fcmapplication.utils.extensions.visible
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -41,7 +43,7 @@ class CompanyProfileActivity : BaseActivityBinding<ActivityCompanyProfileBinding
                 initView(state.data)
             }
             is CompanyProfileViewModel.CompanyProfileUiState.LoadingCompanyProfile -> {
-                // TODO: 20/11/2021 addLoading
+
             }
             is CompanyProfileViewModel.CompanyProfileUiState.FailedLoadCompanyProfile -> {
                 this.fancyToast(

@@ -21,6 +21,7 @@
             android:layout_marginHorizontal="32dp"
             android:layout_marginTop="16dp"
             android:gravity="center"
+            android:fontFamily="@font/inter_regular"
             android:text="@string/are_you_sure_want_to_exit"
             android:textColor="@color/blue_lochmara"
             android:textSize="16sp" />
@@ -47,6 +48,7 @@
                 android:textSize="14sp"
                 android:visibility="visible"
                 app:cornerRadius="6dp"
+                android:fontFamily="@font/inter_semi_bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnYes"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -65,6 +67,7 @@
                 android:textSize="14sp"
                 android:visibility="visible"
                 app:cornerRadius="6dp"
+                android:fontFamily="@font/inter_semi_bold"
                 android:backgroundTint="@color/yellow_selective"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

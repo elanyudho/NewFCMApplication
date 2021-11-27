@@ -14,9 +14,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvLottieLoading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:visibility="gone"
+        app:cardCornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="ic_loading.json"
+            app:lottie_loop="true" />
+
+    </com.google.android.material.card.MaterialCardView>
+
     <ScrollView
+        android:id="@+id/viewFatDetail"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,8 +104,8 @@
                         android:layout_marginStart="24dp"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="18sp"
-                        android:textStyle="bold"
                         android:layout_marginEnd="8dp"
+                        android:fontFamily="@font/inter_semi_bold"
                         app:layout_constraintEnd_toStartOf="@+id/icIsService"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toEndOf="@+id/imageDetail"
@@ -96,6 +121,7 @@
                         android:text="@string/total_core"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="12sp"
+                        android:fontFamily="@font/inter_semi_bold"
                         app:layout_constraintEnd_toStartOf="@+id/materialTextView3"
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
                         app:layout_constraintStart_toEndOf="@+id/imageDetail"
@@ -109,6 +135,7 @@
                         android:text="@string/used"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="12sp"
+                        android:fontFamily="@font/inter_semi_bold"
                         app:layout_constraintEnd_toStartOf="@+id/materialTextView4"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/materialTextView2"
@@ -123,6 +150,7 @@
                         android:text="@string/backup"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="12sp"
+                        android:fontFamily="@font/inter_semi_bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/materialTextView3"
@@ -135,7 +163,7 @@
                         android:layout_marginTop="4dp"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="14sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/inter_semi_bold"
                         app:layout_constraintEnd_toEndOf="@+id/materialTextView2"
                         app:layout_constraintStart_toStartOf="@+id/materialTextView2"
                         app:layout_constraintTop_toBottomOf="@+id/materialTextView2"
@@ -148,7 +176,7 @@
                         android:layout_marginTop="4dp"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="14sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/inter_semi_bold"
                         app:layout_constraintEnd_toEndOf="@+id/materialTextView3"
                         app:layout_constraintStart_toStartOf="@+id/materialTextView3"
                         app:layout_constraintTop_toBottomOf="@+id/materialTextView3"
@@ -161,7 +189,7 @@
                         android:layout_marginTop="4dp"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="14sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/inter_semi_bold"
                         app:layout_constraintEnd_toEndOf="@+id/materialTextView4"
                         app:layout_constraintStart_toStartOf="@+id/materialTextView4"
                         app:layout_constraintTop_toBottomOf="@+id/materialTextView4"
@@ -212,7 +240,7 @@
                             android:text="@string/fat_loss_is"
                             android:textColor="@color/blue_lochmara"
                             android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:fontFamily="@font/inter_semi_bold" />
 
                         <TextView
                             android:id="@+id/tvFatLossNumber"
@@ -223,7 +251,7 @@
                             android:layout_weight="1"
                             android:textColor="@color/blue_lochmara"
                             android:textSize="18sp"
-                            android:textStyle="bold"
+                            android:fontFamily="@font/inter_semi_bold"
                             tools:text="5 dB" />
 
                     </LinearLayout>
@@ -271,10 +299,10 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginStart="16dp"
-                            android:text="20"
                             android:textColor="@color/blue_lochmara"
                             android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:fontFamily="@font/inter_semi_bold"
+                            tools:text="20"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -285,7 +313,7 @@
                             android:text="@string/home_covered"
                             android:textColor="@color/blue_lochmara"
                             android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:fontFamily="@font/inter_semi_bold" />
 
                     </LinearLayout>
 
@@ -327,12 +355,13 @@
                         android:text="@string/fdt_location"
                         android:textColor="@color/white"
                         android:textSize="18sp"
+                        android:fontFamily="@font/inter_semi_bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/view" />
 
                     <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/lottieAnimationView"
+                        android:id="@+id/lottieAnimationMaps"
                         android:layout_width="130dp"
                         android:layout_height="130dp"
                         app:layout_constraintBottom_toBottomOf="@+id/view"
@@ -391,7 +420,7 @@
                             android:text="@string/repair_notes"
                             android:textColor="@color/blue_lochmara"
                             android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:fontFamily="@font/inter_semi_bold" />
 
                     </LinearLayout>
 
@@ -431,6 +460,7 @@
                             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Dignissim cras tincidunt lobortis feugiat vivamus at augue. Eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus. Erat nam at lectus urna duis convallis convallis tellus id. Egestas purus viverra accumsan in nisl nisi. Sed libero enim sed faucibus turpis. Bibendum enim facilisis gravida neque convallis a. At elementum eu facilisis sed odio. Aliquam nulla facilisi cras fermentum odio eu feugiat pretium. A condimentum vitae sapien pellentesque. Ac ut consequat semper viverra. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. Montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Purus ut faucibus pulvinar elementum integer enim neque volutpat ac."
                             android:textColor="@color/black"
                             android:textSize="14sp"
+                            android:fontFamily="@font/inter_regular"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

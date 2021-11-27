@@ -29,4 +29,10 @@ interface ApiService{
 
     @GET("servicelists/page/{page}")
     suspend fun getRepairList(@Path("page") page: String): Response<List<RepairListResponse.RepairListResponseItem>>
+
+    @GET("fdts")
+    suspend fun getFdtSearchResult(@QueryMap queries: Map<String, String>): Response<List<FdtListResponse.FdtListResponseItem>>
+
+    @GET("fats")
+    suspend fun getFatSearchResult(@QueryMap queries: Map<String, String>): Response<List<FatListResponse.FatListResponseItem>>
 }

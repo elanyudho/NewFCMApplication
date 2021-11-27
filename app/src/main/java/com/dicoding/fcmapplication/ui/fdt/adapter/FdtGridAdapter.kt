@@ -6,7 +6,6 @@ import com.dicoding.core.abstraction.BaseViewHolder
 import com.dicoding.core.abstraction.PagingRecyclerViewAdapter
 import com.dicoding.fcmapplication.databinding.ItemRectangleBinding
 import com.dicoding.fcmapplication.domain.model.Fdt
-import com.dicoding.fcmapplication.utils.api.ApiVariabel.BASE_URL_IMAGE
 import com.dicoding.fcmapplication.utils.extensions.glide
 
 class FdtGridAdapter : PagingRecyclerViewAdapter<FdtGridAdapter.FdtViewHolder, Fdt>() {
