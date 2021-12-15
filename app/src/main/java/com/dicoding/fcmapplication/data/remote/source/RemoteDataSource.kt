@@ -15,6 +15,11 @@ class RemoteDataSource
             api.login(loginData)
         }
 
+    suspend fun register(registerData: Map<String, RequestBody>): Either<Failure, LoginResponse> =
+        request {
+            api.register(registerData)
+        }
+
     suspend fun fdtList(page: String): Either<Failure, List<FdtListResponse.FdtListResponseItem>> =
         request {
             api.getFdtList(page)

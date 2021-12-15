@@ -16,6 +16,7 @@ import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.ActivityLoginBinding
 import com.dicoding.fcmapplication.domain.model.User
 import com.dicoding.fcmapplication.ui.main.MainActivity
+import com.dicoding.fcmapplication.ui.register.RegisterActivity
 import com.dicoding.fcmapplication.utils.extensions.*
 import com.dicoding.fcmapplication.utils.network.NetworkInterceptor
 import com.shashank.sony.fancytoastlib.FancyToast
@@ -44,6 +45,10 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
 
         binding.btnLogin.setOnClickListener {
             doLogin()
+        }
+
+        binding.tvRegister.setOnClickListener {
+            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
         }
     }
 
@@ -75,11 +80,11 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
         with(binding) {
 
             if (etUsername.text.isNullOrEmpty()) {
-                etUsername.error = "Bidang ini wajib diisi"
+                etUsername.error = "This field is required"
                 etUsername.requestFocus()
             }
             if (etPassword.text.isNullOrEmpty()) {
-                binding.etPassword.error = "Bidang ini wajib diisi"
+                binding.etPassword.error = "This field is required"
                 binding.etPassword.requestFocus()
             }else {
                 mViewModel.doLogin(
@@ -96,7 +101,7 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
             fancyToast(getString(R.string.error_unstable_network), FancyToast.ERROR)
         } else {
             if (failure.code == "400") {
-                fancyToast("Email dan password salah. Silahkan cek kembali", FancyToast.ERROR)
+                fancyToast("Incorrect username or password. Please check again", FancyToast.ERROR)
             } else {
                 fancyToast(getString(R.string.error_unknown_error), FancyToast.ERROR)
             }

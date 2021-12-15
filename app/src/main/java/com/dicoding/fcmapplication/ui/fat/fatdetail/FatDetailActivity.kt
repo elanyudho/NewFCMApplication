@@ -3,7 +3,7 @@ package com.dicoding.fcmapplication.ui.fat.fatdetail
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Toast
+import android.widget.ScrollView
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
@@ -14,6 +14,7 @@ import com.dicoding.fcmapplication.utils.extensions.*
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
@@ -37,6 +38,7 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
 
         binding.headerFatDetail.tvTitleHeader.text = getString(R.string.fat_profile)
         binding.headerFatDetail.btnBack.setOnClickListener { onBackPressed() }
+
 
     }
 

@@ -12,6 +12,11 @@ interface ApiService{
     @POST("auth/local")
     suspend fun login(@PartMap loginData: Map<String, RequestBody> ): Response<LoginResponse>
 
+    @JvmSuppressWildcards
+    @Multipart
+    @POST("auth/local/register")
+    suspend fun register(@PartMap registerData: Map<String, RequestBody> ): Response<LoginResponse>
+
     @GET("fdts/page/{page}")
     suspend fun getFdtList(@Path("page") page: String): Response<List<FdtListResponse.FdtListResponseItem>>
 

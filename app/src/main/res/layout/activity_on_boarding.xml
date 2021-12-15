@@ -35,34 +35,20 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnBoardingNext"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:backgroundTint="@color/yellow_selective"
-        android:padding="16dp"
-        android:text="@string/next"
-        android:textSize="16sp"
-        android:textAllCaps="false"
         android:fontFamily="@font/inter_bold"
+        android:paddingVertical="16dp"
+        android:paddingHorizontal="50dp"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textSize="16sp"
         app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tabBoarding" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.33" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.67
-" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

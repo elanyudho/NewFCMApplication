@@ -14,6 +14,7 @@ import com.dicoding.fcmapplication.domain.repository.FatRepository
 import com.dicoding.fcmapplication.domain.repository.FdtRepository
 import com.dicoding.fcmapplication.domain.repository.OtherRepository
 import com.dicoding.fcmapplication.domain.usecase.auth.GetLoginUseCase
+import com.dicoding.fcmapplication.domain.usecase.auth.GetRegisterUseCase
 import com.dicoding.fcmapplication.domain.usecase.fat.GetFatDetailUseCase
 import com.dicoding.fcmapplication.domain.usecase.fat.GetFatListUseCase
 import com.dicoding.fcmapplication.domain.usecase.fat.GetFatSearchResultUseCase
@@ -112,6 +113,10 @@ object UseCaseModule {
     @Provides
     @ActivityScoped
     fun provideLoginUseCase(repository: AuthRepository) = GetLoginUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun provideRegisterUseCase(repository: AuthRepository) = GetRegisterUseCase(repository)
 
     @Provides
     @ActivityScoped

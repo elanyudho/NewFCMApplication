@@ -71,17 +71,17 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:drawableLeft="@drawable/ic_navigate_location"
+        android:fontFamily="@font/inter_bold"
         android:paddingVertical="4dp"
         android:text="@string/start"
         android:textAllCaps="false"
         android:textSize="18sp"
-        android:fontFamily="@font/inter_bold"
         app:backgroundTint="@color/yellow_selective"
         app:cornerRadius="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96" />
+        app:layout_constraintTop_toTopOf="@+id/guideline17"
+        app:layout_constraintVertical_bias="0.3" />
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
@@ -89,7 +89,7 @@
         app:cardBackgroundColor="@color/black"
         android:alpha="0.64"
         android:layout_marginHorizontal="8dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="16dp"
         app:cardCornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/mapView"
         app:layout_constraintEnd_toEndOf="@+id/mapView"
@@ -117,7 +117,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.86" />
+        app:layout_constraintGuide_percent="0.88" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

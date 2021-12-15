@@ -10,6 +10,7 @@ import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.ActivityFdtDetailBinding
 import com.dicoding.fcmapplication.domain.model.FdtDetail
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
+import com.dicoding.fcmapplication.ui.fdt.adapter.FatCoveredAdapter
 import com.dicoding.fcmapplication.ui.fdt.adapter.FatHorizontalAdapter
 import com.dicoding.fcmapplication.ui.fdt.more.MoreFatCoveredActivity
 import com.dicoding.fcmapplication.ui.location.LocationActivity
@@ -25,7 +26,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
     @Inject
     lateinit var mViewModel: FdtDetailViewModel
 
-    private val fatHorizontalAdapter: FatHorizontalAdapter by lazy { FatHorizontalAdapter() }
+    private val fatHorizontalAdapter: FatCoveredAdapter by lazy { FatCoveredAdapter() }
 
     private lateinit var uuid: String
 
@@ -53,12 +54,25 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                 setFdtActions()
 
                 val dataFat = arrayListOf<FdtDetail.FatList>()
-                dataFat.addAll(state.data.fdtCoveredList)
-                binding.rowFatCovered.setOnClickListener {
-                    val intent = Intent(this@FdtDetailActivity, MoreFatCoveredActivity::class.java)
-                    intent.putParcelableArrayListExtra(MoreFatCoveredActivity.EXTRA_FAT_COVERED, dataFat)
-                    startActivity(intent)
+
+                if (state.data.fdtCoveredList.isEmpty()){
+                    with(binding){
+                        rvFatCovered.invisible()
+                        imageNoFatCovered.visible()
+                        tvNoFatCovered.visible()
+                    }
+                }else{
+                    binding.rvFatCovered.visible()
+                    binding.imageNoFatCovered.gone()
+                    binding.tvNoFatCovered.gone()
+                    dataFat.addAll(state.data.fdtCoveredList)
+                    binding.rowFatCovered.setOnClickListener {
+                        val intent = Intent(this@FdtDetailActivity, MoreFatCoveredActivity::class.java)
+                        intent.putParcelableArrayListExtra(MoreFatCoveredActivity.EXTRA_FAT_COVERED, dataFat)
+                        startActivity(intent)
+                    }
                 }
+
             }
             is FdtDetailViewModel.FdtDetailUiState.LoadingFdtDetail -> {
 

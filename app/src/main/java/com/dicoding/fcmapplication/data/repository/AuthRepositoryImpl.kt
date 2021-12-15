@@ -8,6 +8,7 @@ import com.dicoding.fcmapplication.data.remote.source.RemoteDataSource
 import com.dicoding.fcmapplication.domain.model.User
 import com.dicoding.fcmapplication.domain.repository.AuthRepository
 import okhttp3.RequestBody
+import timber.log.Timber
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -23,9 +24,22 @@ class AuthRepositoryImpl @Inject constructor(
                Either.Success(login)
            }
            is Either.Error -> {
-               Log.d("failed do login :", results.failure.throwable.message.toString())
+               Timber.e(results.failure.throwable.message.toString())
                Either.Error(results.failure)
            }
        }
+    }
+
+    override suspend fun register(registerData: HashMap<String, RequestBody>): Either<Failure, User> {
+        return when(val results = remoteDataSource.register(registerData)) {
+            is Either.Success -> {
+                val register = loginMapper.mapToDomain(results.body)
+                Either.Success(register)
+            }
+            is Either.Error -> {
+                Timber.e(results.failure.throwable.message.toString())
+                Either.Error(results.failure)
+            }
+        }
     }
 }

@@ -8,4 +8,6 @@ import okhttp3.RequestBody
 interface AuthRepository {
 
     suspend fun login(loginData :HashMap<String, RequestBody>): Either<Failure, User>
+
+    suspend fun register(registerData :HashMap<String, RequestBody>): Either<Failure, User>
 }
