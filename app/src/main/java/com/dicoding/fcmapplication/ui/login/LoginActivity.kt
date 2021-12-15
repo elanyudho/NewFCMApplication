@@ -75,6 +75,11 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
+    }
+
     private fun doLogin() {
 
         var isEmpty = false
