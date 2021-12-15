@@ -34,14 +34,14 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
     lateinit var encryptedPreferences: EncryptedPreferences
 
     @Inject
-    lateinit var session : Session
+    lateinit var session: Session
 
     override val bindingInflater: (LayoutInflater) -> ActivityLoginBinding
         get() = { ActivityLoginBinding.inflate(it) }
 
     override fun setupView() {
 
-        mViewModel.uiState.observe(this,this)
+        mViewModel.uiState.observe(this, this)
 
         binding.btnLogin.setOnClickListener {
             doLogin()
@@ -77,19 +77,27 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
 
     private fun doLogin() {
 
+        var isEmpty = false
+
         with(binding) {
 
             if (etUsername.text.isNullOrEmpty()) {
                 etUsername.error = "This field is required"
                 etUsername.requestFocus()
+                isEmpty = true
             }
             if (etPassword.text.isNullOrEmpty()) {
                 binding.etPassword.error = "This field is required"
                 binding.etPassword.requestFocus()
-            }else {
+                isEmpty = true
+            }
+
+            if (isEmpty) {
+                return
+            } else {
                 mViewModel.doLogin(
-                    binding.etUsername.text.toString(),
-                    binding.etPassword.text.toString()
+                    etUsername.text.toString(),
+                    etPassword.text.toString()
                 )
             }
 
@@ -107,7 +115,7 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
             }
 
         }
-        Log.d ("Session Login", session.isLogin.toString())
+        Log.d("Session Login", session.isLogin.toString())
         //e { "Type: ${failure.requestResults} || Body: ${failure.throwable.message}" }
     }
 

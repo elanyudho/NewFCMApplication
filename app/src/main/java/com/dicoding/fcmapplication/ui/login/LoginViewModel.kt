@@ -23,11 +23,11 @@ class LoginViewModel @Inject constructor(
         data class Failed(val failure: Failure) : LoginUiState()
     }
 
-    fun doLogin(email: String, password: String) {
+    fun doLogin(userName: String, password: String) {
         _uiState.value = LoginUiState.Loading
         viewModelScope.launch(dispatcherProvider.io) {
 
-            loginUseCase.run(GetLoginUseCase.Params(email, password))
+            loginUseCase.run(GetLoginUseCase.Params(userName, password))
                 .onSuccess {
                     withContext(dispatcherProvider.main) {
                         _uiState.value = LoginUiState.SuccessApi(it)
