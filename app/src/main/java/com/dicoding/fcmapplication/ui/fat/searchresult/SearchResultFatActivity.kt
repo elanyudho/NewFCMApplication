@@ -13,6 +13,7 @@ import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
 import com.dicoding.fcmapplication.ui.fdt.searchresult.SearchResultFdtActivity
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
+import com.dicoding.fcmapplication.utils.extensions.invisible
 import com.dicoding.fcmapplication.utils.extensions.visible
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,15 +68,15 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
     override fun onChanged(state: SearchResultFatViewModel.SearchResultFatUiState?) {
         when (state) {
             is SearchResultFatViewModel.SearchResultFatUiState.SearchResultFatLoaded -> {
-                if(state.data.isEmpty()){
+                if (state.data.isEmpty()) {
                     emptyDataView()
-                }else{
+                } else {
                     fatNoPaginationAdapter.submitList(state.data)
                     dataIsNotEmptyView()
                 }
             }
             is SearchResultFatViewModel.SearchResultFatUiState.LoadingSearchResultFat -> {
-                // TODO: 24/11/2021 add loading
+                binding.cvLottieLoading.visible()
             }
             is SearchResultFatViewModel.SearchResultFatUiState.FailedLoadSearchResultFat -> {
                 this.fancyToast(
@@ -91,14 +92,17 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
             adapter = fatNoPaginationAdapter
             setHasFixedSize(true)
 
-            fatNoPaginationAdapter.setOnClickData { val intent = Intent(this@SearchResultFatActivity, FatDetailActivity::class.java)
+            fatNoPaginationAdapter.setOnClickData {
+                val intent = Intent(this@SearchResultFatActivity, FatDetailActivity::class.java)
                 intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.uuid)
-                startActivity(intent) }
+                startActivity(intent)
+            }
         }
     }
 
     private fun emptyDataView() {
-        with(binding){
+        with(binding) {
+            cvLottieLoading.gone()
             tvNotFound.visible()
             tvNotFound2.visible()
             imageNotFound.visible()
@@ -107,10 +111,12 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
     }
 
     private fun dataIsNotEmptyView() {
-        with(binding){tvNotFound.gone()
-        tvNotFound2.gone()
-        imageNotFound.gone()
-        rvFat.visible()
+        with(binding) {
+            cvLottieLoading.gone()
+            tvNotFound.gone()
+            tvNotFound2.gone()
+            imageNotFound.gone()
+            rvFat.visible()
         }
     }
 

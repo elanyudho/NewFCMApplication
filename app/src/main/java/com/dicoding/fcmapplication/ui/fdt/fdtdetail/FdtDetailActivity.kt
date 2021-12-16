@@ -106,7 +106,11 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             tvCoreUsed.text = obj.fdtCoreUsed
             tvFatLossNumber.text = obj.fdtLoss
             tvFatNumber.text = obj.fdtCoveredFat
-            tvRepairNotes.text = obj.fdtNote
+            tvRepairNotes.text = if(obj.fdtNote == ""){
+                "No note"
+            }else{
+                obj.fdtNote
+            }
             if (obj.fdtIsService == true){
                 icRepair.visible()
             }else {

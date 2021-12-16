@@ -1,7 +1,9 @@
 package com.dicoding.fcmapplication.ui.fdt.searchresult
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
@@ -25,6 +27,8 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
     lateinit var mViewModel: SearchResultFdtViewModel
 
     private lateinit var queryFdtName: String
+
+    private var loading = false
 
     private val fdtNoPaginationAdapter: SearchFdtNoPaginationAdapter by lazy { SearchFdtNoPaginationAdapter() }
 
@@ -54,6 +58,12 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
             })
         }
 
+        if (loading){
+            binding.cvLottieLoading.visible()
+        }else{
+            binding.cvLottieLoading.gone()
+        }
+
         setFdtActions()
 
     }
@@ -61,6 +71,7 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
     override fun onChanged(state: SearchResultFdtViewModel.SearchResultFdtUiState?) {
         when (state) {
             is SearchResultFdtViewModel.SearchResultFdtUiState.SearchResultFdtLoaded -> {
+
                 if(state.data.isEmpty()){
                     emptyDataView()
                 }else{
@@ -69,7 +80,7 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
                 }
             }
             is SearchResultFdtViewModel.SearchResultFdtUiState.LoadingSearchResultFdt -> {
-                // TODO: 24/11/2021 add loading
+                binding.cvLottieLoading.visible()
             }
             is SearchResultFdtViewModel.SearchResultFdtUiState.FailedLoadSearchResultFdt -> {
                 this.fancyToast(
@@ -95,6 +106,7 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
 
     private fun emptyDataView() {
         with(binding){
+            cvLottieLoading.gone()
             tvNotFound.visible()
             tvNotFound2.visible()
             imageNotFound.visible()
@@ -103,7 +115,9 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
     }
 
     private fun dataIsNotEmptyView() {
-        with(binding){tvNotFound.gone()
+        with(binding){
+            cvLottieLoading.gone()
+            tvNotFound.gone()
             tvNotFound2.gone()
             imageNotFound.gone()
             rvFdt.visible()

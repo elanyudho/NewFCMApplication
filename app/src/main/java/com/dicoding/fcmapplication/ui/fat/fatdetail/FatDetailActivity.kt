@@ -66,7 +66,11 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
             tvFatCoreUsed.text = obj.fatCoreUsed
             tvFatLossNumber.text = obj.fatLoss
             tvHomeNumber.text = obj.fatCoveredHome
-            tvRepairNotes.text = obj.fatNote
+            tvRepairNotes.text = if(obj.fatNote == ""){
+                "No note"
+            }else{
+                obj.fatNote
+            }
             if (obj.fatIsService == true) {
                 icIsService.visible()
             } else {

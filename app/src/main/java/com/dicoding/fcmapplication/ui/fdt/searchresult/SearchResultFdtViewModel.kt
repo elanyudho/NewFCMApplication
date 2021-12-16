@@ -29,14 +29,14 @@ class SearchResultFdtViewModel @Inject constructor(
             getFdtSearchResultUseCase.run(query)
                 .onSuccess {
                     withContext(dispatcherProvider.main){
-                        _uiState.value = SearchResultFdtUiState.SearchResultFdtLoaded(it)
                         _uiState.value = SearchResultFdtUiState.LoadingSearchResultFdt(false)
+                        _uiState.value = SearchResultFdtUiState.SearchResultFdtLoaded(it)
                     }
                 }
                 .onError {
                     withContext(dispatcherProvider.main){
-                        _uiState.value = SearchResultFdtUiState.FailedLoadSearchResultFdt(it)
                         _uiState.value = SearchResultFdtUiState.LoadingSearchResultFdt(false)
+                        _uiState.value = SearchResultFdtUiState.FailedLoadSearchResultFdt(it)
                     }
                 }
         }

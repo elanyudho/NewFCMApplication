@@ -14,47 +14,58 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.FCMApplication"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.register.RegisterActivity"
             android:theme="@style/clearScreen.blueLoch"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".ui.fat.searchresult.SearchResultFatActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/clearScreen.blueDim" />
         <activity
             android:name=".ui.fdt.searchresult.SearchResultFdtActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/clearScreen.blueDim" />
         <activity
             android:name=".ui.other.repairlist.RepairListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/clearScreen.blueDim" />
         <activity
             android:name=".ui.location.LocationActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/clearScreen.blueDim" />
         <activity
             android:name=".ui.fat.fatdetail.FatDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/clearScreen.blueDim" />
         <activity
             android:name=".ui.other.companyprofile.CompanyProfileActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/clearScreen.blueDim" />
         <activity
             android:name=".ui.fdt.more.MoreFatCoveredActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/clearScreen.blueDim" />
         <activity
             android:name=".ui.fdt.fdtdetail.FdtDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/clearScreen.blueDim" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:theme="@style/clearScreen.blueLoch"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".ui.onboarding.OnBoardingActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/clearScreen.blueLoch" />
         <activity
             android:name=".ui.splash.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/clearScreen.blueLoch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,6 +75,7 @@
         </activity>
         <activity
             android:name=".ui.main.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/clearScreen.blueDim" />
     </application>
 

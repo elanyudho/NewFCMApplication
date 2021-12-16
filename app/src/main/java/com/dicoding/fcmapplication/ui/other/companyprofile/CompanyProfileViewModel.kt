@@ -30,14 +30,14 @@ class CompanyProfileViewModel @Inject constructor(
             getCompanyProfileUseCase.run(UseCase.None)
                 .onSuccess {
                     withContext(dispatcherProvider.main) {
-                        _uiState.value = CompanyProfileUiState.CompanyProfileLoaded(it)
                         _uiState.value = CompanyProfileUiState.LoadingCompanyProfile(false)
+                        _uiState.value = CompanyProfileUiState.CompanyProfileLoaded(it)
                     }
                 }
                 .onError {
                     withContext(dispatcherProvider.main) {
-                        _uiState.value = CompanyProfileUiState.FailedLoadCompanyProfile(it)
                         _uiState.value = CompanyProfileUiState.LoadingCompanyProfile(false)
+                        _uiState.value = CompanyProfileUiState.FailedLoadCompanyProfile(it)
                     }
                 }
         }

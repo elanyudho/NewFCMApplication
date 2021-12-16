@@ -29,14 +29,14 @@ class SearchResultFatViewModel @Inject constructor(
             getFatSearchResultUseCase.run(query)
                 .onSuccess {
                     withContext(dispatcherProvider.main){
-                        _uiState.value = SearchResultFatUiState.SearchResultFatLoaded(it)
                         _uiState.value = SearchResultFatUiState.LoadingSearchResultFat(false)
+                        _uiState.value = SearchResultFatUiState.SearchResultFatLoaded(it)
                     }
                 }
                 .onError {
                     withContext(dispatcherProvider.main){
-                        _uiState.value = SearchResultFatUiState.FailedLoadSearchResultFat(it)
                         _uiState.value = SearchResultFatUiState.LoadingSearchResultFat(false)
+                        _uiState.value = SearchResultFatUiState.FailedLoadSearchResultFat(it)
                     }
                 }
         }

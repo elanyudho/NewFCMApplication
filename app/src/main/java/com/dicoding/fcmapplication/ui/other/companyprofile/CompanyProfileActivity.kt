@@ -41,9 +41,16 @@ class CompanyProfileActivity : BaseActivityBinding<ActivityCompanyProfileBinding
         when(state){
             is CompanyProfileViewModel.CompanyProfileUiState.CompanyProfileLoaded -> {
                 initView(state.data)
+                with(binding){
+                    cvLottieLoading.gone()
+                    viewCompanyProfile.visible()
+                }
             }
             is CompanyProfileViewModel.CompanyProfileUiState.LoadingCompanyProfile -> {
-
+                with(binding){
+                    cvLottieLoading.visible()
+                    viewCompanyProfile.gone()
+                }
             }
             is CompanyProfileViewModel.CompanyProfileUiState.FailedLoadCompanyProfile -> {
                 this.fancyToast(
