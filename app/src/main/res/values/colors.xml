@@ -10,8 +10,12 @@
 
     <color name="blue_lochmara">#3A62AB</color>
     <color name="blue_dim">#F6F9FF</color>
+    <color name="blue_manatee">#959BA5</color>
 
     <color name="yellow_selective">#FFB300</color>
+    <color name="yellow_tangerine">#FFCC00</color>
 
     <color name="grey_silver">#C4C4C4</color>
+
+    <color name="green_lime">#00FF00</color>
 </resources>

@@ -92,4 +92,8 @@ dependencies {
     implementation "com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v8:$mapbox_annotation_version"
     implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.6'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-telemetry:6.1.0'
+
+    // ArcBar Progress
+    implementation "com.github.Marvel999:Arc-Progressbar-lib:$arcbar_version"
+    implementation 'com.github.hadibtf:SemiCircleArcProgressBar:1.1.1'
 }
