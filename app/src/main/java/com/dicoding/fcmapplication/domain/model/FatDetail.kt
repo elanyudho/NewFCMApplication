@@ -10,6 +10,6 @@ data class FatDetail(
     var fatIsService: Boolean?,
     val fatNote: String?,
     val fatLocation: String?,
-    val uuid: String?,
-    val fatImage: String?
+    val fatId: String?,
+    val fatRegion: String?
 )

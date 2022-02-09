@@ -1,9 +1,7 @@
 package com.dicoding.fcmapplication.data.repository
 
-import android.util.Log
 import com.dicoding.core.exception.Failure
 import com.dicoding.core.vo.Either
-import com.dicoding.fcmapplication.data.remote.mapper.FdtDetailMapper
 import com.dicoding.fcmapplication.data.remote.mapper.FdtListMapper
 import com.dicoding.fcmapplication.data.remote.source.RemoteDataSource
 import com.dicoding.fcmapplication.domain.model.Fdt
