@@ -163,6 +163,21 @@
         app:progressPlaceHolderColor="@color/blue_manatee"
         app:progressPlaceHolderWidth="60" />
 
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvCapacityPercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/blue_lochmara"
+        android:textSize="24sp"
+        android:fontFamily="@font/inter_semi_bold"
+        app:layout_constraintBottom_toBottomOf="@+id/semiCircleArcProgressBar"
+        app:layout_constraintEnd_toEndOf="@+id/semiCircleArcProgressBar"
+        app:layout_constraintStart_toStartOf="@+id/semiCircleArcProgressBar"
+        app:layout_constraintTop_toTopOf="@+id/semiCircleArcProgressBar"
+        app:layout_constraintVertical_bias="0.75"
+        tools:text="50%" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFdt"
         android:layout_width="0dp"

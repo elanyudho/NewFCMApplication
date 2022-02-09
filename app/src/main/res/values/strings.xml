@@ -52,5 +52,7 @@
     <string name="register">Register</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="are_you_a_new_member">Are you a new member?</string>
+    <string name="add_fd_fat"><![CDATA[Add FDT & FAT]]></string>
+    <string name="region_admin">Region Admin</string>
 
 </resources>

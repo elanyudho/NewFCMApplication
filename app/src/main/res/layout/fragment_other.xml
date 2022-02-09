@@ -23,7 +23,6 @@
         android:layout_marginEnd="24dp"
         android:backgroundTint="@color/blue_lochmara"
         app:cardCornerRadius="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/rowRepairList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,8 +39,8 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/hi"
                 android:fontFamily="@font/inter_semi_bold"
+                android:text="@string/hi"
                 android:textColor="@color/blue_dim"
                 android:textSize="16sp" />
 
@@ -50,16 +49,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
+                android:fontFamily="@font/inter_semi_bold"
                 android:textColor="@color/blue_dim"
                 android:textSize="16sp"
-                android:fontFamily="@font/inter_semi_bold"
                 tools:text="Elanyudho" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/exclamation_mark"
                 android:fontFamily="@font/inter_semi_bold"
+                android:text="@string/exclamation_mark"
                 android:textColor="@color/blue_dim"
                 android:textSize="16sp" />
 
@@ -72,13 +71,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cvProfile"
-        app:layout_constraintVertical_chainStyle="packed">
+        app:layout_constraintTop_toBottomOf="@+id/rowCompanyProfile">
 
         <ImageView
             android:layout_width="32dp"
@@ -90,8 +90,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_weight="1"
-            android:text="@string/repair_list"
             android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/repair_list"
             android:textColor="@color/blue_lochmara"
             android:textSize="18sp" />
 
@@ -116,12 +116,10 @@
         android:layout_marginHorizontal="24dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rowRepairList"
-        app:layout_constraintVertical_chainStyle="packed">
+        app:layout_constraintTop_toTopOf="@+id/rowAddFdtFat">
 
         <ImageView
             android:layout_width="32dp"
@@ -133,11 +131,11 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_weight="1"
+            android:fontFamily="@font/inter_semi_bold"
             android:text="@string/company_profile"
             android:textColor="@color/blue_lochmara"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/inter_semi_bold"/>
+            android:textStyle="bold" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/btnDetail2"
@@ -152,26 +150,141 @@
             app:shapeAppearanceOverlay="@style/CircleImageView"
             app:srcCompat="@drawable/ic_chevron_right" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rowAddFdtFat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvProfile">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:srcCompat="@drawable/ic_add_fdt_fat" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/add_fd_fat"
+            android:textColor="@color/blue_lochmara"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btnDetail3"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@color/blue_lochmara"
+            app:contentPadding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:shapeAppearanceOverlay="@style/CircleImageView"
+            app:srcCompat="@drawable/ic_chevron_right" />
 
     </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogOut"
+    <LinearLayout
+        android:id="@+id/rowLogout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:backgroundTint="@color/yellow_selective"
-        android:padding="16dp"
-        android:text="@string/logout"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textAllCaps="false"
-        app:cornerRadius="8dp"
-        android:fontFamily="@font/inter_semi_bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/rowCompanyProfile" />
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rowRepairList">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:srcCompat="@drawable/ic_logout" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/logout"
+            android:textColor="@color/blue_lochmara"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btnDetail4"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@color/blue_lochmara"
+            app:contentPadding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:shapeAppearanceOverlay="@style/CircleImageView"
+            app:srcCompat="@drawable/ic_chevron_right" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rowRegionAdmin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvProfile"
+        app:layout_constraintVertical_chainStyle="spread_inside">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:srcCompat="@drawable/ic_region_admin" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/region_admin"
+            android:textColor="@color/blue_lochmara"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btnDetail5"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@color/blue_lochmara"
+            app:contentPadding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:shapeAppearanceOverlay="@style/CircleImageView"
+            app:srcCompat="@drawable/ic_chevron_right" />
+
+    </LinearLayout>
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
