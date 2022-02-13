@@ -15,11 +15,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></androidx.viewpager2.widget.ViewPager2>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.dicoding.fcmapplication.utils.customview.tablayout.CustomTabLayout
         android:id="@+id/tabBoarding"
-        style="@style/Theme.BUMNCerdas.DotIndicatorTabLayout"
+        style="@style/Theme.FCMApplication.DotIndicatorTabLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

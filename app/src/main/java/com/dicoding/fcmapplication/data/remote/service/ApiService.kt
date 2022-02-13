@@ -54,4 +54,7 @@ interface ApiService {
         @Path("fatname") fatname: String,
         @Path("page") page: String
     ): Response<List<FatResponse.FatResponseItem>>
+
+    @GET("regions")
+    suspend fun getRegionList(): Response<List<RegionResponse.RegionResponseItem>>
 }

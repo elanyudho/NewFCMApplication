@@ -31,7 +31,7 @@
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:fontFamily="@font/inter_regular"
+        android:fontFamily="@font/inter_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,6 +40,7 @@
         android:id="@+id/imageView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/ic_register_new"
         app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
@@ -50,9 +51,10 @@
         android:id="@+id/et_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:padding = "10dp"
+        android:layout_marginTop="24dp"
+        android:padding = "12dp"
         android:hint="@string/email"
+        android:textSize="14sp"
         android:inputType="textEmailAddress"
         android:textColor="@color/white"
         android:textColorHint="@color/dark_grey"
@@ -69,7 +71,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:padding="10dp"
+        android:padding="12dp"
+        android:textSize="14sp"
         android:hint="@string/username"
         android:inputType="text"
         android:textColor="@color/black"
@@ -87,7 +90,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:padding="10dp"
+        android:padding="12dp"
+        android:textSize="14sp"
         android:fontFamily="@font/inter_regular"
         android:hint="@string/password"
         android:inputType="textPassword"
@@ -105,7 +109,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:padding="10dp"
+        android:padding="12dp"
+        android:textSize="14sp"
         android:fontFamily="@font/inter_regular"
         android:hint="@string/confirm_password"
         android:inputType="textPassword"
@@ -118,11 +123,32 @@
         app:layout_constraintStart_toStartOf="@+id/et_password"
         app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
+    <EditText
+        android:id="@+id/et_region"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_field"
+        android:drawableStart="@drawable/ic_location_field"
+        android:drawablePadding="8dp"
+        android:fontFamily="@font/inter_regular"
+        android:hint="Region"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/dark_grey"
+        android:drawableEnd="@drawable/ic_arrow_drop_down"
+        app:layout_constraintEnd_toEndOf="@+id/et_confirm_password"
+        app:layout_constraintStart_toStartOf="@+id/et_confirm_password"
+        app:layout_constraintTop_toBottomOf="@+id/et_confirm_password" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="@color/yellow_selective"
         android:fontFamily="@font/inter_bold"
         android:paddingVertical="10dp"
@@ -132,21 +158,8 @@
         app:cornerRadius="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/et_confirm_password"
-        app:layout_constraintStart_toStartOf="@+id/et_confirm_password" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.33" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.67" />
+        app:layout_constraintStart_toStartOf="@+id/et_confirm_password"
+        app:layout_constraintTop_toBottomOf="@+id/et_region" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
@@ -167,7 +180,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.48290014" />
+        app:layout_constraintGuide_percent="0.43" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvLottieLoading"

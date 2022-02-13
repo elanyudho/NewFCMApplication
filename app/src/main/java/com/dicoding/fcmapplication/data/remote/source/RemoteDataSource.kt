@@ -59,4 +59,9 @@ class RemoteDataSource
         request{
             api.getFatSearchResult(zone, fatName, page)
         }
+
+    suspend fun regionList(): Either<Failure, List<RegionResponse.RegionResponseItem>> =
+        request {
+            api.getRegionList()
+        }
 }
