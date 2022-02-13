@@ -53,5 +53,5 @@ interface ApiService {
         @Path("zone") zone: String,
         @Path("fatname") fatname: String,
         @Path("page") page: String
-    ): Response<List<FdtResponse.FdtResponseItem>>
+    ): Response<List<FatResponse.FatResponseItem>>
 }

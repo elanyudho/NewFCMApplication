@@ -18,7 +18,8 @@ class GetRegisterUseCase @Inject constructor(private val repo : AuthRepository) 
         val password: String,
         val isAdmin: String,
         val isConfirmed: String,
-        val isBlocked: String
+        val isBlocked: String,
+        val region: String
     )
 
     override suspend fun run(params: Params): Either<Failure, User> {
@@ -30,6 +31,7 @@ class GetRegisterUseCase @Inject constructor(private val repo : AuthRepository) 
         register["isAdmin"]=params.isAdmin.toMultipartForm()
         register["confirmed"]=params.isConfirmed.toMultipartForm()
         register["blocked"]=params.isBlocked.toMultipartForm()
+        register["region"]=params.region.toMultipartForm()
         return repo.register(register)
     }
 }

@@ -24,11 +24,11 @@ class RegisterViewModel @Inject constructor(
         data class Failed(val failure: Failure) : RegisterUiState()
     }
 
-    fun doRegister(email: String, userName: String, password: String) {
+    fun doRegister(email: String, userName: String, password: String, region: String) {
         _uiState.value = RegisterUiState.Loading
         viewModelScope.launch(dispatcherProvider.io) {
 
-            registerUseCase.run(GetRegisterUseCase.Params(email, userName, password, "false", "true", "false"))
+            registerUseCase.run(GetRegisterUseCase.Params(email, userName, password, "false", "true", "false", region))
                 .onSuccess {
                     withContext(dispatcherProvider.main) {
                         _uiState.value = RegisterUiState.SuccessApi(it)

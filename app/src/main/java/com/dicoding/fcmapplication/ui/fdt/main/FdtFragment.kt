@@ -73,7 +73,6 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
                 })
             }
         }
-
         callOnceWhenDisplayed {
             mViewModel.getFdtList(1)
         }

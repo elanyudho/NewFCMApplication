@@ -7,9 +7,9 @@ import com.dicoding.fcmapplication.domain.model.FdtDetail
 
 interface FdtRepository {
 
-    suspend fun fdtList(page: String): Either<Failure, List<Fdt>>
+    suspend fun fdtList(zone: String, page: String): Either<Failure, List<Fdt>>
 
-    suspend fun fdtDetail(uuid: String): Either<Failure, FdtDetail>
+    suspend fun fdtDetail(id: String): Either<Failure, FdtDetail>
 
-    suspend fun fdtSearchResult(queries: Map<String, String>) : Either<Failure, List<Fdt>>
+    suspend fun fdtSearchResult(zone: String, fdtName: String, page: String) : Either<Failure, List<Fdt>>
 }

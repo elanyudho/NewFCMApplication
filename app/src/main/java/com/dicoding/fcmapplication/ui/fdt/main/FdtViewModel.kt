@@ -24,7 +24,7 @@ class FdtViewModel @Inject constructor(
         data class FailedLoadFdt(val failure: Failure) : FdtUiState()
     }
 
-    fun getFdtList(page: Long) {
+    fun getFdtList(zone: String, page: Long) {
         _uiState.value = if (page == 1L) {
             FdtUiState.InitialLoading
         }else{
@@ -32,7 +32,7 @@ class FdtViewModel @Inject constructor(
         }
 
         viewModelScope.launch(dispatcherProvider.io) {
-            fdtListUseCase.run(page)
+            fdtListUseCase.run(GetFdtListUseCase.Params(zone, page))
                 .onSuccess {
                     withContext(dispatcherProvider.main) {
                         _uiState.value = FdtUiState.FdtLoaded(it)

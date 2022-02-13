@@ -6,7 +6,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class User (
 
-    val username: String = "",
-    val token:String = ""
+    val username: String?,
+    val token:String?,
+    val isAdmin: Boolean?,
+    val region: String?
 
 ) : Parcelable

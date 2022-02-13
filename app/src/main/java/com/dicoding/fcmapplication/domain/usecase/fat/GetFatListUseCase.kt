@@ -8,10 +8,15 @@ import com.dicoding.fcmapplication.domain.repository.FatRepository
 import javax.inject.Inject
 
 class GetFatListUseCase @Inject constructor(private val repo: FatRepository) :
-    UseCase<List<Fat>, Long>() {
+    UseCase<List<Fat>, GetFatListUseCase.Params>() {
 
-    override suspend fun run(params: Long): Either<Failure, List<Fat>> {
-        return repo.fatList(params.toString())
+    data class Params(
+        val zone: String,
+        val page: Long
+    )
+
+    override suspend fun run(params: Params): Either<Failure, List<Fat>> {
+        return repo.fatList(params.zone, params.page.toString())
     }
 
 }

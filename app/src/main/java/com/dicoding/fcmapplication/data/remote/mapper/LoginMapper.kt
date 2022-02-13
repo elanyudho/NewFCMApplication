@@ -8,7 +8,9 @@ class LoginMapper : BaseMapper<LoginResponse, User> {
     override fun mapToDomain(raw: LoginResponse): User {
         return User(
             username = raw.user.username,
-            token = raw.jwt
+            token = raw.jwt,
+            isAdmin = raw.user.isAdmin,
+            region = raw.user.region
         )
     }
 

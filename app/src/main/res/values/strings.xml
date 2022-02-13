@@ -54,5 +54,6 @@
     <string name="are_you_a_new_member">Are you a new member?</string>
     <string name="add_fd_fat"><![CDATA[Add FDT & FAT]]></string>
     <string name="region_admin">Region Admin</string>
+    <string name="email">Email</string>
 
 </resources>

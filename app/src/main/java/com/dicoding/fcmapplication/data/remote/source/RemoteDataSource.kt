@@ -50,13 +50,13 @@ class RemoteDataSource
             api.getRepairList(page)
         }
 
-    suspend fun fdtSearchResult(queries: Map<String, String>) : Either<Failure, List<FdtResponse.FdtResponseItem>> =
+    suspend fun fdtSearchResult(zone: String, fdtName: String, page: String) : Either<Failure, List<FdtResponse.FdtResponseItem>> =
         request{
-            api.getFdtSearchResult(queries)
+            api.getFdtSearchResult(zone, fdtName, page)
         }
 
-    suspend fun fatSearchResult(queries: Map<String, String>) : Either<Failure, List<FatResponse.FatResponseItem>> =
+    suspend fun fatSearchResult(zone: String, fatName: String, page: String) : Either<Failure, List<FatResponse.FatResponseItem>> =
         request{
-            api.getFatSearchResult(queries)
+            api.getFatSearchResult(zone, fatName, page)
         }
 }

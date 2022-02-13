@@ -24,7 +24,7 @@ class FatViewModel @Inject constructor(
         data class FailedLoadFat(val failure: Failure) : FatUiState()
     }
 
-    fun getFatList(page: Long) {
+    fun getFatList(zone: String, page: Long) {
         _uiState.value = if (page == 1L) {
             FatUiState.InitialLoading
         }else{
@@ -32,7 +32,7 @@ class FatViewModel @Inject constructor(
         }
 
         viewModelScope.launch(dispatcherProvider.io) {
-            fatListUseCase.run(page)
+            fatListUseCase.run(GetFatListUseCase.Params(zone, page))
                 .onSuccess {
                     withContext(dispatcherProvider.main) {
                         _uiState.value = FatUiState.FatLoaded(it)
