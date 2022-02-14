@@ -13,7 +13,10 @@ class FatListMapper : BaseMapper<List<FatResponse.FatResponseItem>, List<Fat>> {
                 fatId = it.id.toString(),
                 fatActivated = it.fatActivated,
                 fatIsService = it.fatInRepair,
-                fatRegion = it.fatRegion
+                fatRegion = it.fatRegion,
+                fatCore = it.fatTotalCore,
+                fatCoreUsed = it.fatCoreUsed,
+                fatCoreRemaining = it.fatBackupCore
             )
             listData.add(data)
         }

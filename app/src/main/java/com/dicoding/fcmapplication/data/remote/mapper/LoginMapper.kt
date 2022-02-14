@@ -10,7 +10,8 @@ class LoginMapper : BaseMapper<LoginResponse, User> {
             username = raw.user.username,
             token = raw.jwt,
             isAdmin = raw.user.isAdmin,
-            region = raw.user.region
+            region = raw.user.region,
+            isCenterAdmin = raw.user.isCenterAdmin
         )
     }
 

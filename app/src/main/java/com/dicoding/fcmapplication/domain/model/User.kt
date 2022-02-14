@@ -9,6 +9,7 @@ data class User (
     val username: String?,
     val token:String?,
     val isAdmin: Boolean?,
+    val isCenterAdmin: Boolean?,
     val region: String?
 
 ) : Parcelable

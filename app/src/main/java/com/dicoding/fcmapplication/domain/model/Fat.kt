@@ -9,5 +9,8 @@ data class Fat(
     val fatName: String?,
     val fatRegion: String?,
     val fatActivated: String?,
-    val fatIsService: Boolean?
+    val fatIsService: Boolean?,
+    val fatCoreUsed: String?,
+    val fatCoreRemaining: String?,
+    val fatCore: String?,
 ) : Parcelable

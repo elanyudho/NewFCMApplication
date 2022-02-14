@@ -13,7 +13,10 @@ class FdtListMapper : BaseMapper<List<FdtResponse.FdtResponseItem>, List<Fdt>> {
                 fdtId = it.id.toString(),
                 fdtActivated = it.fdtActivated,
                 fdtIsService = it.fdtInRepair,
-                fdtRegion = it.fdtRegion
+                fdtRegion = it.fdtRegion,
+                fdtCore = it.fdtTotalCore,
+                fdtCoreUsed = it.fdtCoreUsed,
+                fdtCoreRemaining = it.fdtBackupCore
             )
             listData.add(data)
         }
