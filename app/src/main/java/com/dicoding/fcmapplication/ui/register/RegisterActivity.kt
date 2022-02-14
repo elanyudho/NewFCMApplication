@@ -1,7 +1,6 @@
 package com.dicoding.fcmapplication.ui.register
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
@@ -9,8 +8,9 @@ import com.dicoding.core.exception.Failure
 import com.dicoding.core.vo.RequestResults
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.ActivityRegisterBinding
+import com.dicoding.fcmapplication.domain.model.Region
+import com.dicoding.fcmapplication.ui.dialogfilter.BottomDialogRegionFragment
 import com.dicoding.fcmapplication.ui.login.LoginActivity
-import com.dicoding.fcmapplication.ui.login.LoginViewModel
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.isValidEmail
@@ -31,6 +31,7 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
 
     override fun setupView() {
         mViewModel.uiState.observe(this, this)
+        mViewModel.getRegionList()
 
         binding.btnBack.setOnClickListener { onBackPressed() }
 
@@ -41,10 +42,15 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
 
     override fun onChanged(state: RegisterViewModel.RegisterUiState?) {
         when (state) {
-            is RegisterViewModel.RegisterUiState.SuccessApi -> {
+            is RegisterViewModel.RegisterUiState.SuccessRegisterApi -> {
                 binding.cvLottieLoading.gone()
                 fancyToast(getString(R.string.register_succesfull), FancyToast.SUCCESS)
                 startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+            }
+            is RegisterViewModel.RegisterUiState.SuccessRegionApi -> {
+                binding.etRegion.setOnClickListener {
+                    setRegionSpinner(state.region)
+                }
             }
             is RegisterViewModel.RegisterUiState.Loading -> {
                 with(binding) {
@@ -109,6 +115,11 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
                     isPasswordValid =true
                 }
             }
+            if (etRegion.text.isNullOrEmpty()){
+                etRegion.error = "This field is required"
+                etEmail.requestFocus()
+                isEmpty = true
+            }
 
             // check everything is valid
             if(isEmpty){
@@ -119,7 +130,8 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
                         mViewModel.doRegister(
                             email = etEmail.text.toString(),
                             userName = etUsername.text.toString(),
-                            password = etPassword.text.toString()
+                            password = etPassword.text.toString(),
+                            region = etRegion.text.toString()
                         )
                     }
                 }else{
@@ -139,6 +151,21 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
             } else {
                 fancyToast(getString(R.string.error_unknown_error), FancyToast.ERROR)
             }
+        }
+    }
+
+    private fun setRegionSpinner(listData: List<Region>) {
+        //init dialog
+        val bottomDialogRegion = BottomDialogRegionFragment()
+        bottomDialogRegion.show(supportFragmentManager, BottomDialogRegionFragment::class.java.simpleName)
+
+        bottomDialogRegion.setOnClickItemListener(
+            listData = listData,
+            titleDialog = getString(R.string.region)
+        ) { data ->
+            //set region field
+            binding.etRegion.setText(data)
+            bottomDialogRegion.dismiss()
         }
     }
 }

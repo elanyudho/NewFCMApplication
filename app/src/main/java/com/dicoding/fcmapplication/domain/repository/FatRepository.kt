@@ -7,9 +7,9 @@ import com.dicoding.fcmapplication.domain.model.FatDetail
 
 interface FatRepository {
 
-    suspend fun fatList(page: String): Either<Failure, List<Fat>>
+    suspend fun fatList(zone: String, page: String): Either<Failure, List<Fat>>
 
-    suspend fun fatDetail(uuid: String): Either<Failure, FatDetail>
+    suspend fun fatDetail(id: String): Either<Failure, FatDetail>
 
-    suspend fun fatSearchResult(queries: Map<String, String>) : Either<Failure, List<Fat>>
+    suspend fun fatSearchResult(zone: String, fatName: String, page: String) : Either<Failure, List<Fat>>
 }

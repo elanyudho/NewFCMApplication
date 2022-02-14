@@ -11,6 +11,12 @@ data class LoginResponse(
 ) {
     data class User(
         @SerializedName("username")
-        val username: String = ""
+        val username: String = "",
+        @SerializedName("isAdmin")
+        val isAdmin: Boolean = false,
+        @SerializedName("isCenterAdmin")
+        val isCenterAdmin: Boolean = false,
+        @SerializedName("region")
+        val region: String = ""
     )
 }

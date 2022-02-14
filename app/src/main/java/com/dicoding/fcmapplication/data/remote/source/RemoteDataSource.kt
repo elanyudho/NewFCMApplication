@@ -20,24 +20,24 @@ class RemoteDataSource
             api.register(registerData)
         }
 
-    suspend fun fdtList(page: String): Either<Failure, List<FdtListResponse.FdtListResponseItem>> =
+    suspend fun fdtList(zone: String,page: String): Either<Failure, List<FdtResponse.FdtResponseItem>> =
         request {
-            api.getFdtList(page)
+            api.getFdtList(zone, page)
         }
 
-    suspend fun fatList(page: String): Either<Failure, List<FatListResponse.FatListResponseItem>> =
+    suspend fun fatList(zone: String, page: String): Either<Failure, List<FatResponse.FatResponseItem>> =
         request {
-            api.getFatList(page)
+            api.getFatList(zone, page)
         }
 
-    suspend fun fdtDetail(uuid: String): Either<Failure, FdtDetailResponse> =
+    suspend fun fdtDetail(fdtName: String): Either<Failure, FdtDetailResponse> =
         request {
-            api.getFdtDetail(uuid)
+            api.getFdtDetail(fdtName)
         }
 
-    suspend fun fatDetail(uuid: String): Either<Failure, FatDetailResponse> =
+    suspend fun fatDetail(fatName: String): Either<Failure, FatDetailResponse> =
         request {
-            api.getFatDetail(uuid)
+            api.getFatDetail(fatName)
         }
 
     suspend fun companyProfile(): Either<Failure, CompanyProfileResponse> =
@@ -50,13 +50,18 @@ class RemoteDataSource
             api.getRepairList(page)
         }
 
-    suspend fun fdtSearchResult(queries: Map<String, String>) : Either<Failure, List<FdtListResponse.FdtListResponseItem>> =
+    suspend fun fdtSearchResult(zone: String, fdtName: String, page: String) : Either<Failure, List<FdtResponse.FdtResponseItem>> =
         request{
-            api.getFdtSearchResult(queries)
+            api.getFdtSearchResult(zone, fdtName, page)
         }
 
-    suspend fun fatSearchResult(queries: Map<String, String>) : Either<Failure, List<FatListResponse.FatListResponseItem>> =
+    suspend fun fatSearchResult(zone: String, fatName: String, page: String) : Either<Failure, List<FatResponse.FatResponseItem>> =
         request{
-            api.getFatSearchResult(queries)
+            api.getFatSearchResult(zone, fatName, page)
+        }
+
+    suspend fun regionList(): Either<Failure, List<RegionResponse.RegionResponseItem>> =
+        request {
+            api.getRegionList()
         }
 }

@@ -8,14 +8,18 @@ import com.dicoding.fcmapplication.domain.repository.FatRepository
 import javax.inject.Inject
 
 class GetFatSearchResultUseCase @Inject constructor(private val repository: FatRepository) :
-    UseCase<List<Fat>, String?>() {
+    UseCase<List<Fat>, GetFatSearchResultUseCase.Params>() {
 
-    override suspend fun run(params: String?): Either<Failure, List<Fat>> {
-        val queries = HashMap<String, String>()
+    data class Params(
+        val zone: String,
+        val fatName: String = "%00",
+        val page: Long
+    )
 
-        queries["_fat_name_contains"] = params ?: ""
 
-        return repository.fatSearchResult(queries)
+    override suspend fun run(params: Params): Either<Failure, List<Fat>> {
+
+        return repository.fatSearchResult(params.zone, params.fatName, params.page.toString())
     }
 
 

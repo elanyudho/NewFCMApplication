@@ -24,4 +24,5 @@
         <attr name="paddingButtonLeft" format="dimension"/>
         <attr name="paddingButtonRight" format="dimension"/>
     </declare-styleable>
+
 </resources>

@@ -46,11 +46,18 @@
     <string name="search_fat">Search FAT</string>
     <string name="sorry_no_result_found">Sorry, No Result Found</string>
     <string name="we_cannot_find_what_are_you_looking_for_please_try_another_keyword">We Cannot Find What Are You Looking For. Please Try Another Keyword.</string>
-    <string name="need_service">Need Service</string>
+    <string name="need_service">Status: Need Service</string>
     <string name="no_fat_covered">No FAT Covered</string>
     <string name="register_now">Register Now!</string>
     <string name="register">Register</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="are_you_a_new_member">Are you a new member?</string>
+    <string name="add_fd_fat"><![CDATA[Add FDT & FAT]]></string>
+    <string name="region_admin">Region Admin</string>
+    <string name="region">Region</string>
+    <string name="email">Email</string>
+    <string name="status">Status</string>
+    <string name="normal">Status: Good Condition</string>
+
 
 </resources>

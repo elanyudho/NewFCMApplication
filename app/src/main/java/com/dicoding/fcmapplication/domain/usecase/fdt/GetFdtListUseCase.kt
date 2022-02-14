@@ -8,9 +8,14 @@ import com.dicoding.fcmapplication.domain.repository.FdtRepository
 import javax.inject.Inject
 
 class GetFdtListUseCase @Inject constructor(private val repo: FdtRepository) :
-UseCase<List<Fdt>, Long>(){
+UseCase<List<Fdt>, GetFdtListUseCase.Params>(){
 
-    override suspend fun run(params: Long): Either<Failure, List<Fdt>> {
-        return repo.fdtList(params.toString())
+    data class Params(
+        val zone: String,
+        val page: Long
+    )
+
+    override suspend fun run(params: Params): Either<Failure, List<Fdt>> {
+        return repo.fdtList(params.zone, params.page.toString())
     }
 }

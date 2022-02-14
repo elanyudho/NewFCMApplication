@@ -2,12 +2,15 @@ package com.dicoding.fcmapplication.utils.extensions
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Build
 import android.view.View
 import android.view.WindowInsetsController
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import com.bumptech.glide.Glide
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.utils.version.VersionUtil.hasSdkAboveEqual
@@ -93,4 +96,7 @@ fun View.invisible() {
 
 fun View.gone() {
     visibility = View.GONE
+}
+fun ImageView.setTint(@ColorRes colorRes: Int) {
+    ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(ContextCompat.getColor(context, colorRes)))
 }

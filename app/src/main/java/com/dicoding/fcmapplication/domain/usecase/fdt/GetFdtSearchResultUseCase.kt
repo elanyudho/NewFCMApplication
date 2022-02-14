@@ -8,14 +8,17 @@ import com.dicoding.fcmapplication.domain.repository.FdtRepository
 import javax.inject.Inject
 
 class GetFdtSearchResultUseCase @Inject constructor(private val repository: FdtRepository) :
-UseCase<List<Fdt>, String?>() {
+UseCase<List<Fdt>, GetFdtSearchResultUseCase.Params>() {
 
-    override suspend fun run(params: String?): Either<Failure, List<Fdt>> {
-        val queries = HashMap<String, String>()
+    data class Params(
+        val zone: String,
+        val fdtName: String = "%00",
+        val page: Long
+    )
 
-        queries["_fdt_name_contains"] = params?: ""
+    override suspend fun run(params: Params): Either<Failure, List<Fdt>> {
 
-        return repository.fdtSearchResult(queries)
+        return repository.fdtSearchResult(params.zone, params.fdtName, params.page.toString())
     }
 
 

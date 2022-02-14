@@ -6,12 +6,20 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+
     <color name="white">#FFFFFFFF</color>
 
     <color name="blue_lochmara">#3A62AB</color>
     <color name="blue_dim">#F6F9FF</color>
+    <color name="blue_manatee">#959BA5</color>
 
     <color name="yellow_selective">#FFB300</color>
+    <color name="yellow_tangerine">#FFCC00</color>
 
     <color name="grey_silver">#C4C4C4</color>
+    <color name="dark_grey">#AFAFAF</color>
+
+    <color name="green_lime">#00FF00</color>
+
+    <color name="red_orange">#FF3333</color>
 </resources>

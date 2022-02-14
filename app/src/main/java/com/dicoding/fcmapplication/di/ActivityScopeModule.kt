@@ -72,6 +72,10 @@ object MapperModule {
     @ActivityScoped
     fun provideRepairListMapper() = RepairListMapper()
 
+    @Provides
+    @ActivityScoped
+    fun provideRegionListMapper() = RegionListMapper()
+
 
 }
 

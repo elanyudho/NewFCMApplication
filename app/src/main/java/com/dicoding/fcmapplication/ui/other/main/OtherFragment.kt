@@ -41,7 +41,11 @@ class OtherFragment : BaseFragmentBinding<FragmentOtherBinding>() {
                     startActivity(Intent(requireContext(), RepairListActivity::class.java))
                 }
 
-                btnLogOut.setOnClickListener {
+                rowAddFdtFat.setOnClickListener {  }
+
+                rowRegionAdmin.setOnClickListener {  }
+
+                rowLogout.setOnClickListener {
                     val dialogFragment = LogoutDialogFragment()
                     dialogFragment.show(childFragmentManager, "dialog")
                 }

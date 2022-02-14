@@ -43,12 +43,27 @@
         <item name="cornerSize">16dp</item>
     </style>
 
-    <style name="Theme.BUMNCerdas.DotIndicatorTabLayout" parent="Widget.MaterialComponents.TabLayout">
+    <style name="Theme.FCMApplication.DotIndicatorTabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:clickable">false</item>
         <item name="android:focusable">false</item>
         <item name="tabGravity">center</item>
         <item name="tabIndicatorGravity">top</item>
         <item name="tabIndicatorHeight">0dp</item>
+    </style>
+
+    <style name="Theme.FCMApplication.FilterRoundedDragButton">
+        <item name="cornerSize">3dp</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_marginTop">32dp</item>
+        <item name="behavior_peekHeight">350dp</item>
+        <item name="behavior_hideable">true</item>
+    </style>
+
+    <style name="Theme.FCMApplication.BottomSheetTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
 </resources>

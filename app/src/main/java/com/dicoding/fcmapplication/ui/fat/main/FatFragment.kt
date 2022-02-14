@@ -1,5 +1,6 @@
 package com.dicoding.fcmapplication.ui.fat.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.core.abstraction.BaseFragmentBinding
 import com.dicoding.fcmapplication.R
+import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.FragmentFatBinding
 import com.dicoding.fcmapplication.ui.fat.adapter.FatVerticalAdapter
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
@@ -28,6 +30,9 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
 
     @Inject
     lateinit var mViewModel: FatViewModel
+
+    @Inject
+    lateinit var session: Session
 
     private val fatVerticalAdapter: FatVerticalAdapter by lazy { FatVerticalAdapter() }
 
@@ -73,15 +78,41 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
             setFatPagination()
         }
         callOnceWhenDisplayed {
-            mViewModel.getFatList(1) }
+            if (session.user?.isAdmin == true){
+                if (session.user?.isCenterAdmin == true) {
+
+                }else{
+                    session.user?.region?.let { mViewModel.getFatList(it, 1) }
+                }
+            }else {
+                session.user?.region?.let { mViewModel.getFatList(it, 1) }
+            }
+        }
     }
 
     override fun onChanged(state: FatViewModel.FatUiState?) {
         when (state) {
             is FatViewModel.FatUiState.FatLoaded -> {
                 stopLoading()
+
+                val allFatCoreTotalList = ArrayList<Int>()
+                val allFatCoreUsedList = ArrayList<Int>()
+                val allFatCoreBackupList = ArrayList<Int>()
+
                 fatVerticalAdapter.appendList(state.list)
 
+                state.list.map {
+                    it.fatCore?.let { fdtTotal -> allFatCoreTotalList.add(fdtTotal.toInt()) }
+                    it.fatCoreUsed?.let { fdtUsed -> allFatCoreUsedList.add(fdtUsed.toInt()) }
+                    it.fatCoreRemaining?.let { fdtBackup -> allFatCoreBackupList.add(fdtBackup.toInt()) }
+                }
+                val sumFatCoreTotal = allFatCoreTotalList.sum()
+                val sumFatCoreUsed = allFatCoreUsedList.sum()
+                val sumFatCoreBackup = allFatCoreBackupList.sum()
+
+                setArcProgressBar(sumFatCoreTotal.toString(), sumFatCoreUsed.toString(), sumFatCoreBackup.toString())
+
+                fatVerticalAdapter.valueIndicator = sumFatCoreTotal
             }
             is FatViewModel.FatUiState.InitialLoading -> {
                 startInitialLoading()
@@ -101,7 +132,8 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
     private fun setFatPagination() {
         paginator = RecyclerViewPaginator(binding.rvFat.layoutManager as LinearLayoutManager)
         paginator?.setOnLoadMoreListener { page ->
-            mViewModel.getFatList(page)
+            // TODO: 14/02/2022 Add Condition for central admin
+            session.user?.region?.let { mViewModel.getFatList(it, page) }
         }
         paginator?.let { binding.rvFat.addOnScrollListener(it) }
     }
@@ -112,9 +144,24 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
             setHasFixedSize(true)
 
             fatVerticalAdapter.setOnClickData { val intent = Intent(requireContext(), FatDetailActivity::class.java)
-                intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.uuid)
+                intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.fatName)
                 startActivity(intent) }
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setArcProgressBar(allFatCoreTotal: String, allFatCoreUsed: String, allFatCoreBackup: String){
+        val percentValue =  allFatCoreUsed.toDouble()/allFatCoreTotal.toDouble()*100
+        val percentValueInt = percentValue.toInt()
+        val percentValueStr = percentValueInt.toString()
+        with(binding){
+            semiCircleArcProgressBar.setPercent(percentValueInt)
+            tvCoreTotal.text = allFatCoreTotal
+            tvCoreUsed.text = allFatCoreUsed
+            tvBackup.text = allFatCoreBackup
+            tvCapacityPercentage.text = "$percentValueStr%"
+        }
+
     }
 
     private fun startInitialLoading() {
