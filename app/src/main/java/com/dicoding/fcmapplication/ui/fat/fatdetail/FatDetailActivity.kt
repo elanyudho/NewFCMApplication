@@ -4,10 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ScrollView
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
+import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.ActivityFatDetailBinding
 import com.dicoding.fcmapplication.domain.model.FatDetail
 import com.dicoding.fcmapplication.ui.location.LocationActivity
@@ -24,7 +27,17 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
     @Inject
     lateinit var mViewModel: FatDetailViewModel
 
+    @Inject
+    lateinit var session: Session
+
     private lateinit var fatName: String
+
+    private var clicked = false
+
+    private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
+    private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
+    private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim)}
+    private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim)}
 
     override val bindingInflater: (LayoutInflater) -> ActivityFatDetailBinding
         get() = { ActivityFatDetailBinding.inflate(layoutInflater) }
@@ -40,6 +53,25 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
         binding.headerFatDetail.tvTitleHeader.text = getString(R.string.fat_profile)
         binding.headerFatDetail.btnBack.setOnClickListener { onBackPressed() }
 
+        if (session.user?.isAdmin == true){
+            binding.fabMenu.visible()
+            enable(binding.fabMenu)
+        }else{
+            binding.fabMenu.invisible()
+            disable(binding.fabMenu)
+        }
+
+        with(binding){
+            fabMenu.setOnClickListener {
+                onAddButtonClicked()
+            }
+            fabEdit.setOnClickListener {
+
+            }
+            fabDelete.setOnClickListener {
+
+            }
+        }
 
     }
 
@@ -85,6 +117,57 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                 extras.putString(LocationActivity.EXTRA_NAME, obj.fatName)
                 intent.putExtras(extras)
                 startActivity(intent)
+            }
+        }
+    }
+
+    private fun onAddButtonClicked() {
+        setVisbility(clicked)
+        setAnimation(clicked)
+        setClickable(clicked)
+        clicked = !clicked
+    }
+
+    private fun setClickable(clicked: Boolean) {
+        if(!clicked){
+            with(binding){
+                fabEdit.isClickable = true
+                fabDelete.isClickable = true
+            }
+        }else{
+            with(binding){
+                fabEdit.isClickable = false
+                fabDelete.isClickable = false
+            }
+        }
+    }
+
+    private fun setVisbility(clicked: Boolean) {
+        if(!clicked){
+            with(binding){
+                fabEdit.visible()
+                fabDelete.visible()
+            }
+        }else{
+            with(binding){
+                fabEdit.invisible()
+                fabDelete.invisible()
+            }
+        }
+    }
+
+    private fun setAnimation(clicked: Boolean) {
+        if(!clicked){
+            with(binding){
+                fabEdit.startAnimation(fromBottom)
+                fabDelete.startAnimation(fromBottom)
+                fabMenu.startAnimation(rotateOpen)
+            }
+        }else{
+            with(binding){
+                fabEdit.startAnimation(toBottom)
+                fabDelete.startAnimation(toBottom)
+                fabMenu.startAnimation(rotateClose)
             }
         }
     }

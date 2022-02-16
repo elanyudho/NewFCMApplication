@@ -4,10 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
+import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.ActivityFdtDetailBinding
 import com.dicoding.fcmapplication.domain.model.FdtDetail
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
@@ -27,9 +30,19 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
     @Inject
     lateinit var mViewModel: FdtDetailViewModel
 
+    @Inject
+    lateinit var session: Session
+
     private val fatHorizontalAdapter: FatCoveredAdapter by lazy { FatCoveredAdapter() }
 
+    private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
+    private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
+    private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim)}
+    private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim)}
+
     private lateinit var uuid: String
+
+    private var clicked = false
 
     override val bindingInflater: (LayoutInflater) -> ActivityFdtDetailBinding
         get() = { ActivityFdtDetailBinding.inflate(layoutInflater) }
@@ -44,6 +57,26 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
 
         binding.headerFdtDetail.btnBack.setOnClickListener { onBackPressed() }
         binding.headerFdtDetail.tvTitleHeader.text = getString(R.string.fdt_profile)
+
+        if (session.user?.isAdmin == true){
+            binding.fabMenu.visible()
+            enable(binding.fabMenu)
+        }else{
+            binding.fabMenu.invisible()
+            disable(binding.fabMenu)
+        }
+
+        with(binding){
+            fabMenu.setOnClickListener {
+                onAddButtonClicked()
+            }
+            fabEdit.setOnClickListener {
+
+            }
+            fabDelete.setOnClickListener {
+
+            }
+        }
     }
 
     override fun onChanged(state: FdtDetailViewModel.FdtDetailUiState?) {
@@ -152,6 +185,57 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             tvCapacityPercentage.text = "$percentValueStr%"
         }
 
+    }
+
+    private fun onAddButtonClicked() {
+        setVisbility(clicked)
+        setAnimation(clicked)
+        setClickable(clicked)
+        clicked = !clicked
+    }
+
+    private fun setClickable(clicked: Boolean) {
+        if(!clicked){
+            with(binding){
+                fabEdit.isClickable = true
+                fabDelete.isClickable = true
+            }
+        }else{
+            with(binding){
+                fabEdit.isClickable = false
+                fabDelete.isClickable = false
+            }
+        }
+    }
+
+    private fun setVisbility(clicked: Boolean) {
+        if(!clicked){
+            with(binding){
+                fabEdit.visible()
+                fabDelete.visible()
+            }
+        }else{
+            with(binding){
+                fabEdit.invisible()
+                fabDelete.invisible()
+            }
+        }
+    }
+
+    private fun setAnimation(clicked: Boolean) {
+        if(!clicked){
+            with(binding){
+                fabEdit.startAnimation(fromBottom)
+                fabDelete.startAnimation(fromBottom)
+                fabMenu.startAnimation(rotateOpen)
+            }
+        }else{
+            with(binding){
+                fabEdit.startAnimation(toBottom)
+                fabDelete.startAnimation(toBottom)
+                fabMenu.startAnimation(rotateClose)
+            }
+        }
     }
 
     companion object {
