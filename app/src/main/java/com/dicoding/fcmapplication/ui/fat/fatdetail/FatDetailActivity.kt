@@ -1,5 +1,6 @@
 package com.dicoding.fcmapplication.ui.fat.fatdetail
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,17 +24,17 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
     @Inject
     lateinit var mViewModel: FatDetailViewModel
 
-    private lateinit var uuid: String
+    private lateinit var fatName: String
 
     override val bindingInflater: (LayoutInflater) -> ActivityFatDetailBinding
         get() = { ActivityFatDetailBinding.inflate(layoutInflater) }
 
     override fun setupView() {
-        uuid = intent.getStringExtra(EXTRA_DETAIL_FAT) ?: ""
+        fatName = intent.getStringExtra(EXTRA_DETAIL_FAT) ?: ""
 
         with(mViewModel) {
             uiState.observe(this@FatDetailActivity, this@FatDetailActivity)
-            getFatDetail(uuid)
+            getFatDetail(fatName)
         }
 
         binding.headerFatDetail.tvTitleHeader.text = getString(R.string.fat_profile)
@@ -57,13 +58,13 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initFdtDetailView(obj: FatDetail) {
         with(binding) {
-            obj.fatImage?.let { imageDetail.glide(this@FatDetailActivity, it) }
-            tvNameDetail.text = obj.fatName
-            tvFatCore.text = obj.fatCore
-            tvFatCoreRemaining.text = obj.fatCoreRemaining
-            tvFatCoreUsed.text = obj.fatCoreUsed
+            tvArcBarLocationName.text = "Core are used in ${obj.fatName}"
+            tvCoreTotal.text = obj.fatCore
+            tvBackup.text = obj.fatCoreRemaining
+            tvCoreUsed.text = obj.fatCoreUsed
             tvFatLossNumber.text = obj.fatLoss
             tvHomeNumber.text = obj.fatCoveredHome
             tvRepairNotes.text = if(obj.fatNote == ""){
@@ -72,9 +73,9 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                 obj.fatNote
             }
             if (obj.fatIsService == true) {
-                icIsService.visible()
+                icRepair.visible()
             } else {
-                icIsService.invisible()
+                icRepair.invisible()
             }
            cvLocation.setOnClickListener {
                 val intent = Intent(this@FatDetailActivity, LocationActivity::class.java)

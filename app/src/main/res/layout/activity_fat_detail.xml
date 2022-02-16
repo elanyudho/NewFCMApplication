@@ -47,157 +47,165 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headerFatDetail">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/materialCardView"
-                android:layout_width="match_parent"
-                android:layout_height="124dp"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="24dp"
-                app:cardBackgroundColor="@color/blue_dim"
-                app:cardCornerRadius="12dp"
+            <TextView
+                android:id="@+id/tvArcBarLocationName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_semi_bold"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                tools:text="Core are used in FAT0391AAA" />
+
+            <ImageView
+                android:id="@+id/icRepair"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_repair"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/materialCardView2"
+                app:layout_constraintStart_toEndOf="@+id/materialCardView2"
+                app:layout_constraintTop_toTopOf="@+id/materialCardView2" />
+
+            <me.bastanfar.semicirclearcprogressbar.SemiCircleArcProgressBar
+                android:id="@+id/semiCircleArcProgressBar"
+                android:layout_width="210dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvArcBarLocationName"
+                app:progressBarColor="@color/blue_lochmara"
+                app:progressBarWidth="30"
+                app:progressPlaceHolderColor="@color/blue_manatee"
+                app:progressPlaceHolderWidth="60" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="8dp"
+                app:strokeWidth="2dp"
                 app:strokeColor="@color/blue_lochmara"
-                app:strokeWidth="2dp">
+                app:layout_constraintEnd_toEndOf="@+id/semiCircleArcProgressBar"
+                app:layout_constraintStart_toStartOf="@+id/semiCircleArcProgressBar"
+                app:layout_constraintTop_toBottomOf="@+id/semiCircleArcProgressBar">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/icIsService"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="24dp"
-                        android:src="@drawable/ic_service_detail"
-                        android:visibility="invisible"
-                        app:layout_constraintBottom_toTopOf="@+id/materialTextView4"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.166" />
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/imageDetail"
-                        android:layout_width="0dp"
-                        android:layout_height="100dp"
-                        android:layout_marginStart="12dp"
-                        android:scaleType="centerCrop"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintDimensionRatio="w,1:1"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="spread_inside"
-                        app:shapeAppearanceOverlay="@style/RoundedImageView10"
-                        tools:srcCompat="@drawable/ic_launcher_background" />
-
+                    android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvNameDetail"
-                        android:layout_width="0dp"
-                        android:layout_height="23dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="8dp"
-                        android:fontFamily="@font/inter_semi_bold"
-                        android:textColor="@color/blue_lochmara"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toStartOf="@+id/icIsService"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toEndOf="@+id/imageDetail"
-                        app:layout_constraintTop_toTopOf="@+id/imageDetail"
-                        tools:text="FAT1234511" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/materialTextView2"
+                        android:id="@+id/textView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="10dp"
                         android:fontFamily="@font/inter_semi_bold"
                         android:text="@string/total_core"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="12sp"
-                        app:layout_constraintEnd_toStartOf="@+id/materialTextView3"
-                        app:layout_constraintHorizontal_chainStyle="spread_inside"
-                        app:layout_constraintStart_toEndOf="@+id/imageDetail"
-                        app:layout_constraintTop_toBottomOf="@+id/tvNameDetail" />
+                        app:layout_constraintEnd_toStartOf="@+id/textView4"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/materialTextView3"
+                        android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
                         android:fontFamily="@font/inter_semi_bold"
                         android:text="@string/used"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="12sp"
-                        app:layout_constraintEnd_toStartOf="@+id/materialTextView4"
+                        app:layout_constraintEnd_toStartOf="@+id/textView5"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/materialTextView2"
-                        app:layout_constraintTop_toBottomOf="@+id/tvNameDetail" />
+                        app:layout_constraintStart_toEndOf="@+id/textView6"
+                        app:layout_constraintTop_toTopOf="@+id/textView6" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/materialTextView4"
+                        android:id="@+id/textView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="24dp"
                         android:fontFamily="@font/inter_semi_bold"
                         android:text="@string/backup"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/materialTextView3"
-                        app:layout_constraintTop_toBottomOf="@+id/tvNameDetail" />
+                        app:layout_constraintStart_toEndOf="@+id/textView4"
+                        app:layout_constraintTop_toTopOf="@+id/textView6" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvFatCore"
+                        android:id="@+id/tvBackup"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter_semi_bold"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="@+id/materialTextView2"
-                        app:layout_constraintStart_toStartOf="@+id/materialTextView2"
-                        app:layout_constraintTop_toBottomOf="@+id/materialTextView2"
-                        tools:text="24" />
+                        app:layout_constraintBottom_toBottomOf="@+id/tvCoreTotal"
+                        app:layout_constraintEnd_toEndOf="@+id/textView5"
+                        app:layout_constraintStart_toStartOf="@+id/textView5"
+                        app:layout_constraintTop_toBottomOf="@+id/textView5"
+                        tools:text="25" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvFatCoreUsed"
+                        android:id="@+id/tvCoreUsed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter_semi_bold"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="@+id/materialTextView3"
-                        app:layout_constraintStart_toStartOf="@+id/materialTextView3"
-                        app:layout_constraintTop_toBottomOf="@+id/materialTextView3"
-                        tools:text="20" />
+                        app:layout_constraintBottom_toBottomOf="@+id/tvCoreTotal"
+                        app:layout_constraintEnd_toEndOf="@+id/textView4"
+                        app:layout_constraintStart_toStartOf="@+id/textView4"
+                        app:layout_constraintTop_toBottomOf="@+id/textView4"
+                        tools:text="25" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvFatCoreRemaining"
+                        android:id="@+id/tvCoreTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
+                        android:layout_marginBottom="10dp"
                         android:fontFamily="@font/inter_semi_bold"
                         android:textColor="@color/blue_lochmara"
                         android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="@+id/materialTextView4"
-                        app:layout_constraintStart_toStartOf="@+id/materialTextView4"
-                        app:layout_constraintTop_toBottomOf="@+id/materialTextView4"
-                        tools:text="4" />
-
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/textView6"
+                        app:layout_constraintStart_toStartOf="@+id/textView6"
+                        app:layout_constraintTop_toBottomOf="@+id/textView6"
+                        tools:text="25" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
             </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvCapacityPercentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="24sp"
+                android:fontFamily="@font/inter_semi_bold"
+                app:layout_constraintBottom_toBottomOf="@+id/semiCircleArcProgressBar"
+                app:layout_constraintEnd_toEndOf="@+id/semiCircleArcProgressBar"
+                app:layout_constraintStart_toStartOf="@+id/semiCircleArcProgressBar"
+                app:layout_constraintTop_toTopOf="@+id/semiCircleArcProgressBar"
+                app:layout_constraintVertical_bias="0.75"
+                tools:text="50%" />
 
             <LinearLayout
                 android:id="@+id/rowFatLoss"
@@ -264,13 +272,13 @@
                 android:id="@+id/rowHomeCovered"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="24dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/materialCardView"
+                app:layout_constraintTop_toBottomOf="@+id/materialCardView2"
                 app:layout_constraintVertical_chainStyle="packed">
 
                 <ImageView

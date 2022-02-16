@@ -1,5 +1,6 @@
 package com.dicoding.fcmapplication.ui.fdt.fdtdetail
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -50,12 +51,22 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             is FdtDetailViewModel.FdtDetailUiState.FdtDetailLoaded -> {
                 initFdtDetailView(state.data)
 
-                fatHorizontalAdapter.submitList(state.data.fdtCoveredList)
+                fatHorizontalAdapter.submitList(state.data.fatCoveredList)
                 setFdtActions()
+
+                state.data.fdtCore?.let { state.data.fdtCoreUsed?.let { it1 ->
+                    state.data.fdtCoreRemaining?.let { it2 ->
+                        setArcProgressBar(it,
+                            it1, it2
+                        )
+                    }
+                } }
+
+                fatHorizontalAdapter.valueIndicator = state.data.fdtCore?.toInt()!!
 
                 val dataFat = arrayListOf<FdtDetail.FatList>()
 
-                if (state.data.fdtCoveredList.isEmpty()){
+                if (state.data.fatCoveredList.isEmpty()){
                     with(binding){
                         rvFatCovered.invisible()
                         imageNoFatCovered.visible()
@@ -65,7 +76,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                     binding.rvFatCovered.visible()
                     binding.imageNoFatCovered.gone()
                     binding.tvNoFatCovered.gone()
-                    dataFat.addAll(state.data.fdtCoveredList)
+                    dataFat.addAll(state.data.fatCoveredList)
                     binding.rowFatCovered.setOnClickListener {
                         val intent = Intent(this@FdtDetailActivity, MoreFatCoveredActivity::class.java)
                         intent.putParcelableArrayListExtra(MoreFatCoveredActivity.EXTRA_FAT_COVERED, dataFat)
@@ -91,18 +102,18 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
 
             fatHorizontalAdapter.setOnClickData {
                 val intent = Intent(this@FdtDetailActivity, FatDetailActivity::class.java)
-                intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.fatUuid)
+                intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.fatName)
                 startActivity(intent)
             }
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initFdtDetailView(obj: FdtDetail){
         with(binding){
-            obj.fdtImage?.let { imageDetail.glide(this@FdtDetailActivity, it) }
-            tvNameDetail.text = obj.fdtName
+            tvArcBarLocationName.text = "Core are used in ${obj.fdtName}"
             tvCoreTotal.text = obj.fdtCore
-            tvCoreRemaining.text = obj.fdtCoreRemaining
+            tvBackup.text = obj.fdtCoreRemaining
             tvCoreUsed.text = obj.fdtCoreUsed
             tvFatLossNumber.text = obj.fdtLoss
             tvFatNumber.text = obj.fdtCoveredFat
@@ -126,6 +137,21 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                 startActivity(intent)
             }
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setArcProgressBar(allFdtCoreTotal: String, allFdtCoreUsed: String, allFdtCoreBackup: String){
+        val percentValue =  allFdtCoreUsed.toDouble()/allFdtCoreTotal.toDouble()*100
+        val percentValueInt = percentValue.toInt()
+        val percentValueStr = percentValueInt.toString()
+        with(binding){
+            semiCircleArcProgressBar.setPercent(percentValueInt)
+            tvCoreTotal.text = allFdtCoreTotal
+            tvCoreUsed.text = allFdtCoreUsed
+            tvBackup.text = allFdtCoreBackup
+            tvCapacityPercentage.text = "$percentValueStr%"
+        }
+
     }
 
     companion object {
