@@ -23,7 +23,7 @@
         app:useAdditionalButton="false" />
 
     <TextView
-        android:id="@+id/tvArcBarLocation"
+        android:id="@+id/tvArcBarLocationName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -157,7 +157,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvArcBarLocation"
+        app:layout_constraintTop_toBottomOf="@+id/tvArcBarLocationName"
         app:progressBarColor="@color/blue_lochmara"
         app:progressBarWidth="30"
         app:progressPlaceHolderColor="@color/blue_manatee"

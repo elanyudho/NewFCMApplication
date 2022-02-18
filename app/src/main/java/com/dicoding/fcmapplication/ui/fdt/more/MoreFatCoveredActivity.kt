@@ -32,18 +32,18 @@ class MoreFatCoveredActivity : BaseActivityBinding<ActivityMoreFatCoveredBinding
 
         fatGridAdapter.submitList(data)
 
-        setFdtActions()
+        setFatActions()
 
     }
 
-    private fun setFdtActions() {
+    private fun setFatActions() {
         with(binding.rvMoreFatCovered) {
             adapter = fatGridAdapter
             setHasFixedSize(true)
 
             fatGridAdapter.setOnClickData {
                 val intent = Intent(this@MoreFatCoveredActivity, FatDetailActivity::class.java)
-                intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.fatUuid)
+                intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.fatName)
                 startActivity(intent)
             }
         }
