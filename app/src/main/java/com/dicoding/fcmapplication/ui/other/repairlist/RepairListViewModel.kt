@@ -6,25 +6,29 @@ import com.dicoding.core.dispatcher.DispatcherProvider
 import com.dicoding.core.exception.Failure
 import com.dicoding.core.extension.onError
 import com.dicoding.core.extension.onSuccess
-import com.dicoding.fcmapplication.domain.model.Repair
-import com.dicoding.fcmapplication.domain.usecase.other.GetRepairListUseCase
+import com.dicoding.fcmapplication.domain.model.Fat
+import com.dicoding.fcmapplication.domain.model.Fdt
+import com.dicoding.fcmapplication.domain.usecase.fat.GetFatListUseCase
+import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListUseCase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RepairListViewModel @Inject constructor(
     private val dispatcherProvider: DispatcherProvider,
-    private val repairListUseCase: GetRepairListUseCase
+    private val fdtListUseCase: GetFdtListUseCase,
+    private val fatListUseCase: GetFatListUseCase
 ) : BaseViewModel<RepairListViewModel.RepairListUiState>() {
 
     sealed class RepairListUiState {
         object InitialLoading: RepairListUiState()
         object PagingLoading: RepairListUiState()
-        data class RepairListLoaded(val list: List<Repair>) : RepairListUiState()
-        data class FailedLoadRepairList(val failure: Failure) : RepairListUiState()
+        data class FdtLoaded(val list: List<Fdt>) : RepairListUiState()
+        data class FatLoaded(val list: List<Fat>) : RepairListUiState()
+        data class FailedLoad(val failure: Failure) : RepairListUiState()
     }
 
-    fun getRepairList(page: Long) {
+    fun getFdtList(zone: String, page: Long) {
         _uiState.value = if (page == 1L) {
             RepairListUiState.InitialLoading
         }else{
@@ -32,15 +36,37 @@ class RepairListViewModel @Inject constructor(
         }
 
         viewModelScope.launch(dispatcherProvider.io) {
-            repairListUseCase.run(page)
+            fdtListUseCase.run(GetFdtListUseCase.Params(zone, page))
                 .onSuccess {
                     withContext(dispatcherProvider.main) {
-                        _uiState.value = RepairListUiState.RepairListLoaded(it)
+                        _uiState.value = RepairListUiState.FdtLoaded(it)
                     }
                 }
                 .onError {
                     withContext(dispatcherProvider.main) {
-                        _uiState.value = RepairListUiState.FailedLoadRepairList(it)
+                        _uiState.value = RepairListUiState.FailedLoad(it)
+                    }
+                }
+        }
+    }
+
+    fun getFatList(zone: String, page: Long) {
+        _uiState.value = if (page == 1L) {
+            RepairListUiState.InitialLoading
+        }else{
+            RepairListUiState.PagingLoading
+        }
+
+        viewModelScope.launch(dispatcherProvider.io) {
+            fatListUseCase.run(GetFatListUseCase.Params(zone, page))
+                .onSuccess {
+                    withContext(dispatcherProvider.main) {
+                        _uiState.value = RepairListUiState.FatLoaded(it)
+                    }
+                }
+                .onError {
+                    withContext(dispatcherProvider.main) {
+                        _uiState.value = RepairListUiState.FailedLoad(it)
                     }
                 }
         }

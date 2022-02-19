@@ -9,6 +9,4 @@ interface OtherRepository {
 
     suspend fun companyProfile(): Either<Failure, CompanyProfile>
 
-    suspend fun repairList(page: String): Either<Failure, List<Repair>>
-
 }

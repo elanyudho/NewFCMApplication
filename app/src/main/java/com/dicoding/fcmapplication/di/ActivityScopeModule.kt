@@ -22,7 +22,6 @@ import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtDetailUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtSearchResultUseCase
 import com.dicoding.fcmapplication.domain.usecase.other.GetCompanyProfileUseCase
-import com.dicoding.fcmapplication.domain.usecase.other.GetRepairListUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

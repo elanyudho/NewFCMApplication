@@ -12,4 +12,5 @@ data class Fdt(
     val fdtCore: String?,
     val fdtCoreUsed: String?,
     val fdtCoreRemaining: String?,
+    val fdtNote: String?
 )

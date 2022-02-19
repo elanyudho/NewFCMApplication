@@ -1,7 +1,6 @@
 package com.dicoding.fcmapplication.data.remote.mapper
 
 import com.dicoding.core.abstraction.BaseMapper
-import com.dicoding.fcmapplication.data.remote.response.RepairListResponse
 import com.dicoding.fcmapplication.domain.model.Repair
 
 class RepairListMapper : BaseMapper<List<RepairListResponse.RepairListResponseItem>, List<Repair>> {

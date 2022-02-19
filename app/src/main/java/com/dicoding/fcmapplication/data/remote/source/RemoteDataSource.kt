@@ -45,11 +45,6 @@ class RemoteDataSource
             api.getCompanyProfile()
         }
 
-    suspend fun repairList(page: String): Either<Failure, List<RepairListResponse.RepairListResponseItem>> =
-        request {
-            api.getRepairList(page)
-        }
-
     suspend fun fdtSearchResult(zone: String, fdtName: String, page: String) : Either<Failure, List<FdtResponse.FdtResponseItem>> =
         request{
             api.getFdtSearchResult(zone, fdtName, page)

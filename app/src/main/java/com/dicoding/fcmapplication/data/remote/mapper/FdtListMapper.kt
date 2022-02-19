@@ -16,7 +16,8 @@ class FdtListMapper : BaseMapper<List<FdtResponse.FdtResponseItem>, List<Fdt>> {
                 fdtRegion = it.fdtRegion,
                 fdtCore = it.fdtTotalCore,
                 fdtCoreUsed = it.fdtCoreUsed,
-                fdtCoreRemaining = it.fdtBackupCore
+                fdtCoreRemaining = it.fdtBackupCore,
+                fdtNote = it.fdtNote
             )
             listData.add(data)
         }

@@ -29,17 +29,4 @@ class OtherRepositoryImpl @Inject constructor(
             }
         }
     }
-
-    override suspend fun repairList(page: String): Either<Failure, List<Repair>> {
-        return when(val response = remoteDataSource.repairList(page)) {
-            is Either.Success -> {
-                val repairList = repairListMapper.mapToDomain(response.body)
-                Either.Success(repairList)
-            }
-            is Either.Error -> {
-                Timber.e(response.failure.throwable.message.toString())
-                Either.Error(response.failure)
-            }
-        }
-    }
 }

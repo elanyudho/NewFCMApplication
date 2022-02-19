@@ -13,4 +13,5 @@ data class Fat(
     val fatCoreUsed: String?,
     val fatCoreRemaining: String?,
     val fatCore: String?,
+    val fatNote: String?
 ) : Parcelable

@@ -16,7 +16,8 @@ class FatListMapper : BaseMapper<List<FatResponse.FatResponseItem>, List<Fat>> {
                 fatRegion = it.fatRegion,
                 fatCore = it.fatTotalCore,
                 fatCoreUsed = it.fatCoreUsed,
-                fatCoreRemaining = it.fatBackupCore
+                fatCoreRemaining = it.fatBackupCore,
+                fatNote = it.fatNote
             )
             listData.add(data)
         }

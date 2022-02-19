@@ -14,21 +14,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.dicoding.fcmapplication.utils.customview.tablayout.CustomTabLayout
+        android:id="@+id/tabLayoutCourse"
+        style="@style/Theme.FCMApplication.ChooserTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerRepairList" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRepairList"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:paddingHorizontal="18dp"
         android:paddingBottom="32dp"
         android:visibility="visible"
+        android:layout_marginTop="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/progressRepairList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerRepairList"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayoutCourse"
         app:reverseLayout="false"
         tools:listitem="@layout/item_service_list" />
 
