@@ -14,30 +14,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.dicoding.fcmapplication.utils.customview.tablayout.CustomTabLayout
-        android:id="@+id/tabLayoutCourse"
-        style="@style/Theme.FCMApplication.ChooserTabLayout"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        app:cardCornerRadius="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/rvRepairList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerRepairList" />
+        app:layout_constraintTop_toBottomOf="@+id/headerRepairList">
+
+        <com.dicoding.fcmapplication.utils.customview.tablayout.CustomTabLayout
+            android:id="@+id/tabLayoutCourse"
+            style="@style/Theme.FCMApplication.ChooserTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRepairList"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:paddingHorizontal="18dp"
         android:paddingBottom="32dp"
         android:visibility="visible"
-        android:layout_marginTop="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/progressRepairList"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayoutCourse"
+        app:layout_constraintTop_toBottomOf="@+id/cvTabLayout"
         app:reverseLayout="false"
         tools:listitem="@layout/item_service_list" />
 
@@ -45,10 +58,10 @@
         android:id="@+id/progressRepairList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
         android:layout_marginBottom="8dp"
-        android:visibility="gone"
+        android:indeterminate="true"
         android:indeterminateTint="@color/yellow_selective"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

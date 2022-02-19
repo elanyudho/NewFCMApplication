@@ -7,6 +7,5 @@
         android:width="3dp"
         android:color="@color/blue_lochmara"/>
 
-    <corners android:radius="10dp"/>
 
 </shape>

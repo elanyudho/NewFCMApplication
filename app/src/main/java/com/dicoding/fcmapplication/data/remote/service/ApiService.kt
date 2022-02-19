@@ -38,9 +38,6 @@ interface ApiService {
     @GET("companyprofile")
     suspend fun getCompanyProfile(): Response<CompanyProfileResponse>
 
-    @GET("servicelists/page/{page}")
-    suspend fun getRepairList(@Path("page") page: String): Response<List<RepairListResponse.RepairListResponseItem>>
-
     @GET("fdts/zone/{zone}/fdtname/{fdtname}/page/{page}")
     suspend fun getFdtSearchResult(
         @Path("zone") zone: String,

@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:variablePadding="true">
 
-    <item android:drawable="@drawable/tab_filter_indicator_active"
+    <item android:drawable="@drawable/tab_field_active"
         android:state_selected="true" />
 
-    <item android:drawable="@drawable/tab_filter_indicator_inactive"
+    <item android:drawable="@drawable/tab_field_inactive"
         android:state_selected="false"/>
 
 </selector>
