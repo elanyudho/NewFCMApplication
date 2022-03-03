@@ -14,6 +14,7 @@ import com.dicoding.fcmapplication.domain.repository.FatRepository
 import com.dicoding.fcmapplication.domain.repository.FdtRepository
 import com.dicoding.fcmapplication.domain.repository.OtherRepository
 import com.dicoding.fcmapplication.domain.usecase.auth.GetLoginUseCase
+import com.dicoding.fcmapplication.domain.usecase.auth.GetRegionListUseCase
 import com.dicoding.fcmapplication.domain.usecase.auth.GetRegisterUseCase
 import com.dicoding.fcmapplication.domain.usecase.fat.GetFatDetailUseCase
 import com.dicoding.fcmapplication.domain.usecase.fat.GetFatListUseCase
@@ -66,10 +67,6 @@ object MapperModule {
     @Provides
     @ActivityScoped
     fun provideCompanyProfileMapper() = CompanyProfileMapper()
-
-    @Provides
-    @ActivityScoped
-    fun provideRepairListMapper() = RepairListMapper()
 
     @Provides
     @ActivityScoped
@@ -141,9 +138,6 @@ object UseCaseModule {
     @ActivityScoped
     fun provideCompanyProfileUseCase(repository: OtherRepository) = GetCompanyProfileUseCase(repository)
 
-    @Provides
-    @ActivityScoped
-    fun provideRepairListUseCase(repository: OtherRepository) = GetRepairListUseCase(repository)
 
     @Provides
     @ActivityScoped
@@ -152,4 +146,8 @@ object UseCaseModule {
     @Provides
     @ActivityScoped
     fun provideFatSearchResultUseCase(repository: FatRepository) = GetFatSearchResultUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun provideRegionUseCase(repository: AuthRepository) = GetRegionListUseCase(repository)
 }

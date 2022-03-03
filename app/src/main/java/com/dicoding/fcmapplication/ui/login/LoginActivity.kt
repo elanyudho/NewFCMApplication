@@ -1,8 +1,6 @@
 package com.dicoding.fcmapplication.ui.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.WindowManager
@@ -18,7 +16,6 @@ import com.dicoding.fcmapplication.domain.model.User
 import com.dicoding.fcmapplication.ui.main.MainActivity
 import com.dicoding.fcmapplication.ui.register.RegisterActivity
 import com.dicoding.fcmapplication.utils.extensions.*
-import com.dicoding.fcmapplication.utils.network.NetworkInterceptor
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

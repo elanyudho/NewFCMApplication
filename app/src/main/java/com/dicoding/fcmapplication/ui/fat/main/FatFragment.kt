@@ -78,13 +78,9 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
             setFatPagination()
         }
         callOnceWhenDisplayed {
-            if (session.user?.isAdmin == true){
-                if (session.user?.isCenterAdmin == true) {
-
-                }else{
-                    session.user?.region?.let { mViewModel.getFatList(it, 1) }
-                }
-            }else {
+            if (session.user?.isCenterAdmin == true) {
+                session.user?.region?.let { mViewModel.getFatList(it, 1) }
+            } else {
                 session.user?.region?.let { mViewModel.getFatList(it, 1) }
             }
         }
@@ -110,7 +106,11 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
                 val sumFatCoreUsed = allFatCoreUsedList.sum()
                 val sumFatCoreBackup = allFatCoreBackupList.sum()
 
-                setArcProgressBar(sumFatCoreTotal.toString(), sumFatCoreUsed.toString(), sumFatCoreBackup.toString())
+                setArcProgressBar(
+                    sumFatCoreTotal.toString(),
+                    sumFatCoreUsed.toString(),
+                    sumFatCoreBackup.toString()
+                )
 
                 fatVerticalAdapter.valueIndicator = sumFatCoreTotal
             }
@@ -143,18 +143,24 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
             adapter = fatVerticalAdapter
             setHasFixedSize(true)
 
-            fatVerticalAdapter.setOnClickData { val intent = Intent(requireContext(), FatDetailActivity::class.java)
+            fatVerticalAdapter.setOnClickData {
+                val intent = Intent(requireContext(), FatDetailActivity::class.java)
                 intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.fatName)
-                startActivity(intent) }
+                startActivity(intent)
+            }
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setArcProgressBar(allFatCoreTotal: String, allFatCoreUsed: String, allFatCoreBackup: String){
-        val percentValue =  allFatCoreUsed.toDouble()/allFatCoreTotal.toDouble()*100
+    private fun setArcProgressBar(
+        allFatCoreTotal: String,
+        allFatCoreUsed: String,
+        allFatCoreBackup: String
+    ) {
+        val percentValue = allFatCoreUsed.toDouble() / allFatCoreTotal.toDouble() * 100
         val percentValueInt = percentValue.toInt()
         val percentValueStr = percentValueInt.toString()
-        with(binding){
+        with(binding) {
             semiCircleArcProgressBar.setPercent(percentValueInt)
             tvCoreTotal.text = allFatCoreTotal
             tvCoreUsed.text = allFatCoreUsed

@@ -18,24 +18,28 @@ class SearchResultFdtViewModel @Inject constructor(
 ) : BaseViewModel<SearchResultFdtViewModel.SearchResultFdtUiState>() {
 
     sealed class SearchResultFdtUiState {
-        data class LoadingSearchResultFdt(val isLoading: Boolean) : SearchResultFdtUiState()
+        object InitialLoading: SearchResultFdtViewModel.SearchResultFdtUiState()
+        object PagingLoading: SearchResultFdtViewModel.SearchResultFdtUiState()
         data class SearchResultFdtLoaded(val data: List<Fdt>) : SearchResultFdtUiState()
         data class FailedLoadSearchResultFdt(val failure: Failure) : SearchResultFdtUiState()
     }
 
-    fun getFdtSearchResult(query: String?){
-        _uiState.value = SearchResultFdtUiState.LoadingSearchResultFdt(true)
-        viewModelScope.launch(dispatcherProvider.io){
-            getFdtSearchResultUseCase.run(query)
+    fun getFdtSearchResult(zone: String, fdtName: String, page: Long) {
+        _uiState.value = if (page == 1L) {
+            SearchResultFdtUiState.InitialLoading
+        }else{
+            SearchResultFdtUiState.PagingLoading
+        }
+
+        viewModelScope.launch(dispatcherProvider.io) {
+            getFdtSearchResultUseCase.run(GetFdtSearchResultUseCase.Params(zone, fdtName, page))
                 .onSuccess {
-                    withContext(dispatcherProvider.main){
-                        _uiState.value = SearchResultFdtUiState.LoadingSearchResultFdt(false)
+                    withContext(dispatcherProvider.main) {
                         _uiState.value = SearchResultFdtUiState.SearchResultFdtLoaded(it)
                     }
                 }
                 .onError {
-                    withContext(dispatcherProvider.main){
-                        _uiState.value = SearchResultFdtUiState.LoadingSearchResultFdt(false)
+                    withContext(dispatcherProvider.main) {
                         _uiState.value = SearchResultFdtUiState.FailedLoadSearchResultFdt(it)
                     }
                 }

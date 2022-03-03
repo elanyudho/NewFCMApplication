@@ -3,18 +3,18 @@ package com.dicoding.fcmapplication.ui.fat.searchresult
 import android.content.Intent
 import android.view.LayoutInflater
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
+import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.ActivitySearchResultFatBinding
-import com.dicoding.fcmapplication.ui.fat.adapter.SearchFatNoPaginationAdapter
+import com.dicoding.fcmapplication.ui.fat.adapter.FatVerticalAdapter
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
-import com.dicoding.fcmapplication.ui.fdt.searchresult.SearchResultFdtActivity
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
-import com.dicoding.fcmapplication.utils.extensions.invisible
 import com.dicoding.fcmapplication.utils.extensions.visible
+import com.dicoding.fcmapplication.utils.pagination.RecyclerViewPaginator
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -26,9 +26,14 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
     @Inject
     lateinit var mViewModel: SearchResultFatViewModel
 
+    @Inject
+    lateinit var session: Session
+
     private lateinit var queryFatName: String
 
-    private val fatNoPaginationAdapter: SearchFatNoPaginationAdapter by lazy { SearchFatNoPaginationAdapter() }
+    private val searchFatAdapter: FatVerticalAdapter by lazy { FatVerticalAdapter() }
+
+    private var paginator: RecyclerViewPaginator? = null
 
     override val bindingInflater: (LayoutInflater) -> ActivitySearchResultFatBinding
         get() = { ActivitySearchResultFatBinding.inflate(layoutInflater) }
@@ -37,13 +42,24 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
         queryFatName = intent.getStringExtra(EXTRA_NAME) ?: ""
 
         mViewModel.uiState.observe(this, this)
-        mViewModel.getFatSearchResult(queryFatName)
+        if (session.user?.isCenterAdmin == true){
+            mViewModel.getFatSearchResult(session.user?.region.toString(), queryFatName, 1)
+        }else{
+            mViewModel.getFatSearchResult(session.user?.region.toString(), queryFatName, 1)
+        }
+
+        setFdtPagination()
 
         with(binding) {
             btnBack.setOnClickListener { onBackPressed() }
             searchFat.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    mViewModel.getFatSearchResult(query)
+                    if (session.user?.isCenterAdmin == true){
+                        // TODO: 20/02/2022 add logic for isCenterAdmin
+                        mViewModel.getFatSearchResult(session.user?.region.toString(), queryFatName, 1)
+                    }else{
+                        mViewModel.getFatSearchResult(session.user?.region.toString(), queryFatName, 1)
+                    }
                     searchFat.setQuery("")
                     searchFat.clearFocus()
                     return true
@@ -68,15 +84,29 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
     override fun onChanged(state: SearchResultFatViewModel.SearchResultFatUiState?) {
         when (state) {
             is SearchResultFatViewModel.SearchResultFatUiState.SearchResultFatLoaded -> {
+                stopLoading()
+
+                val allFatCoreTotalList = ArrayList<Int>()
+
                 if (state.data.isEmpty()) {
                     emptyDataView()
                 } else {
-                    fatNoPaginationAdapter.submitList(state.data)
+                    state.data.map {
+                        it.fatCore?.let { fdtTotal -> allFatCoreTotalList.add(fdtTotal.toInt()) }
+                    }
+                    searchFatAdapter.appendList(state.data)
                     dataIsNotEmptyView()
                 }
+
+                val sumFatCoreTotal = allFatCoreTotalList.sum()
+                searchFatAdapter.valueIndicator = sumFatCoreTotal
             }
-            is SearchResultFatViewModel.SearchResultFatUiState.LoadingSearchResultFat -> {
-                binding.cvLottieLoading.visible()
+            is SearchResultFatViewModel.SearchResultFatUiState.InitialLoading -> {
+                startInitialLoading()
+
+            }
+            is SearchResultFatViewModel.SearchResultFatUiState.PagingLoading -> {
+                startPagingLoading()
             }
             is SearchResultFatViewModel.SearchResultFatUiState.FailedLoadSearchResultFat -> {
                 this.fancyToast(
@@ -89,20 +119,32 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
 
     private fun setFatActions() {
         with(binding.rvFat) {
-            adapter = fatNoPaginationAdapter
+            adapter = searchFatAdapter
             setHasFixedSize(true)
 
-            fatNoPaginationAdapter.setOnClickData {
+            searchFatAdapter.setOnClickData {
                 val intent = Intent(this@SearchResultFatActivity, FatDetailActivity::class.java)
-                intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.uuid)
+                intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.fatName)
                 startActivity(intent)
             }
         }
     }
 
+    private fun setFdtPagination() {
+        paginator = RecyclerViewPaginator(binding.rvFat.layoutManager as LinearLayoutManager)
+        paginator?.setOnLoadMoreListener { page ->
+            // TODO: 14/02/2022 add condition for central admin
+            if (session.user?.isCenterAdmin == true){
+                mViewModel.getFatSearchResult(session.user?.region.toString(), queryFatName, page)
+            }else{
+                mViewModel.getFatSearchResult(session.user?.region.toString(), queryFatName, page)
+            }
+        }
+        paginator?.let { binding.rvFat.addOnScrollListener(it) }
+    }
+
     private fun emptyDataView() {
-        with(binding) {
-            cvLottieLoading.gone()
+        with(binding){
             tvNotFound.visible()
             tvNotFound2.visible()
             imageNotFound.visible()
@@ -111,13 +153,30 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
     }
 
     private fun dataIsNotEmptyView() {
-        with(binding) {
-            cvLottieLoading.gone()
+        with(binding){
             tvNotFound.gone()
             tvNotFound2.gone()
             imageNotFound.gone()
             rvFat.visible()
         }
+    }
+
+    private fun startInitialLoading() {
+        with(binding) {
+            rvFat.gone()
+            tvNotFound.gone()
+            tvNotFound2.gone()
+            imageNotFound.gone()
+            cvLottieLoading.visible()
+        }
+    }
+
+    private fun stopLoading() {
+        binding.cvLottieLoading.gone()
+    }
+
+    private fun startPagingLoading() {
+        binding.progressFdt.visible()
     }
 
 }

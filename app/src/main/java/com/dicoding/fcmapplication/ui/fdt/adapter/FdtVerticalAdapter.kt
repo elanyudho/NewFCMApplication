@@ -7,7 +7,6 @@ import com.dicoding.core.abstraction.PagingRecyclerViewAdapter
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.ItemDeviceLinearLayoutBinding
 import com.dicoding.fcmapplication.domain.model.Fdt
-import com.dicoding.fcmapplication.utils.extensions.glide
 import com.dicoding.fcmapplication.utils.extensions.invisible
 import com.dicoding.fcmapplication.utils.extensions.setTint
 import com.dicoding.fcmapplication.utils.extensions.visible
@@ -17,7 +16,7 @@ class FdtVerticalAdapter : PagingRecyclerViewAdapter<FdtVerticalAdapter.FdtViewH
 
     private var onClick: ((Fdt) -> Unit)? = null
 
-    var valueIndicator = 0
+    private var valueIndicator = 0
 
     override val holderInflater: (LayoutInflater, ViewGroup, Boolean) -> FdtVerticalAdapter.FdtViewHolder
         get() = { inflater, viewGroup, boolean ->
@@ -33,6 +32,7 @@ class FdtVerticalAdapter : PagingRecyclerViewAdapter<FdtVerticalAdapter.FdtViewH
         override fun bind(data: Fdt) {
             with(binding) {
                 tvDeviceName.text = data.fdtName
+                valueIndicator = setIndicatorValue(data.fdtCore!!, data.fdtCoreUsed!!)
                 if (data.fdtIsService == true) {
                     imageIsService.visible()
                     tvTagCondition.setText(R.string.need_service)
@@ -62,5 +62,10 @@ class FdtVerticalAdapter : PagingRecyclerViewAdapter<FdtVerticalAdapter.FdtViewH
 
     fun setOnClickData(onClick: (data: Fdt) -> Unit) {
         this.onClick = onClick
+    }
+
+    private fun setIndicatorValue(total: String, used: String): Int {
+        val totalCoreInDouble = used.toDouble() / total.toDouble() * 100
+        return totalCoreInDouble.toInt()
     }
 }

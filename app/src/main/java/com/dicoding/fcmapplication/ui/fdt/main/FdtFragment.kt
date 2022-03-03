@@ -53,12 +53,18 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun setupView() {
         callOnceWhenCreated {
             mViewModel.uiState.observe(viewLifecycleOwner, this@FdtFragment)
 
             setFdtActions()
             setFdtPagination()
+
+            with(binding){
+                tvArcBarLocationName.text = "Core FAT are used in ${session.user?.region}"
+                tvFdtLocation.text = "FDT in ${session.user?.region}"
+            }
 
             with(binding) {
                 searchFdt.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
@@ -79,13 +85,9 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
             }
         }
         callOnceWhenDisplayed {
-            if (session.user?.isAdmin == true){
-                if (session.user?.isCenterAdmin == true) {
-
-                }else{
-                    session.user?.region?.let { mViewModel.getFdtList(it, 1) }
-                }
-            }else {
+            if (session.user?.isAdmin == true) {
+                session.user?.region?.let { mViewModel.getFdtList(it, 1) }
+            } else {
                 session.user?.region?.let { mViewModel.getFdtList(it, 1) }
             }
         }
@@ -112,9 +114,12 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
                 val sumFdtCoreUsed = allFdtCoreUsedList.sum()
                 val sumFdtCoreBackup = allFdtCoreBackupList.sum()
 
-                setArcProgressBar(sumFdtCoreTotal.toString(), sumFdtCoreUsed.toString(), sumFdtCoreBackup.toString())
+                setArcProgressBar(
+                    sumFdtCoreTotal.toString(),
+                    sumFdtCoreUsed.toString(),
+                    sumFdtCoreBackup.toString()
+                )
 
-                fdtVerticalAdapter.valueIndicator = sumFdtCoreTotal
             }
             is FdtViewModel.FdtUiState.InitialLoading -> {
                 startInitialLoading()
@@ -155,11 +160,15 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
 
 
     @SuppressLint("SetTextI18n")
-    private fun setArcProgressBar(allFdtCoreTotal: String, allFdtCoreUsed: String, allFdtCoreBackup: String){
-        val percentValue =  allFdtCoreUsed.toDouble()/allFdtCoreTotal.toDouble()*100
+    private fun setArcProgressBar(
+        allFdtCoreTotal: String,
+        allFdtCoreUsed: String,
+        allFdtCoreBackup: String
+    ) {
+        val percentValue = allFdtCoreUsed.toDouble() / allFdtCoreTotal.toDouble() * 100
         val percentValueInt = percentValue.toInt()
         val percentValueStr = percentValueInt.toString()
-        with(binding){
+        with(binding) {
             semiCircleArcProgressBar.setPercent(percentValueInt)
             tvCoreTotal.text = allFdtCoreTotal
             tvCoreUsed.text = allFdtCoreUsed

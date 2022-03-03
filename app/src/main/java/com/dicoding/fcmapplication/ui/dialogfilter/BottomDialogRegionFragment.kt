@@ -1,9 +1,6 @@
 package com.dicoding.fcmapplication.ui.dialogfilter
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import com.dicoding.core.abstraction.BaseBottomDialogBinding
 import com.dicoding.fcmapplication.R
@@ -21,7 +18,9 @@ class BottomDialogRegionFragment : BaseBottomDialogBinding<BottomFilterListBindi
     var title = ""
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> BottomFilterListBinding
-        get() = TODO("Not yet implemented")
+        get() = {layoutInflater, viewGroup, b ->
+            BottomFilterListBinding.inflate(layoutInflater,viewGroup,b)
+        }
 
     override fun setupView() {
         binding.tvTitleFilter.text = title

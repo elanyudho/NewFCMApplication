@@ -11,10 +11,7 @@ import com.dicoding.fcmapplication.databinding.ActivityRegisterBinding
 import com.dicoding.fcmapplication.domain.model.Region
 import com.dicoding.fcmapplication.ui.dialogfilter.BottomDialogRegionFragment
 import com.dicoding.fcmapplication.ui.login.LoginActivity
-import com.dicoding.fcmapplication.utils.extensions.fancyToast
-import com.dicoding.fcmapplication.utils.extensions.gone
-import com.dicoding.fcmapplication.utils.extensions.isValidEmail
-import com.dicoding.fcmapplication.utils.extensions.visible
+import com.dicoding.fcmapplication.utils.extensions.*
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -25,6 +22,8 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
 
     @Inject
     lateinit var mViewModel: RegisterViewModel
+
+    private var isEmpty = false
 
     override val bindingInflater: (LayoutInflater) -> ActivityRegisterBinding
         get() = { ActivityRegisterBinding.inflate(layoutInflater) }
@@ -48,6 +47,7 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
                 startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
             }
             is RegisterViewModel.RegisterUiState.SuccessRegionApi -> {
+                binding.cvLottieLoading.gone()
                 binding.etRegion.setOnClickListener {
                     setRegionSpinner(state.region)
                 }
@@ -73,7 +73,6 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
 
     private fun doRegister() {
 
-        var isEmpty = false
         var isEmailValid = false
         var isPasswordValid = false
 
@@ -103,8 +102,8 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
                 isEmpty = true
             }
             if (etConfirmPassword.text.isNullOrEmpty()) {
-                etEmail.error = "This field is required"
-                etEmail.requestFocus()
+                etConfirmPassword.error = "This field is required"
+                etConfirmPassword.requestFocus()
                 isEmpty = true
             }else {
                 if (etConfirmPassword.text.toString() != etPassword.text.toString()) {
@@ -119,6 +118,8 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
                 etRegion.error = "This field is required"
                 etEmail.requestFocus()
                 isEmpty = true
+            }else{
+                isEmpty= false
             }
 
             // check everything is valid
@@ -164,7 +165,17 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
             titleDialog = getString(R.string.region)
         ) { data ->
             //set region field
-            binding.etRegion.setText(data)
+            with(binding) {
+                binding.etRegion.setText(data)
+                if (etRegion.text.isNullOrEmpty()) {
+                    etRegion.error = "This field is required"
+                    etRegion.requestFocus()
+                    isEmpty = true
+                }else{
+                    etRegion.error = null
+                    etRegion.clearFocus()
+                }
+            }
             bottomDialogRegion.dismiss()
         }
     }

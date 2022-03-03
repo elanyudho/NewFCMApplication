@@ -1,17 +1,13 @@
 package com.dicoding.fcmapplication.ui.fdt.more
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Toast
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.ActivityMoreFatCoveredBinding
 import com.dicoding.fcmapplication.domain.model.FdtDetail
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
 import com.dicoding.fcmapplication.ui.fdt.adapter.FatHorizontalAdapter
-import com.dicoding.fcmapplication.ui.fdt.adapter.FdtGridAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
