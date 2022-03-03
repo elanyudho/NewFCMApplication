@@ -41,7 +41,7 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
 
     private var paginator: RecyclerViewPaginator? = null
 
-    private var listTab = listOf<String>("FDT", "FAT")
+    private var listTab = listOf("FDT", "FAT")
 
     private var onTabSelectedListener: TabLayout.OnTabSelectedListener? = null
 

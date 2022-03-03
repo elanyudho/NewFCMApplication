@@ -50,10 +50,11 @@ class FdtVerticalAdapter : PagingRecyclerViewAdapter<FdtVerticalAdapter.FdtViewH
                 }
                 if (valueIndicator > 75) {
                     imgCapacityIndicator.setTint(R.color.red_orange)
+                }
 
-                    root.setOnClickListener {
-                        onClick?.invoke(data)
-                    }
+                root.setOnClickListener {
+                    onClick?.invoke(data)
+
                 }
             }
 

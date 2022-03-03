@@ -79,7 +79,7 @@
         <item name="tabContentStart">52dp</item>
         <item name="tabGravity">center</item>
         <item name="tabIndicatorHeight">0dp</item>
-        <item name="tabMode">scrollable</item>
+        <item name="tabMode">auto</item>
         <item name="tabPaddingTop">0dp</item>
         <item name="tabPaddingBottom">0dp</item>
         <item name="tabPaddingStart">24dp</item>

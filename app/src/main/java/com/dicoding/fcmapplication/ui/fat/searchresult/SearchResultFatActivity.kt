@@ -98,8 +98,6 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
                     dataIsNotEmptyView()
                 }
 
-                val sumFatCoreTotal = allFatCoreTotalList.sum()
-                searchFatAdapter.valueIndicator = sumFatCoreTotal
             }
             is SearchResultFatViewModel.SearchResultFatUiState.InitialLoading -> {
                 startInitialLoading()

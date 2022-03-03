@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.ScrollView
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
@@ -79,8 +78,14 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
         when(state) {
             is FatDetailViewModel.FatDetailUiState.FatDetailLoaded -> {
                 initFdtDetailView(state.data)
+
+                /*binding.cvLottieLoading.gone()
+                binding.viewFatDetail.visible()*/
+
             }
             is FatDetailViewModel.FatDetailUiState.LoadingFatDetail -> {
+                /*binding.cvLottieLoading.visible()
+                binding.viewFatDetail.gone()*/
 
             }
             is FatDetailViewModel.FatDetailUiState.FailedLoadFatDetail -> {
@@ -93,13 +98,14 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
     @SuppressLint("SetTextI18n")
     private fun initFdtDetailView(obj: FatDetail) {
         with(binding) {
+            obj.fatCoreUsed?.let { obj.fatCore?.let { core -> setArcProgressBar(core, it) } }
             tvArcBarLocationName.text = "Core are used in ${obj.fatName}"
             tvCoreTotal.text = obj.fatCore
             tvBackup.text = obj.fatCoreRemaining
             tvCoreUsed.text = obj.fatCoreUsed
             tvFatLossNumber.text = obj.fatLoss
             tvHomeNumber.text = obj.fatCoveredHome
-            tvRepairNotes.text = if(obj.fatNote == ""){
+            tvRepairNotes.text = if(obj.fatNote == "null"){
                 "No note"
             }else{
                 obj.fatNote
@@ -119,6 +125,18 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                 startActivity(intent)
             }
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setArcProgressBar(allFatCoreTotal: String, allFatCoreUsed: String){
+        val percentValue =  allFatCoreUsed.toDouble()/allFatCoreTotal.toDouble()*100
+        val percentValueInt = percentValue.toInt()
+        val percentValueStr = percentValueInt.toString()
+        with(binding){
+            semiCircleArcProgressBar.setPercent(percentValueInt)
+            tvCapacityPercentage.text = "$percentValueStr%"
+        }
+
     }
 
     private fun onAddButtonClicked() {

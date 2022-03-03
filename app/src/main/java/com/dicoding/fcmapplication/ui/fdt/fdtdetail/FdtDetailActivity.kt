@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
@@ -14,8 +13,7 @@ import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.ActivityFdtDetailBinding
 import com.dicoding.fcmapplication.domain.model.FdtDetail
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
-import com.dicoding.fcmapplication.ui.fdt.adapter.FatCoveredAdapter
-import com.dicoding.fcmapplication.ui.fdt.adapter.FatHorizontalAdapter
+import com.dicoding.fcmapplication.ui.fdt.adapter.CoveredAdapter
 import com.dicoding.fcmapplication.ui.fdt.more.MoreFatCoveredActivity
 import com.dicoding.fcmapplication.ui.location.LocationActivity
 import com.dicoding.fcmapplication.utils.extensions.*
@@ -33,7 +31,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
     @Inject
     lateinit var session: Session
 
-    private val fatHorizontalAdapter: FatCoveredAdapter by lazy { FatCoveredAdapter() }
+    private val horizontalAdapter: CoveredAdapter by lazy { CoveredAdapter() }
 
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
     private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
@@ -82,20 +80,11 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
     override fun onChanged(state: FdtDetailViewModel.FdtDetailUiState?) {
         when (state) {
             is FdtDetailViewModel.FdtDetailUiState.FdtDetailLoaded -> {
+
                 initFdtDetailView(state.data)
 
-                fatHorizontalAdapter.submitList(state.data.fatCoveredList)
+                horizontalAdapter.submitList(state.data.fatCoveredList)
                 setFdtActions()
-
-                state.data.fdtCore?.let { state.data.fdtCoreUsed?.let { it1 ->
-                    state.data.fdtCoreRemaining?.let { it2 ->
-                        setArcProgressBar(it,
-                            it1, it2
-                        )
-                    }
-                } }
-
-                fatHorizontalAdapter.valueIndicator = state.data.fdtCore?.toInt()!!
 
                 val dataFat = arrayListOf<FdtDetail.FatList>()
 
@@ -117,8 +106,13 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                     }
                 }
 
+                binding.cvLottieLoading.gone()
+                binding.viewFdtDetail.visible()
+
             }
             is FdtDetailViewModel.FdtDetailUiState.LoadingFdtDetail -> {
+                binding.cvLottieLoading.visible()
+                binding.viewFdtDetail.gone()
 
             }
             is FdtDetailViewModel.FdtDetailUiState.FailedLoadFdtDetail -> {
@@ -130,10 +124,10 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
 
     private fun setFdtActions() {
         with(binding.rvFatCovered) {
-            adapter = fatHorizontalAdapter
+            adapter = horizontalAdapter
             setHasFixedSize(true)
 
-            fatHorizontalAdapter.setOnClickData {
+            horizontalAdapter.setOnClickData {
                 val intent = Intent(this@FdtDetailActivity, FatDetailActivity::class.java)
                 intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.fatName)
                 startActivity(intent)
@@ -144,13 +138,14 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
     @SuppressLint("SetTextI18n")
     private fun initFdtDetailView(obj: FdtDetail){
         with(binding){
+            obj.fdtCoreUsed?.let { obj.fdtCore?.let { core -> setArcProgressBar(core, it) } }
             tvArcBarLocationName.text = "Core are used in ${obj.fdtName}"
             tvCoreTotal.text = obj.fdtCore
             tvBackup.text = obj.fdtCoreRemaining
             tvCoreUsed.text = obj.fdtCoreUsed
             tvFatLossNumber.text = obj.fdtLoss
             tvFatNumber.text = obj.fdtCoveredFat
-            tvRepairNotes.text = if(obj.fdtNote == ""){
+            tvRepairNotes.text = if(obj.fdtNote == null){
                 "No note"
             }else{
                 obj.fdtNote
@@ -173,15 +168,12 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setArcProgressBar(allFdtCoreTotal: String, allFdtCoreUsed: String, allFdtCoreBackup: String){
+    private fun setArcProgressBar(allFdtCoreTotal: String, allFdtCoreUsed: String){
         val percentValue =  allFdtCoreUsed.toDouble()/allFdtCoreTotal.toDouble()*100
         val percentValueInt = percentValue.toInt()
         val percentValueStr = percentValueInt.toString()
         with(binding){
             semiCircleArcProgressBar.setPercent(percentValueInt)
-            tvCoreTotal.text = allFdtCoreTotal
-            tvCoreUsed.text = allFdtCoreUsed
-            tvBackup.text = allFdtCoreBackup
             tvCapacityPercentage.text = "$percentValueStr%"
         }
 

@@ -31,7 +31,7 @@
             android:id="@+id/tabLayoutCourse"
             style="@style/Theme.FCMApplication.ChooserTabLayout"
             android:layout_width="match_parent"
-            android:layout_height="45dp" />
+            android:layout_height="wrap_content" />
 
     </androidx.cardview.widget.CardView>
 

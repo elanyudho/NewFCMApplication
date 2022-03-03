@@ -62,7 +62,6 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
             setFdtPagination()
 
             with(binding){
-                tvArcBarLocationName.text = "Core FAT are used in ${session.user?.region}"
                 tvFdtLocation.text = "FDT in ${session.user?.region}"
             }
 
@@ -98,27 +97,7 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
             is FdtViewModel.FdtUiState.FdtLoaded -> {
                 stopLoading()
 
-                val allFdtCoreTotalList = ArrayList<Int>()
-                val allFdtCoreUsedList = ArrayList<Int>()
-                val allFdtCoreBackupList = ArrayList<Int>()
-
                 fdtVerticalAdapter.appendList(state.list)
-
-                state.list.map {
-                    it.fdtCore?.let { fdtTotal -> allFdtCoreTotalList.add(fdtTotal.toInt()) }
-                    it.fdtCoreUsed?.let { fdtUsed -> allFdtCoreUsedList.add(fdtUsed.toInt()) }
-                    it.fdtCoreRemaining?.let { fdtBackup -> allFdtCoreBackupList.add(fdtBackup.toInt()) }
-                }
-
-                val sumFdtCoreTotal = allFdtCoreTotalList.sum()
-                val sumFdtCoreUsed = allFdtCoreUsedList.sum()
-                val sumFdtCoreBackup = allFdtCoreBackupList.sum()
-
-                setArcProgressBar(
-                    sumFdtCoreTotal.toString(),
-                    sumFdtCoreUsed.toString(),
-                    sumFdtCoreBackup.toString()
-                )
 
             }
             is FdtViewModel.FdtUiState.InitialLoading -> {
@@ -158,25 +137,6 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
         }
     }
 
-
-    @SuppressLint("SetTextI18n")
-    private fun setArcProgressBar(
-        allFdtCoreTotal: String,
-        allFdtCoreUsed: String,
-        allFdtCoreBackup: String
-    ) {
-        val percentValue = allFdtCoreUsed.toDouble() / allFdtCoreTotal.toDouble() * 100
-        val percentValueInt = percentValue.toInt()
-        val percentValueStr = percentValueInt.toString()
-        with(binding) {
-            semiCircleArcProgressBar.setPercent(percentValueInt)
-            tvCoreTotal.text = allFdtCoreTotal
-            tvCoreUsed.text = allFdtCoreUsed
-            tvBackup.text = allFdtCoreBackup
-            tvCapacityPercentage.text = "$percentValueStr%"
-        }
-
-    }
 
     private fun startInitialLoading() {
         binding.rvFdt.gone()

@@ -6,13 +6,15 @@ import com.dicoding.core.abstraction.BaseRecyclerViewAdapter
 import com.dicoding.core.abstraction.BaseViewHolder
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.ItemDeviceLinearLayoutBinding
+import com.dicoding.fcmapplication.databinding.ItemRectangleBinding
 import com.dicoding.fcmapplication.domain.model.FdtDetail
+import com.dicoding.fcmapplication.utils.extensions.glide
 import com.dicoding.fcmapplication.utils.extensions.invisible
 import com.dicoding.fcmapplication.utils.extensions.setTint
 import com.dicoding.fcmapplication.utils.extensions.visible
 
-class FatCoveredAdapter :
-    BaseRecyclerViewAdapter<FatCoveredAdapter.FatCoveredViewHolder>() {
+class MoreFatAdapter :
+    BaseRecyclerViewAdapter<MoreFatAdapter.FatHorizontalViewHolder>() {
 
     private var listData = mutableListOf<FdtDetail.FatList>()
 
@@ -25,10 +27,11 @@ class FatCoveredAdapter :
         notifyDataSetChanged()
     }
 
-    inner class FatCoveredViewHolder(itemView: ItemDeviceLinearLayoutBinding) :
+    inner class FatHorizontalViewHolder(itemView: ItemDeviceLinearLayoutBinding) :
         BaseViewHolder<FdtDetail.FatList, ItemDeviceLinearLayoutBinding>(itemView) {
         override fun bind(data: FdtDetail.FatList) {
             with(binding) {
+
                 tvDeviceName.text = data.fatName
                 if (data.fatIsService == true) {
                     imageIsService.visible()
@@ -47,19 +50,19 @@ class FatCoveredAdapter :
                 }
                 if (valueIndicator > 75) {
                     imgCapacityIndicator.setTint(R.color.red_orange)
+                }
 
-                    binding.root.setOnClickListener {
-                        onClick.invoke(data)
-                    }
+                binding.root.setOnClickListener {
+                    onClick.invoke(data)
                 }
             }
         }
 
     }
 
-    override val holderInflater: (LayoutInflater, ViewGroup, Boolean) -> FatCoveredAdapter.FatCoveredViewHolder
+    override val holderInflater: (LayoutInflater, ViewGroup, Boolean) -> MoreFatAdapter.FatHorizontalViewHolder
         get() = { inflater, viewGroup, boolean ->
-            FatCoveredViewHolder(
+            FatHorizontalViewHolder(
                 ItemDeviceLinearLayoutBinding.inflate(
                     inflater,
                     viewGroup,
@@ -68,17 +71,11 @@ class FatCoveredAdapter :
             )
         }
 
-    override fun onBindViewHolder(holder: FatCoveredAdapter.FatCoveredViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MoreFatAdapter.FatHorizontalViewHolder, position: Int) {
         holder.bind(listData[position])
     }
 
-    override fun getItemCount(): Int {
-        return if (listData.size > 6) {
-            6
-        } else {
-            listData.size
-        }
-    }
+    override fun getItemCount(): Int = listData.size
 
     fun setOnClickData(onClick: (data: FdtDetail.FatList) -> Unit) {
         this.onClick = onClick

@@ -88,6 +88,7 @@
                 app:progressBarColor="@color/blue_lochmara"
                 app:progressBarWidth="30"
                 app:progressPlaceHolderColor="@color/blue_manatee"
+                app:percent="0"
                 app:progressPlaceHolderWidth="60" />
 
             <com.google.android.material.card.MaterialCardView
@@ -204,7 +205,7 @@
                 app:layout_constraintStart_toStartOf="@+id/semiCircleArcProgressBar"
                 app:layout_constraintTop_toTopOf="@+id/semiCircleArcProgressBar"
                 app:layout_constraintVertical_bias="0.75"
-                tools:text="50%" />
+                tools:text="0%" />
 
             <LinearLayout
                 android:id="@+id/rowFatLoss"
@@ -526,7 +527,7 @@
         android:clickable="true"
         android:focusable="true"
         android:elevation="4dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:backgroundTint="@color/yellow_selective"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

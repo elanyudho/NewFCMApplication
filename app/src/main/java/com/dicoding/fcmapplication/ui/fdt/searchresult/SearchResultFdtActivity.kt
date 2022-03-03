@@ -31,8 +31,6 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
 
     private lateinit var queryFdtName: String
 
-    private var loading = false
-
     private var paginator: RecyclerViewPaginator? = null
 
     private val searchFdtAdapter: FdtVerticalAdapter by lazy { FdtVerticalAdapter() }
@@ -87,9 +85,6 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
                 if(state.data.isEmpty()){
                     emptyDataView()
                 }else{
-                    state.data.map {
-                        it.fdtCore?.let { fdtTotal -> allFdtCoreTotalList.add(fdtTotal.toInt()) }
-                    }
                     searchFdtAdapter.appendList(state.data)
                     dataIsNotEmptyView()
                 }
