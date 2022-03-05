@@ -51,11 +51,14 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
     override fun setupView() {
         mViewModel.uiState.observe(this, this)
 
+        session.user?.region?.let { mViewModel.getFdtList(it, 1) }
+
         binding.headerRepairList.btnBack.setOnClickListener { onBackPressed() }
         binding.headerRepairList.tvTitleHeader.text = getString(R.string.repair_list)
 
         setRepairListActions()
         setRepairListPagination()
+
     }
 
     override fun onChanged(state: RepairListViewModel.RepairListUiState?) {
@@ -71,7 +74,9 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
                         deviceNote = it.fdtNote,
                         deviceIsService = it.fdtIsService
                     )
-                    fdtRepairList.add(data)
+                    if (data.deviceIsService == true) {
+                        fdtRepairList.add(data)
+                    }
                 }
                 repairListAdapter.appendList(fdtRepairList)
             }
@@ -92,11 +97,11 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
             }
             is RepairListViewModel.RepairListUiState.InitialLoading -> {
                 startInitialLoading()
-                setTabItems()
                 setTabAction()
             }
             is RepairListViewModel.RepairListUiState.PagingLoading -> {
                 startPagingLoading()
+                setTabAction()
             }
             is RepairListViewModel.RepairListUiState.FailedLoad -> {
                 this.fancyToast(

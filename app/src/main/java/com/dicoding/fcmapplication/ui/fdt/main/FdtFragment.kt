@@ -16,10 +16,7 @@ import com.dicoding.fcmapplication.databinding.FragmentFdtBinding
 import com.dicoding.fcmapplication.ui.fdt.adapter.FdtVerticalAdapter
 import com.dicoding.fcmapplication.ui.fdt.fdtdetail.FdtDetailActivity
 import com.dicoding.fcmapplication.ui.fdt.searchresult.SearchResultFdtActivity
-import com.dicoding.fcmapplication.utils.extensions.fancyToast
-import com.dicoding.fcmapplication.utils.extensions.gone
-import com.dicoding.fcmapplication.utils.extensions.setStatusBar
-import com.dicoding.fcmapplication.utils.extensions.visible
+import com.dicoding.fcmapplication.utils.extensions.*
 import com.dicoding.fcmapplication.utils.pagination.RecyclerViewPaginator
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,9 +55,6 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
         callOnceWhenCreated {
             mViewModel.uiState.observe(viewLifecycleOwner, this@FdtFragment)
 
-            setFdtActions()
-            setFdtPagination()
-
             with(binding){
                 tvFdtLocation.text = "FDT in ${session.user?.region}"
             }
@@ -82,6 +76,8 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
 
                 })
             }
+            setFdtActions()
+            setFdtPagination()
         }
         callOnceWhenDisplayed {
             if (session.user?.isAdmin == true) {
@@ -95,22 +91,23 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
     override fun onChanged(state: FdtViewModel.FdtUiState?) {
         when (state) {
             is FdtViewModel.FdtUiState.FdtLoaded -> {
-                stopLoading()
+                //stopLoading()
 
                 fdtVerticalAdapter.appendList(state.list)
 
             }
             is FdtViewModel.FdtUiState.InitialLoading -> {
-                startInitialLoading()
+               //startInitialLoading()
             }
             is FdtViewModel.FdtUiState.PagingLoading -> {
-                startPagingLoading()
+                //startPagingLoading()
             }
             is FdtViewModel.FdtUiState.FailedLoadFdt -> {
                 requireActivity().fancyToast(
                     getString(R.string.error_unknown_error),
                     FancyToast.ERROR
                 )
+                //binding.progressFdt.gone()
             }
         }
     }

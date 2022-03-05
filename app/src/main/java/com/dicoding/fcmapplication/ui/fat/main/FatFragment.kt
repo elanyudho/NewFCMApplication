@@ -110,6 +110,7 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
                     getString(R.string.error_unknown_error),
                     FancyToast.ERROR
                 )
+                binding.progressFat.gone()
             }
         }
     }

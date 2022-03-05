@@ -35,7 +35,7 @@ interface ApiService {
     @GET("fats/{fat_name}")
     suspend fun getFatDetail(@Path("fat_name") uuid: String): Response<FatDetailResponse>
 
-    @GET("companyprofile")
+    @GET("company-profile")
     suspend fun getCompanyProfile(): Response<CompanyProfileResponse>
 
     @GET("fdts/zone/{zone}/fdtname/{fdtname}/page/{page}")

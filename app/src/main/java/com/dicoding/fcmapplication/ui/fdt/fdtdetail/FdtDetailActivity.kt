@@ -106,13 +106,17 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                     }
                 }
 
-                binding.cvLottieLoading.gone()
-                binding.viewFdtDetail.visible()
+                /*with(binding){
+                    viewFdtDetail.visible()
+                    cvLottieLoading.gone()
+                }*/
 
             }
             is FdtDetailViewModel.FdtDetailUiState.LoadingFdtDetail -> {
-                binding.cvLottieLoading.visible()
-                binding.viewFdtDetail.gone()
+                /*with(binding){
+                    viewFdtDetail.invisible()
+                    cvLottieLoading.visible()
+                }*/
 
             }
             is FdtDetailViewModel.FdtDetailUiState.FailedLoadFdtDetail -> {

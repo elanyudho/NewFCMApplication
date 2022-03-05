@@ -42,6 +42,8 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
 
         binding.btnLogin.setOnClickListener {
             doLogin()
+            disable(binding.etUsername)
+            disable(binding.etPassword)
         }
 
         binding.tvRegister.setOnClickListener {
