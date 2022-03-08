@@ -139,12 +139,10 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
 
 
     private fun startInitialLoading() {
-        binding.rvFat.gone()
         binding.progressFat.visible()
     }
 
     private fun stopLoading() {
-        binding.rvFat.visible()
         binding.progressFat.gone()
     }
 

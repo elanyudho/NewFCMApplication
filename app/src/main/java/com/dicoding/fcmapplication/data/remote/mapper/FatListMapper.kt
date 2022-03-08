@@ -6,9 +6,8 @@ import com.dicoding.fcmapplication.domain.model.Fat
 
 class FatListMapper : BaseMapper<List<FatResponse.FatResponseItem>, List<Fat>> {
     override fun mapToDomain(raw: List<FatResponse.FatResponseItem>): List<Fat> {
-        val listData = ArrayList<Fat>()
-        raw.map {
-            val data = Fat(
+        return raw.map {
+            Fat(
                 fatName = it.fatName,
                 fatId = it.id.toString(),
                 fatActivated = it.fatActivated,
@@ -19,9 +18,7 @@ class FatListMapper : BaseMapper<List<FatResponse.FatResponseItem>, List<Fat>> {
                 fatCoreRemaining = it.fatBackupCore,
                 fatNote = it.fatNote
             )
-            listData.add(data)
         }
-        return listData
     }
 
     override fun mapToRaw(domain: List<Fat>): List<FatResponse.FatResponseItem> {

@@ -42,8 +42,6 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
 
         binding.btnLogin.setOnClickListener {
             doLogin()
-            disable(binding.etUsername)
-            disable(binding.etPassword)
         }
 
         binding.tvRegister.setOnClickListener {
@@ -60,6 +58,7 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
             is LoginViewModel.LoginUiState.Loading -> {
                 with(binding) {
                     cvLottieLoading.visible()
+
                 }
             }
 
@@ -70,6 +69,7 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
                     cvLottieLoading.gone()
                 }
                 handleFailure(state.failure)
+
             }
         }
     }
@@ -120,6 +120,7 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
 
         }
         Log.d("Session Login", session.isLogin.toString())
+
         //e { "Type: ${failure.requestResults} || Body: ${failure.throwable.message}" }
     }
 

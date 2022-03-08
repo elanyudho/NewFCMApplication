@@ -44,7 +44,6 @@
         android:clipToPadding="false"
         android:orientation="vertical"
         android:paddingHorizontal="18dp"
-        android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/progressFat"
         app:layout_constraintEnd_toEndOf="parent"

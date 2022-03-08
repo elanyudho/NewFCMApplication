@@ -1,7 +1,6 @@
 package com.dicoding.fcmapplication.ui.other.repairlist
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,9 +11,7 @@ import com.dicoding.fcmapplication.databinding.ActivityRepairListBinding
 import com.dicoding.fcmapplication.domain.model.Repair
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
 import com.dicoding.fcmapplication.ui.fdt.fdtdetail.FdtDetailActivity
-import com.dicoding.fcmapplication.ui.fdt.main.FdtViewModel
 import com.dicoding.fcmapplication.ui.other.adapter.RepairListAdapter
-import com.dicoding.fcmapplication.utils.extensions.dp
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.visible
@@ -51,13 +48,13 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
     override fun setupView() {
         mViewModel.uiState.observe(this, this)
 
-        session.user?.region?.let { mViewModel.getFdtList(it, 1) }
-
         binding.headerRepairList.btnBack.setOnClickListener { onBackPressed() }
         binding.headerRepairList.tvTitleHeader.text = getString(R.string.repair_list)
 
         setRepairListActions()
         setRepairListPagination()
+        setTabAction()
+        setTabItems()
 
     }
 
@@ -78,6 +75,7 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
                         fdtRepairList.add(data)
                     }
                 }
+                repairListAdapter.clearList()
                 repairListAdapter.appendList(fdtRepairList)
             }
             is RepairListViewModel.RepairListUiState.FatLoaded -> {
@@ -91,17 +89,18 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
                         deviceNote = it.fatNote,
                         deviceIsService = it.fatIsService
                     )
-                    fatRepairList.add(data)
+                    if (data.deviceIsService == true) {
+                        fatRepairList.add(data)
+                    }
                 }
+                repairListAdapter.clearList()
                 repairListAdapter.appendList(fatRepairList)
             }
             is RepairListViewModel.RepairListUiState.InitialLoading -> {
                 startInitialLoading()
-                setTabAction()
             }
             is RepairListViewModel.RepairListUiState.PagingLoading -> {
                 startPagingLoading()
-                setTabAction()
             }
             is RepairListViewModel.RepairListUiState.FailedLoad -> {
                 this.fancyToast(
@@ -185,12 +184,12 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
             }
         }
         onTabSelectedListener?.let {
-            binding.tabLayoutCourse.addOnTabSelectedListener(it)
+            binding.tabLayoutRepair.addOnTabSelectedListener(it)
         }
     }
 
     private fun setTabItems() {
-        with(binding.tabLayoutCourse) {
+        with(binding.tabLayoutRepair) {
             val tabList = mutableListOf<String>()
             listTab.forEach {
                 tabList.add(it)
@@ -199,7 +198,6 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
             addTitleOnlyTabs(tabList)
 
             // Set margins
-            setTabsMargin(0, 6.dp, 0.dp, 6.dp)
         }
     }
 

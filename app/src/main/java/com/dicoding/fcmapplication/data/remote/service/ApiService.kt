@@ -45,7 +45,7 @@ interface ApiService {
         @Path("page") page: String
     ): Response<List<FdtResponse.FdtResponseItem>>
 
-    @GET("fdts/zone/{zone}/fatname/{fatname}/page/{page}")
+    @GET("fats/zone/{zone}/fatname/{fatname}/page/{page}")
     suspend fun getFatSearchResult(
         @Path("zone") zone: String,
         @Path("fatname") fatname: String,

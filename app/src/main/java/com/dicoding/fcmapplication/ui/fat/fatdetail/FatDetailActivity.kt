@@ -86,10 +86,6 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
 
             }
             is FatDetailViewModel.FatDetailUiState.LoadingFatDetail -> {
-                with(binding){
-                    cvLottieLoading.visible()
-                    viewFatDetail.gone()
-                }
 
             }
             is FatDetailViewModel.FatDetailUiState.FailedLoadFatDetail -> {

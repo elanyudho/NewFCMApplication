@@ -3,6 +3,7 @@ package com.dicoding.fcmapplication.ui.fdt.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,16 +92,16 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
     override fun onChanged(state: FdtViewModel.FdtUiState?) {
         when (state) {
             is FdtViewModel.FdtUiState.FdtLoaded -> {
-                //stopLoading()
-
+                stopLoading()
+                Log.d("DATA FDT", state.list.toString())
                 fdtVerticalAdapter.appendList(state.list)
 
             }
             is FdtViewModel.FdtUiState.InitialLoading -> {
-               //startInitialLoading()
+               startInitialLoading()
             }
             is FdtViewModel.FdtUiState.PagingLoading -> {
-                //startPagingLoading()
+                startPagingLoading()
             }
             is FdtViewModel.FdtUiState.FailedLoadFdt -> {
                 requireActivity().fancyToast(
@@ -124,7 +125,7 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
     private fun setFdtActions() {
         with(binding.rvFdt) {
             adapter = fdtVerticalAdapter
-            setHasFixedSize(true)
+            setHasFixedSize(false)
 
             fdtVerticalAdapter.setOnClickData {
                 val intent = Intent(requireContext(), FdtDetailActivity::class.java)
@@ -136,12 +137,10 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
 
 
     private fun startInitialLoading() {
-        binding.rvFdt.gone()
         binding.progressFdt.visible()
     }
 
     private fun stopLoading() {
-        binding.rvFdt.visible()
         binding.progressFdt.gone()
     }
 

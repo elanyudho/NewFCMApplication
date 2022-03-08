@@ -6,9 +6,8 @@ import com.dicoding.fcmapplication.domain.model.Fdt
 
 class FdtListMapper : BaseMapper<List<FdtResponse.FdtResponseItem>, List<Fdt>> {
     override fun mapToDomain(raw: List<FdtResponse.FdtResponseItem>): List<Fdt> {
-        val listData = ArrayList<Fdt>()
-        raw.map {
-            val data = Fdt(
+        return raw.map {
+            Fdt(
                 fdtName = it.fdtName,
                 fdtId = it.id.toString(),
                 fdtActivated = it.fdtActivated,
@@ -19,9 +18,7 @@ class FdtListMapper : BaseMapper<List<FdtResponse.FdtResponseItem>, List<Fdt>> {
                 fdtCoreRemaining = it.fdtBackupCore,
                 fdtNote = it.fdtNote
             )
-            listData.add(data)
         }
-        return listData
     }
 
     override fun mapToRaw(domain: List<Fdt>): List<FdtResponse.FdtResponseItem> {

@@ -60,7 +60,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             binding.fabMenu.visible()
             enable(binding.fabMenu)
         }else{
-            binding.fabMenu.invisible()
+            binding.fabMenu.gone()
             disable(binding.fabMenu)
         }
 
@@ -106,17 +106,14 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                     }
                 }
 
-                /*with(binding){
+                with(binding){
                     viewFdtDetail.visible()
                     cvLottieLoading.gone()
-                }*/
+                }
 
             }
             is FdtDetailViewModel.FdtDetailUiState.LoadingFdtDetail -> {
-                /*with(binding){
-                    viewFdtDetail.invisible()
-                    cvLottieLoading.visible()
-                }*/
+
 
             }
             is FdtDetailViewModel.FdtDetailUiState.FailedLoadFdtDetail -> {
