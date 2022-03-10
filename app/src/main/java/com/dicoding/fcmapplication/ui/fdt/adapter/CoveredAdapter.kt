@@ -40,15 +40,17 @@ class CoveredAdapter :
                 }
                 tvActiveDate.text = data.fatActivated
 
-                if (valueIndicator <= 50) {
-                    imgCapacityIndicator.setTint(R.color.green_lime)
-                }
-                if (valueIndicator in 51..75) {
-                    imgCapacityIndicator.setTint(R.color.yellow_tangerine)
-                }
-                if (valueIndicator > 75) {
-                    imgCapacityIndicator.setTint(R.color.red_orange)
-                }
+                imgCapacityIndicator.setTint(
+                    when{
+                        valueIndicator <= 50 -> R.color.green_lime
+
+                        valueIndicator in 51..75 -> R.color.yellow_tangerine
+
+                        valueIndicator > 75 -> R.color.red_orange
+
+                        else -> R.color.white
+                    }
+                )
 
                 binding.root.setOnClickListener {
                     onClick.invoke(data)

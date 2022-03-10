@@ -42,10 +42,8 @@ class FdtVerticalAdapter : PagingRecyclerViewAdapter<FdtVerticalAdapter.FdtViewH
                 }
                 tvActiveDate.text = data.fdtActivated
 
-
                 imgCapacityIndicator.setTint(
                     when{
-
                         valueIndicator <= 50 -> R.color.green_lime
 
                         valueIndicator in 51..75 -> R.color.yellow_tangerine

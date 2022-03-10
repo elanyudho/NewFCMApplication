@@ -56,6 +56,19 @@ class FdtRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun fdtListNoPage(queries: Map<String, String>): Either<Failure, List<Fdt>> {
+        return when(val response = remoteDataSource.fdtListNoPage(queries)){
+            is Either.Success -> {
+                val fdtList = fdtListMapper.mapToDomain(response.body)
+                Either.Success(fdtList)
+            }
+            is Either.Error -> {
+                Timber.e(response.failure.throwable.message.toString())
+                Either.Error(response.failure)
+            }
+        }
+    }
+
 
 }
 

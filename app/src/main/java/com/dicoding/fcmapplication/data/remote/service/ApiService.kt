@@ -29,6 +29,12 @@ interface ApiService {
         @Path("page") page: String
     ): Response<List<FatResponse.FatResponseItem>>
 
+    @GET("fdts")
+    suspend fun getFdtListNoPage(@QueryMap queries: Map<String, String>): Response<List<FdtResponse.FdtResponseItem>>
+
+    @GET("fats")
+    suspend fun getFatListNoPage(@QueryMap queries: Map<String, String>): Response<List<FatResponse.FatResponseItem>>
+
     @GET("fdts/{fdt_name}")
     suspend fun getFdtDetail(@Path("fdt_name") uuid: String): Response<FdtDetailResponse>
 

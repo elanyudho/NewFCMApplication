@@ -3,7 +3,6 @@ package com.dicoding.fcmapplication.ui.other.repairlist
 import android.content.Intent
 import android.view.LayoutInflater
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
@@ -52,7 +51,6 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
         binding.headerRepairList.tvTitleHeader.text = getString(R.string.repair_list)
 
         setRepairListActions()
-        setRepairListPagination()
         setTabAction()
         setTabItems()
 
@@ -65,42 +63,37 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
 
                 val fdtRepairList = ArrayList<Repair>()
                 state.list.map {
-                    val data = Repair(
-                        deviceName = it.fdtName,
-                        deviceCoreTotal = it.fdtCore,
-                        deviceNote = it.fdtNote,
-                        deviceIsService = it.fdtIsService
-                    )
-                    if (data.deviceIsService == true) {
+                    if(it.fdtIsService == true){
+                        val data = Repair(
+                            deviceName = it.fdtName,
+                            deviceCoreTotal = it.fdtCore,
+                            deviceNote = it.fdtNote,
+                            deviceIsService = it.fdtIsService
+                        )
                         fdtRepairList.add(data)
                     }
                 }
-                repairListAdapter.clearList()
-                repairListAdapter.appendList(fdtRepairList)
+                repairListAdapter.submitList(fdtRepairList)
             }
             is RepairListViewModel.RepairListUiState.FatLoaded -> {
                 stopLoading()
 
                 val fatRepairList = ArrayList<Repair>()
                 state.list.map {
-                    val data = Repair(
-                        deviceName = it.fatName,
-                        deviceCoreTotal = it.fatCore,
-                        deviceNote = it.fatNote,
-                        deviceIsService = it.fatIsService
-                    )
-                    if (data.deviceIsService == true) {
+                    if(it.fatIsService == true){
+                        val data = Repair(
+                            deviceName = it.fatName,
+                            deviceCoreTotal = it.fatCore,
+                            deviceNote = it.fatNote,
+                            deviceIsService = it.fatIsService
+                        )
                         fatRepairList.add(data)
                     }
                 }
-                repairListAdapter.clearList()
-                repairListAdapter.appendList(fatRepairList)
+                repairListAdapter.submitList(fatRepairList)
             }
-            is RepairListViewModel.RepairListUiState.InitialLoading -> {
-                startInitialLoading()
-            }
-            is RepairListViewModel.RepairListUiState.PagingLoading -> {
-                startPagingLoading()
+            is RepairListViewModel.RepairListUiState.Loading -> {
+                startLoading()
             }
             is RepairListViewModel.RepairListUiState.FailedLoad -> {
                 this.fancyToast(
@@ -109,27 +102,6 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
                 )
             }
         }
-    }
-
-    private fun setRepairListPagination() {
-        paginator = RecyclerViewPaginator(binding.rvRepairList.layoutManager as LinearLayoutManager)
-        paginator?.setOnLoadMoreListener { page ->
-            if (tabChoose == FDT) {
-                if (session.user?.isCenterAdmin == true) {
-                    mViewModel.getFdtList(NO_ZONE, page)
-                } else {
-                    session.user?.region?.let { mViewModel.getFdtList(it, page) }
-                }
-
-            } else {
-                if (session.user?.isCenterAdmin == true) {
-                    mViewModel.getFatList(NO_ZONE, 1)
-                } else {
-                    session.user?.region?.let { mViewModel.getFatList(it, page) }
-                }
-            }
-        }
-        paginator?.let { binding.rvRepairList.addOnScrollListener(it) }
     }
 
     private fun setRepairListActions() {
@@ -159,16 +131,16 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
                 d("Selected Tab: $tabChoose.toString()")
                 if (tabChoose == FDT) {
                     if (session.user?.isCenterAdmin == true) {
-                        mViewModel.getFdtList(NO_ZONE, 1)
+                        mViewModel.getFdtList(NO_ZONE)
                     } else {
-                        session.user?.region?.let { mViewModel.getFdtList(it, 1) }
+                        session.user?.region?.let { mViewModel.getFdtList(it) }
                     }
 
                 } else {
                     if (session.user?.isCenterAdmin == true) {
-                        mViewModel.getFatList(NO_ZONE, 1)
+                        mViewModel.getFatList(NO_ZONE)
                     } else {
-                        session.user?.region?.let { mViewModel.getFatList(it, 1) }
+                        session.user?.region?.let { mViewModel.getFatList(it) }
                     }
                 }
             }
@@ -197,11 +169,10 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
             // Add tabs
             addTitleOnlyTabs(tabList)
 
-            // Set margins
         }
     }
 
-    private fun startInitialLoading() {
+    private fun startLoading() {
         binding.rvRepairList.gone()
         binding.progressRepairList.visible()
     }
@@ -209,10 +180,6 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
     private fun stopLoading() {
         binding.rvRepairList.visible()
         binding.progressRepairList.gone()
-    }
-
-    private fun startPagingLoading() {
-        binding.progressRepairList.visible()
     }
 
     companion object {
