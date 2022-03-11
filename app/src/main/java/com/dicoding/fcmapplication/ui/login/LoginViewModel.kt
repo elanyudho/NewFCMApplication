@@ -8,6 +8,7 @@ import com.dicoding.core.extension.onError
 import com.dicoding.core.extension.onSuccess
 import com.dicoding.fcmapplication.domain.model.User
 import com.dicoding.fcmapplication.domain.usecase.auth.GetLoginUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -26,7 +27,7 @@ class LoginViewModel @Inject constructor(
     fun doLogin(userName: String, password: String) {
         _uiState.value = LoginUiState.Loading
         viewModelScope.launch(dispatcherProvider.io) {
-
+            delay(2000)
             loginUseCase.run(GetLoginUseCase.Params(userName, password))
                 .onSuccess {
                     withContext(dispatcherProvider.main) {

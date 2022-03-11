@@ -17,9 +17,11 @@ import com.dicoding.fcmapplication.domain.usecase.auth.GetLoginUseCase
 import com.dicoding.fcmapplication.domain.usecase.auth.GetRegionListUseCase
 import com.dicoding.fcmapplication.domain.usecase.auth.GetRegisterUseCase
 import com.dicoding.fcmapplication.domain.usecase.fat.GetFatDetailUseCase
+import com.dicoding.fcmapplication.domain.usecase.fat.GetFatListNoPageUseCase
 import com.dicoding.fcmapplication.domain.usecase.fat.GetFatListUseCase
 import com.dicoding.fcmapplication.domain.usecase.fat.GetFatSearchResultUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtDetailUseCase
+import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListNoPageUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtSearchResultUseCase
 import com.dicoding.fcmapplication.domain.usecase.other.GetCompanyProfileUseCase
@@ -150,4 +152,12 @@ object UseCaseModule {
     @Provides
     @ActivityScoped
     fun provideRegionUseCase(repository: AuthRepository) = GetRegionListUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun provideFdtListNoPageUseCase(repository: FdtRepository) = GetFdtListNoPageUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun provideFatListNoPageUseCase(repository: FatRepository) = GetFatListNoPageUseCase(repository)
 }

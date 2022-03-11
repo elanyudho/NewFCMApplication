@@ -29,13 +29,19 @@ interface ApiService {
         @Path("page") page: String
     ): Response<List<FatResponse.FatResponseItem>>
 
+    @GET("fdts")
+    suspend fun getFdtListNoPage(@QueryMap queries: Map<String, String>): Response<List<FdtResponse.FdtResponseItem>>
+
+    @GET("fats")
+    suspend fun getFatListNoPage(@QueryMap queries: Map<String, String>): Response<List<FatResponse.FatResponseItem>>
+
     @GET("fdts/{fdt_name}")
     suspend fun getFdtDetail(@Path("fdt_name") uuid: String): Response<FdtDetailResponse>
 
     @GET("fats/{fat_name}")
     suspend fun getFatDetail(@Path("fat_name") uuid: String): Response<FatDetailResponse>
 
-    @GET("companyprofile")
+    @GET("company-profile")
     suspend fun getCompanyProfile(): Response<CompanyProfileResponse>
 
     @GET("fdts/zone/{zone}/fdtname/{fdtname}/page/{page}")
@@ -45,7 +51,7 @@ interface ApiService {
         @Path("page") page: String
     ): Response<List<FdtResponse.FdtResponseItem>>
 
-    @GET("fdts/zone/{zone}/fatname/{fatname}/page/{page}")
+    @GET("fats/zone/{zone}/fatname/{fatname}/page/{page}")
     suspend fun getFatSearchResult(
         @Path("zone") zone: String,
         @Path("fatname") fatname: String,

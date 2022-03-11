@@ -71,18 +71,20 @@ fun Context.toast(message: String, duration: Int = Toast.LENGTH_SHORT) {
 }
 
 fun enable(view: View) {
-    with(view) {
+    view.apply {
         isFocusable = true
         isClickable = true
         isEnabled = true
+        invalidate()
     }
 }
 
 fun disable(view: View) {
-    with(view) {
+    view.apply {
         isFocusable = false
         isClickable = false
         isEnabled = false
+        invalidate()
     }
 }
 

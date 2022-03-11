@@ -3,6 +3,7 @@ package com.dicoding.fcmapplication.ui.fdt.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +17,7 @@ import com.dicoding.fcmapplication.databinding.FragmentFdtBinding
 import com.dicoding.fcmapplication.ui.fdt.adapter.FdtVerticalAdapter
 import com.dicoding.fcmapplication.ui.fdt.fdtdetail.FdtDetailActivity
 import com.dicoding.fcmapplication.ui.fdt.searchresult.SearchResultFdtActivity
-import com.dicoding.fcmapplication.utils.extensions.fancyToast
-import com.dicoding.fcmapplication.utils.extensions.gone
-import com.dicoding.fcmapplication.utils.extensions.setStatusBar
-import com.dicoding.fcmapplication.utils.extensions.visible
+import com.dicoding.fcmapplication.utils.extensions.*
 import com.dicoding.fcmapplication.utils.pagination.RecyclerViewPaginator
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,11 +56,7 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
         callOnceWhenCreated {
             mViewModel.uiState.observe(viewLifecycleOwner, this@FdtFragment)
 
-            setFdtActions()
-            setFdtPagination()
-
             with(binding){
-                tvArcBarLocationName.text = "Core FAT are used in ${session.user?.region}"
                 tvFdtLocation.text = "FDT in ${session.user?.region}"
             }
 
@@ -83,6 +77,8 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
 
                 })
             }
+            setFdtActions()
+            setFdtPagination()
         }
         callOnceWhenDisplayed {
             if (session.user?.isAdmin == true) {
@@ -97,32 +93,11 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
         when (state) {
             is FdtViewModel.FdtUiState.FdtLoaded -> {
                 stopLoading()
-
-                val allFdtCoreTotalList = ArrayList<Int>()
-                val allFdtCoreUsedList = ArrayList<Int>()
-                val allFdtCoreBackupList = ArrayList<Int>()
-
                 fdtVerticalAdapter.appendList(state.list)
-
-                state.list.map {
-                    it.fdtCore?.let { fdtTotal -> allFdtCoreTotalList.add(fdtTotal.toInt()) }
-                    it.fdtCoreUsed?.let { fdtUsed -> allFdtCoreUsedList.add(fdtUsed.toInt()) }
-                    it.fdtCoreRemaining?.let { fdtBackup -> allFdtCoreBackupList.add(fdtBackup.toInt()) }
-                }
-
-                val sumFdtCoreTotal = allFdtCoreTotalList.sum()
-                val sumFdtCoreUsed = allFdtCoreUsedList.sum()
-                val sumFdtCoreBackup = allFdtCoreBackupList.sum()
-
-                setArcProgressBar(
-                    sumFdtCoreTotal.toString(),
-                    sumFdtCoreUsed.toString(),
-                    sumFdtCoreBackup.toString()
-                )
 
             }
             is FdtViewModel.FdtUiState.InitialLoading -> {
-                startInitialLoading()
+               startInitialLoading()
             }
             is FdtViewModel.FdtUiState.PagingLoading -> {
                 startPagingLoading()
@@ -132,6 +107,7 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
                     getString(R.string.error_unknown_error),
                     FancyToast.ERROR
                 )
+                //binding.progressFdt.gone()
             }
         }
     }
@@ -149,6 +125,7 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
         with(binding.rvFdt) {
             adapter = fdtVerticalAdapter
             setHasFixedSize(true)
+            setItemViewCacheSize(5)
 
             fdtVerticalAdapter.setOnClickData {
                 val intent = Intent(requireContext(), FdtDetailActivity::class.java)
@@ -159,32 +136,11 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
     }
 
 
-    @SuppressLint("SetTextI18n")
-    private fun setArcProgressBar(
-        allFdtCoreTotal: String,
-        allFdtCoreUsed: String,
-        allFdtCoreBackup: String
-    ) {
-        val percentValue = allFdtCoreUsed.toDouble() / allFdtCoreTotal.toDouble() * 100
-        val percentValueInt = percentValue.toInt()
-        val percentValueStr = percentValueInt.toString()
-        with(binding) {
-            semiCircleArcProgressBar.setPercent(percentValueInt)
-            tvCoreTotal.text = allFdtCoreTotal
-            tvCoreUsed.text = allFdtCoreUsed
-            tvBackup.text = allFdtCoreBackup
-            tvCapacityPercentage.text = "$percentValueStr%"
-        }
-
-    }
-
     private fun startInitialLoading() {
-        binding.rvFdt.gone()
         binding.progressFdt.visible()
     }
 
     private fun stopLoading() {
-        binding.rvFdt.visible()
         binding.progressFdt.gone()
     }
 

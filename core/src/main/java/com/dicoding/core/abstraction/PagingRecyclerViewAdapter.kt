@@ -11,6 +11,7 @@ abstract class PagingRecyclerViewAdapter<Holder: RecyclerView.ViewHolder, Data> 
     fun appendList(newData: List<Data>) {
         listData.addAll(newData)
         notifyDataSetChanged()
+
     }
 
     fun clearList() {

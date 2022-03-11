@@ -59,4 +59,14 @@ class RemoteDataSource
         request {
             api.getRegionList()
         }
+
+    suspend fun fdtListNoPage(queries: Map<String, String>) : Either<Failure, List<FdtResponse.FdtResponseItem>> =
+        request{
+            api.getFdtListNoPage(queries)
+        }
+
+    suspend fun fatListNoPage(queries: Map<String, String>) : Either<Failure, List<FatResponse.FatResponseItem>> =
+        request{
+            api.getFatListNoPage(queries)
+        }
 }

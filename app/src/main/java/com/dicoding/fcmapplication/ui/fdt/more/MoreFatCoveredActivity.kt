@@ -7,7 +7,7 @@ import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.ActivityMoreFatCoveredBinding
 import com.dicoding.fcmapplication.domain.model.FdtDetail
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
-import com.dicoding.fcmapplication.ui.fdt.adapter.FatHorizontalAdapter
+import com.dicoding.fcmapplication.ui.fdt.adapter.MoreFatAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,7 +15,7 @@ class MoreFatCoveredActivity : BaseActivityBinding<ActivityMoreFatCoveredBinding
 
     private lateinit var data: List<FdtDetail.FatList>
 
-    private val fatGridAdapter: FatHorizontalAdapter by lazy { FatHorizontalAdapter() }
+    private val moreFatGridAdapter: MoreFatAdapter by lazy { MoreFatAdapter() }
 
     override val bindingInflater: (LayoutInflater) -> ActivityMoreFatCoveredBinding
         get() =  { ActivityMoreFatCoveredBinding.inflate(layoutInflater)}
@@ -26,7 +26,7 @@ class MoreFatCoveredActivity : BaseActivityBinding<ActivityMoreFatCoveredBinding
         binding.headerMoreFatCovered.tvTitleHeader.text = getString(R.string.fat_covered)
         binding.headerMoreFatCovered.btnBack.setOnClickListener { onBackPressed() }
 
-        fatGridAdapter.submitList(data)
+        moreFatGridAdapter.submitList(data)
 
         setFatActions()
 
@@ -34,10 +34,10 @@ class MoreFatCoveredActivity : BaseActivityBinding<ActivityMoreFatCoveredBinding
 
     private fun setFatActions() {
         with(binding.rvMoreFatCovered) {
-            adapter = fatGridAdapter
+            adapter = moreFatGridAdapter
             setHasFixedSize(true)
 
-            fatGridAdapter.setOnClickData {
+            moreFatGridAdapter.setOnClickData {
                 val intent = Intent(this@MoreFatCoveredActivity, FatDetailActivity::class.java)
                 intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.fatName)
                 startActivity(intent)

@@ -54,4 +54,17 @@ class FatRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun fatListNoPage(queries: Map<String, String>): Either<Failure, List<Fat>> {
+        return when(val response = remoteDataSource.fatListNoPage(queries)){
+            is Either.Success -> {
+                val fatList = fatListMapper.mapToDomain(response.body)
+                Either.Success(fatList)
+            }
+            is Either.Error -> {
+                Timber.e(response.failure.throwable.message.toString())
+                Either.Error(response.failure)
+            }
+        }
+    }
 }

@@ -31,11 +31,11 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
 
     private lateinit var queryFdtName: String
 
-    private var loading = false
-
     private var paginator: RecyclerViewPaginator? = null
 
     private val searchFdtAdapter: FdtVerticalAdapter by lazy { FdtVerticalAdapter() }
+
+    private var isFirstGet = true
 
     override val bindingInflater: (LayoutInflater) -> ActivitySearchResultFdtBinding
         get() = { ActivitySearchResultFdtBinding.inflate(layoutInflater) }
@@ -53,15 +53,19 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
             mViewModel.getFdtSearchResult(session.user?.region.toString(), queryFdtName, 1)
         }
 
+        binding.searchFdt.setQuery(queryFdtName)
+
         with(binding) {
             btnBack.setOnClickListener { onBackPressed() }
             searchFdt.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     if (session.user?.isCenterAdmin == true){
-                        mViewModel.getFdtSearchResult(session.user?.region.toString(), queryFdtName, 1)
+                        mViewModel.getFdtSearchResult(session.user?.region.toString(), query?:"", 1)
                     }else{
-                        mViewModel.getFdtSearchResult(session.user?.region.toString(), queryFdtName, 1)
+                        mViewModel.getFdtSearchResult(session.user?.region.toString(), query?:"", 1)
                     }
+
+                    queryFdtName = query?:""
                     searchFdt.setQuery("")
                     searchFdt.clearFocus()
                     return true
@@ -82,14 +86,10 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
         when (state) {
             is SearchResultFdtViewModel.SearchResultFdtUiState.SearchResultFdtLoaded -> {
                 stopLoading()
-                val allFdtCoreTotalList = ArrayList<Int>()
 
-                if(state.data.isEmpty()){
+                if(state.data.isEmpty() && isFirstGet){
                     emptyDataView()
                 }else{
-                    state.data.map {
-                        it.fdtCore?.let { fdtTotal -> allFdtCoreTotalList.add(fdtTotal.toInt()) }
-                    }
                     searchFdtAdapter.appendList(state.data)
                     dataIsNotEmptyView()
                 }
@@ -133,6 +133,7 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
             }else{
                 mViewModel.getFdtSearchResult(session.user?.region.toString(), queryFdtName, page)
             }
+            isFirstGet = false
         }
         paginator?.let { binding.rvFdt.addOnScrollListener(it) }
     }
@@ -167,6 +168,7 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
 
     private fun stopLoading() {
         binding.cvLottieLoading.gone()
+        binding.progressFdt.gone()
     }
 
     private fun startPagingLoading() {

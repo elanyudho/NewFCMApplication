@@ -17,7 +17,7 @@ class FatVerticalAdapter : PagingRecyclerViewAdapter<FatVerticalAdapter.FatViewH
 
     private var onClick: ((Fat) -> Unit)? = null
 
-    var valueIndicator = 0
+    private var valueIndicator = 0
 
     override val holderInflater: (LayoutInflater, ViewGroup, Boolean) -> FatVerticalAdapter.FatViewHolder
         get() = { inflater, viewGroup, boolean ->
@@ -33,31 +33,32 @@ class FatVerticalAdapter : PagingRecyclerViewAdapter<FatVerticalAdapter.FatViewH
         override fun bind(data: Fat) {
             with(binding) {
                 tvDeviceName.text = data.fatName
-                if (data.fatIsService == true){
+                valueIndicator = setIndicatorValue(data.fatCore!!, data.fatCoreUsed!!)
+                if (data.fatIsService == true) {
                     imageIsService.visible()
                     tvTagCondition.setText(R.string.need_service)
-                }else{
+                } else {
                     imageIsService.invisible()
                     tvTagCondition.setText(R.string.normal)
                 }
                 tvActiveDate.text = data.fatActivated
 
-                if (valueIndicator <= 50) {
-                    imgCapacityIndicator.setTint(R.color.green_lime)
-                }
-                if (valueIndicator in 51..75) {
-                    imgCapacityIndicator.setTint(R.color.yellow_tangerine)
-                }
-                if (valueIndicator > 75) {
-                    imgCapacityIndicator.setTint(R.color.red_orange)
+                imgCapacityIndicator.setTint(
+                    when{
 
-                    root.setOnClickListener {
-                        onClick?.invoke(data)
+                        valueIndicator <= 50 -> R.color.green_lime
+
+                        valueIndicator in 51..75 -> R.color.yellow_tangerine
+
+                        valueIndicator > 75 -> R.color.red_orange
+
+                        else -> R.color.white
                     }
-                }
+                )
 
                 root.setOnClickListener {
                     onClick?.invoke(data)
+
                 }
             }
         }
@@ -66,5 +67,10 @@ class FatVerticalAdapter : PagingRecyclerViewAdapter<FatVerticalAdapter.FatViewH
 
     fun setOnClickData(onClick: (data: Fat) -> Unit) {
         this.onClick = onClick
+    }
+
+    private fun setIndicatorValue(total: String, used: String): Int {
+        val totalCoreInDouble = used.toDouble() / total.toDouble() * 100
+        return totalCoreInDouble.toInt()
     }
 }

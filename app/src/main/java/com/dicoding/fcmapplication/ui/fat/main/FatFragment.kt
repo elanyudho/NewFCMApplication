@@ -52,9 +52,14 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun setupView() {
         callOnceWhenCreated {
             mViewModel.uiState.observe(viewLifecycleOwner, this@FatFragment)
+
+            with(binding){
+                tvFatLocation.text = "FAT in ${session.user?.region}"
+            }
 
             with(binding) {
                 searchFat.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
@@ -91,28 +96,8 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
             is FatViewModel.FatUiState.FatLoaded -> {
                 stopLoading()
 
-                val allFatCoreTotalList = ArrayList<Int>()
-                val allFatCoreUsedList = ArrayList<Int>()
-                val allFatCoreBackupList = ArrayList<Int>()
-
                 fatVerticalAdapter.appendList(state.list)
 
-                state.list.map {
-                    it.fatCore?.let { fdtTotal -> allFatCoreTotalList.add(fdtTotal.toInt()) }
-                    it.fatCoreUsed?.let { fdtUsed -> allFatCoreUsedList.add(fdtUsed.toInt()) }
-                    it.fatCoreRemaining?.let { fdtBackup -> allFatCoreBackupList.add(fdtBackup.toInt()) }
-                }
-                val sumFatCoreTotal = allFatCoreTotalList.sum()
-                val sumFatCoreUsed = allFatCoreUsedList.sum()
-                val sumFatCoreBackup = allFatCoreBackupList.sum()
-
-                setArcProgressBar(
-                    sumFatCoreTotal.toString(),
-                    sumFatCoreUsed.toString(),
-                    sumFatCoreBackup.toString()
-                )
-
-                fatVerticalAdapter.valueIndicator = sumFatCoreTotal
             }
             is FatViewModel.FatUiState.InitialLoading -> {
                 startInitialLoading()
@@ -125,6 +110,7 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
                     getString(R.string.error_unknown_error),
                     FancyToast.ERROR
                 )
+                binding.progressFat.gone()
             }
         }
     }
@@ -142,6 +128,7 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
         with(binding.rvFat) {
             adapter = fatVerticalAdapter
             setHasFixedSize(true)
+            setItemViewCacheSize(5)
 
             fatVerticalAdapter.setOnClickData {
                 val intent = Intent(requireContext(), FatDetailActivity::class.java)
@@ -151,32 +138,12 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun setArcProgressBar(
-        allFatCoreTotal: String,
-        allFatCoreUsed: String,
-        allFatCoreBackup: String
-    ) {
-        val percentValue = allFatCoreUsed.toDouble() / allFatCoreTotal.toDouble() * 100
-        val percentValueInt = percentValue.toInt()
-        val percentValueStr = percentValueInt.toString()
-        with(binding) {
-            semiCircleArcProgressBar.setPercent(percentValueInt)
-            tvCoreTotal.text = allFatCoreTotal
-            tvCoreUsed.text = allFatCoreUsed
-            tvBackup.text = allFatCoreBackup
-            tvCapacityPercentage.text = "$percentValueStr%"
-        }
-
-    }
 
     private fun startInitialLoading() {
-        binding.rvFat.gone()
         binding.progressFat.visible()
     }
 
     private fun stopLoading() {
-        binding.rvFat.visible()
         binding.progressFat.gone()
     }
 

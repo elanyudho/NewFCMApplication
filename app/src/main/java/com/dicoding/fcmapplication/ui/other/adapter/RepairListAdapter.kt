@@ -2,29 +2,51 @@ package com.dicoding.fcmapplication.ui.other.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.dicoding.core.abstraction.BaseRecyclerViewAdapter
 import com.dicoding.core.abstraction.BaseViewHolder
 import com.dicoding.core.abstraction.PagingRecyclerViewAdapter
 import com.dicoding.fcmapplication.R
+import com.dicoding.fcmapplication.databinding.ItemDeviceLinearLayoutBinding
 import com.dicoding.fcmapplication.databinding.ItemServiceListBinding
+import com.dicoding.fcmapplication.domain.model.FdtDetail
 import com.dicoding.fcmapplication.domain.model.Repair
 import com.dicoding.fcmapplication.utils.extensions.invisible
 import com.dicoding.fcmapplication.utils.extensions.setTint
 import com.dicoding.fcmapplication.utils.extensions.visible
 
-class RepairListAdapter : PagingRecyclerViewAdapter<RepairListAdapter.RepairListViewHolder, Repair>() {
+class RepairListAdapter : BaseRecyclerViewAdapter<RepairListAdapter.RepairListViewHolder>() {
 
 
     private var onClick: ((Repair) -> Unit)? = null
 
-    var valueIndicator = 0
+    private var valueIndicator = 0
 
-    override val holderInflater: (LayoutInflater, ViewGroup, Boolean) -> RepairListAdapter.RepairListViewHolder
+    private var listData = mutableListOf<Repair>()
+
+    fun submitList(newList: List<Repair>) {
+        listData.clear()
+        listData.addAll(newList)
+        notifyDataSetChanged()
+    }
+
+
+    override val holderInflater: (LayoutInflater, ViewGroup, Boolean) -> RepairListViewHolder
         get() = { inflater, viewGroup, boolean ->
-            RepairListViewHolder(ItemServiceListBinding.inflate(inflater, viewGroup, boolean))
+            RepairListViewHolder(
+                ItemServiceListBinding.inflate(
+                    inflater,
+                    viewGroup,
+                    boolean
+                )
+            )
         }
 
-    override fun onBindViewHolder(holder: RepairListAdapter.RepairListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RepairListViewHolder, position: Int) {
         holder.bind(listData[position])
+    }
+
+    override fun getItemCount(): Int {
+        return listData.size
     }
 
     inner class RepairListViewHolder(itemView: ItemServiceListBinding) :
@@ -41,18 +63,19 @@ class RepairListAdapter : PagingRecyclerViewAdapter<RepairListAdapter.RepairList
                 }
                 tvRepairNotes.text = data.deviceNote
 
-                if (valueIndicator <= 50) {
-                    imgCapacityIndicator.setTint(R.color.green_lime)
-                }
-                if (valueIndicator in 51..75) {
-                    imgCapacityIndicator.setTint(R.color.yellow_tangerine)
-                }
-                if (valueIndicator > 75) {
-                    imgCapacityIndicator.setTint(R.color.red_orange)
+                imgCapacityIndicator.setTint(
+                    when {
+                        valueIndicator <= 50 -> R.color.green_lime
 
-                    root.setOnClickListener {
-                        onClick?.invoke(data)
+                        valueIndicator in 51..75 -> R.color.yellow_tangerine
+
+                        valueIndicator > 75 -> R.color.red_orange
+
+                        else -> R.color.white
                     }
+                )
+                root.setOnClickListener {
+                    onClick?.invoke(data)
                 }
             }
         }
