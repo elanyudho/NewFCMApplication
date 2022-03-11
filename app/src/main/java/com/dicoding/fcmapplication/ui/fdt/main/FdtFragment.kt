@@ -93,7 +93,6 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
         when (state) {
             is FdtViewModel.FdtUiState.FdtLoaded -> {
                 stopLoading()
-                Log.d("DATA FDT", state.list.toString())
                 fdtVerticalAdapter.appendList(state.list)
 
             }

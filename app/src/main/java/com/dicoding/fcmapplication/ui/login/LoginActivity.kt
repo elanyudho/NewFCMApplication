@@ -33,6 +33,8 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
     @Inject
     lateinit var session: Session
 
+    private var isClick = true
+
     override val bindingInflater: (LayoutInflater) -> ActivityLoginBinding
         get() = { ActivityLoginBinding.inflate(it) }
 
@@ -47,6 +49,14 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
         binding.tvRegister.setOnClickListener {
             startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
         }
+
+        if (isClick){
+            enable(binding.etUsername)
+            enable(binding.etPassword)
+        }else{
+            disable(binding.etUsername)
+            disable(binding.etPassword)
+        }
     }
 
     override fun onChanged(state: LoginViewModel.LoginUiState?) {
@@ -56,17 +66,20 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
                 saveStateUser(state.user)
             }
             is LoginViewModel.LoginUiState.Loading -> {
+                isClick = false
                 with(binding) {
                     cvLottieLoading.visible()
-
+                    etUsername.isCursorVisible = false
+                    etPassword.isCursorVisible = false
                 }
             }
 
             is LoginViewModel.LoginUiState.Failed -> {
+                isClick = true
                 with(binding) {
-                    etUsername.setText("")
-                    etPassword.setText("")
                     cvLottieLoading.gone()
+                    etUsername.isCursorVisible = true
+                    etPassword.isCursorVisible = true
                 }
                 handleFailure(state.failure)
 

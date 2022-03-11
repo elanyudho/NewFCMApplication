@@ -16,8 +16,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvLottieLoading"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/black_transparent"
         android:visibility="visible"
         app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"

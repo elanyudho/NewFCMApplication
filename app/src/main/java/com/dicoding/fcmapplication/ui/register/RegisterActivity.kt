@@ -37,6 +37,14 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
         binding.btnRegister.setOnClickListener {
             doRegister()
         }
+
+        with(binding){
+            etEmail.isCursorVisible = true
+            etUsername.isCursorVisible = true
+            etPassword.isCursorVisible = true
+            etConfirmPassword.isCursorVisible = true
+        }
+
     }
 
     override fun onChanged(state: RegisterViewModel.RegisterUiState?) {
@@ -51,20 +59,30 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
                 binding.etRegion.setOnClickListener {
                     setRegionSpinner(state.region)
                 }
+                with(binding){
+                    etEmail.isCursorVisible = true
+                    etUsername.isCursorVisible = true
+                    etPassword.isCursorVisible = true
+                    etConfirmPassword.isCursorVisible = true
+                }
             }
             is RegisterViewModel.RegisterUiState.Loading -> {
                 with(binding) {
                     cvLottieLoading.visible()
+                    etEmail.isCursorVisible = false
+                    etUsername.isCursorVisible = false
+                    etPassword.isCursorVisible = false
+                    etConfirmPassword.isCursorVisible = false
                 }
             }
 
             is RegisterViewModel.RegisterUiState.Failed -> {
                 with(binding) {
-                    etUsername.setText("")
-                    etPassword.setText("")
-                    etEmail.setText("")
-                    etConfirmPassword.setText("")
                     cvLottieLoading.gone()
+                    etEmail.isCursorVisible = true
+                    etUsername.isCursorVisible = true
+                    etPassword.isCursorVisible = true
+                    etConfirmPassword.isCursorVisible = true
                 }
                 handleFailure(state.failure)
             }
