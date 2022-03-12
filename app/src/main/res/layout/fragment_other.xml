@@ -78,7 +78,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rowCompanyProfile">
+        app:layout_constraintTop_toBottomOf="@+id/rowRegionAdmin">
 
         <ImageView
             android:layout_width="32dp"
@@ -114,12 +114,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rowAddFdtFat">
+        app:layout_constraintTop_toBottomOf="@+id/rowAddFdtFat">
 
         <ImageView
             android:layout_width="32dp"
@@ -160,7 +161,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cvProfile">
@@ -247,11 +248,11 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cvProfile"
+        app:layout_constraintTop_toBottomOf="@+id/rowCompanyProfile"
         app:layout_constraintVertical_chainStyle="spread_inside">
 
         <ImageView

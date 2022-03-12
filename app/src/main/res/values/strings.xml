@@ -58,6 +58,8 @@
     <string name="email">Email</string>
     <string name="status">Status</string>
     <string name="normal">Status: Good Condition</string>
+    <string name="add_fdt">Add FDT</string>
+    <string name="add_fat">Add FAT</string>
 
 
 </resources>
