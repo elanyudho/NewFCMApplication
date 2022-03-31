@@ -101,4 +101,7 @@ dependencies {
     // ArcBar Progress
     implementation "com.github.Marvel999:Arc-Progressbar-lib:$arcbar_version"
     implementation 'com.github.hadibtf:SemiCircleArcProgressBar:1.1.1'
+
+    //SwitchButton
+    implementation 'com.kyleduo.switchbutton:library:2.1.0'
 }

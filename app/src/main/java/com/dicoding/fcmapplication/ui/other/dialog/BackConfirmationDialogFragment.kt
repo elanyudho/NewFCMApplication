@@ -1,6 +1,5 @@
 package com.dicoding.fcmapplication.ui.other.dialog
 
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -8,23 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.dicoding.fcmapplication.data.pref.EncryptedPreferences
-import com.dicoding.fcmapplication.data.pref.Session
-import com.dicoding.fcmapplication.databinding.FragmentLogoutDialogBinding
-import com.dicoding.fcmapplication.ui.login.LoginActivity
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import com.dicoding.fcmapplication.databinding.FragmentBackConfirmationDialogBinding
 
-@AndroidEntryPoint
-class LogoutDialogFragment : DialogFragment() {
+class BackConfirmationDialogFragment : DialogFragment() {
 
-    @Inject
-    lateinit var session: Session
-
-    @Inject
-    lateinit var encryptedPreferences: EncryptedPreferences
-
-    private var _binding: FragmentLogoutDialogBinding? = null
+    private var _binding: FragmentBackConfirmationDialogBinding? = null
 
     private val binding
         get() = if (_binding == null) {
@@ -44,7 +31,7 @@ class LogoutDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLogoutDialogBinding.inflate(inflater, container, false)
+        _binding = FragmentBackConfirmationDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -54,16 +41,8 @@ class LogoutDialogFragment : DialogFragment() {
         binding.btnCancel.setOnClickListener { dismiss() }
 
         binding.btnYes.setOnClickListener {
-            session.isLogin = false
-            encryptedPreferences.clear()
-            startActivity(Intent(requireContext(), LoginActivity::class.java))
+            requireActivity().finish()
             dismiss()
         }
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
 }

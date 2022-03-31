@@ -18,6 +18,12 @@
         android:theme="@style/Theme.FCMApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.other.adddata.addfat.AddFatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.other.adddata.addfdt.AddFdtActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.other.adddata.AddDataActivity"
             android:exported="false" />
         <activity

@@ -7,10 +7,12 @@ import com.dicoding.core.abstraction.BaseFragmentBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.FragmentOtherBinding
+import com.dicoding.fcmapplication.ui.other.adddata.AddDataActivity
 import com.dicoding.fcmapplication.ui.other.companyprofile.CompanyProfileActivity
 import com.dicoding.fcmapplication.ui.other.dialog.LogoutDialogFragment
 import com.dicoding.fcmapplication.ui.other.repairlist.RepairListActivity
 import com.dicoding.fcmapplication.utils.extensions.invisible
+import com.dicoding.fcmapplication.utils.extensions.visible
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -27,6 +29,16 @@ class OtherFragment : BaseFragmentBinding<FragmentOtherBinding>() {
 
     override fun setupView() {
         callOnceWhenCreated {
+
+            if (session.user?.isAdmin == true){
+                if (session.user?.isCenterAdmin == true){
+                    // TODO: add logic
+                }
+                else{
+                    binding.rowAddFdtFat.visible()
+                }
+            }
+
             with(binding) {
                 headerOther.btnBack.invisible()
                 headerOther.tvTitleHeader.text = getString(R.string.others)
@@ -41,7 +53,9 @@ class OtherFragment : BaseFragmentBinding<FragmentOtherBinding>() {
                     startActivity(Intent(requireContext(), RepairListActivity::class.java))
                 }
 
-                rowAddFdtFat.setOnClickListener {  }
+                rowAddFdtFat.setOnClickListener {
+                    startActivity(Intent(requireContext(), AddDataActivity::class.java))
+                }
 
                 rowRegionAdmin.setOnClickListener {  }
 

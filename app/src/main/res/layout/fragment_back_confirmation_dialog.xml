@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     app:cardCornerRadius="16dp"
     app:cardBackgroundColor="@color/blue_dim"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.other.dialog.LogoutDialogFragment">
+    tools:context=".ui.other.dialog.BackConfirmationDialogFragment">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -22,7 +22,7 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:fontFamily="@font/inter_regular"
-            android:text="@string/are_you_sure_want_to_exit"
+            android:text="@string/back_confirmation"
             android:textColor="@color/blue_lochmara"
             android:textSize="16sp" />
 
@@ -76,4 +76,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
+
 </com.google.android.material.card.MaterialCardView>
