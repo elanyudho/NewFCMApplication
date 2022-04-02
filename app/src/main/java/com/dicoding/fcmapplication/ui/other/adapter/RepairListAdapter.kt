@@ -54,6 +54,7 @@ class RepairListAdapter : BaseRecyclerViewAdapter<RepairListAdapter.RepairListVi
         override fun bind(data: Repair) {
             with(binding) {
                 tvDeviceName.text = data.deviceName
+                valueIndicator = setIndicatorValue(data.deviceCoreTotal!!, data.deviceCoreUsed!!)
                 if (data.deviceIsService == true) {
                     imageIsService.visible()
                     tvTagCondition.setText(R.string.need_service)
@@ -83,5 +84,10 @@ class RepairListAdapter : BaseRecyclerViewAdapter<RepairListAdapter.RepairListVi
 
     fun setOnClickData(onClick: (data: Repair) -> Unit) {
         this.onClick = onClick
+    }
+
+    private fun setIndicatorValue(total: String, used: String): Int {
+        val totalCoreInDouble = used.toDouble() / total.toDouble() * 100
+        return totalCoreInDouble.toInt()
     }
 }

@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
@@ -34,14 +32,14 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
     @Inject
     lateinit var session: Session
 
-    private val horizontalAdapter: CoveredAdapter by lazy { CoveredAdapter() }
+    private val coveredAdapter: CoveredAdapter by lazy { CoveredAdapter() }
 
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
     private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
     private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim)}
     private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim)}
 
-    private lateinit var uuid: String
+    private lateinit var fdtName: String
 
     private var clicked = false
 
@@ -49,11 +47,11 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
         get() = { ActivityFdtDetailBinding.inflate(layoutInflater) }
 
     override fun setupView() {
-        uuid = intent.getStringExtra(EXTRA_DETAIL_FDT) ?: ""
+        fdtName = intent.getStringExtra(EXTRA_DETAIL_FDT) ?: ""
 
         with(mViewModel) {
             uiState.observe(this@FdtDetailActivity, this@FdtDetailActivity)
-            getFdtDetail(uuid)
+            getFdtDetail(fdtName)
         }
 
         binding.headerFdtDetail.btnBack.setOnClickListener { onBackPressed() }
@@ -81,7 +79,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
 
                 initFdtDetailView(state.data)
 
-                horizontalAdapter.submitList(state.data.fatCoveredList)
+                coveredAdapter.submitList(state.data.fatCoveredList)
                 setFdtActions()
 
                 val dataFat = arrayListOf<FdtDetail.FatList>()
@@ -143,10 +141,10 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
 
     private fun setFdtActions() {
         with(binding.rvFatCovered) {
-            adapter = horizontalAdapter
+            adapter = coveredAdapter
             setHasFixedSize(true)
 
-            horizontalAdapter.setOnClickData {
+            coveredAdapter.setOnClickData {
                 val intent = Intent(this@FdtDetailActivity, FatDetailActivity::class.java)
                 intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.fatName)
                 startActivity(intent)
