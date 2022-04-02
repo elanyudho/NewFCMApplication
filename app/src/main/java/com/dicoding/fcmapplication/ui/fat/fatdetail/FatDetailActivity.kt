@@ -52,14 +52,6 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
         binding.headerFatDetail.tvTitleHeader.text = getString(R.string.fat_profile)
         binding.headerFatDetail.btnBack.setOnClickListener { onBackPressed() }
 
-        if (session.user?.isAdmin == true){
-            binding.fabMenu.visible()
-            enable(binding.fabMenu)
-        }else{
-            binding.fabMenu.invisible()
-            disable(binding.fabMenu)
-        }
-
         with(binding){
             fabMenu.setOnClickListener {
                 onAddButtonClicked()
@@ -86,7 +78,24 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
 
             }
             is FatDetailViewModel.FatDetailUiState.LoadingFatDetail -> {
-
+                if(state.isLoading) {
+                    with(binding){
+                        cvLottieLoading.visible()
+                        viewFatDetail.gone()
+                    }
+                }else {
+                    with(binding){
+                        cvLottieLoading.gone()
+                        viewFatDetail.visible()
+                        if (session.user?.isAdmin == true){
+                            binding.fabMenu.visible()
+                            enable(binding.fabMenu)
+                        }else{
+                            binding.fabMenu.invisible()
+                            disable(binding.fabMenu)
+                        }
+                    }
+                }
             }
             is FatDetailViewModel.FatDetailUiState.FailedLoadFatDetail -> {
                 state.failure.throwable.printStackTrace()

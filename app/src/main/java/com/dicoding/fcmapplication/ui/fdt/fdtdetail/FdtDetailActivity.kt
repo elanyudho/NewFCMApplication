@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
@@ -56,13 +59,6 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
         binding.headerFdtDetail.btnBack.setOnClickListener { onBackPressed() }
         binding.headerFdtDetail.tvTitleHeader.text = getString(R.string.fdt_profile)
 
-        if (session.user?.isAdmin == true){
-            binding.fabMenu.visible()
-            enable(binding.fabMenu)
-        }else{
-            binding.fabMenu.gone()
-            disable(binding.fabMenu)
-        }
 
         with(binding){
             fabMenu.setOnClickListener {
@@ -78,6 +74,8 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
     }
 
     override fun onChanged(state: FdtDetailViewModel.FdtDetailUiState?) {
+        val rowFatLoss = binding.rowFatLoss.layoutParams as ConstraintLayout.LayoutParams
+
         when (state) {
             is FdtDetailViewModel.FdtDetailUiState.FdtDetailLoaded -> {
 
@@ -90,31 +88,51 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
 
                 if (state.data.fatCoveredList.isEmpty()){
                     with(binding){
-                        rvFatCovered.invisible()
-                        imageNoFatCovered.visible()
-                        tvNoFatCovered.visible()
+                        rowFatLoss.topToBottom = tvNoFatCovered.id
+                        rowFatLoss.topMargin = 24.dp
+                        rvFatCovered.gone()
+                        grpEmptyFatCoveredView.visible()
                     }
                 }else{
-                    binding.rvFatCovered.visible()
-                    binding.imageNoFatCovered.gone()
-                    binding.tvNoFatCovered.gone()
-                    dataFat.addAll(state.data.fatCoveredList)
-                    binding.rowFatCovered.setOnClickListener {
-                        val intent = Intent(this@FdtDetailActivity, MoreFatCoveredActivity::class.java)
-                        intent.putParcelableArrayListExtra(MoreFatCoveredActivity.EXTRA_FAT_COVERED, dataFat)
-                        startActivity(intent)
+                    with(binding) {
+                        rowFatLoss.topToBottom = rvFatCovered.id
+                        rowFatLoss.topMargin = 8.dp
+                        rvFatCovered.visible()
+                        grpEmptyFatCoveredView.gone()
+
+                        dataFat.addAll(state.data.fatCoveredList)
+                        rowFatCovered.setOnClickListener {
+                            val intent = Intent(this@FdtDetailActivity, MoreFatCoveredActivity::class.java)
+                            intent.putParcelableArrayListExtra(MoreFatCoveredActivity.EXTRA_FAT_COVERED, dataFat)
+                            startActivity(intent)
+                        }
                     }
                 }
 
-                with(binding){
-                    viewFdtDetail.visible()
-                    cvLottieLoading.gone()
-                }
+
 
             }
             is FdtDetailViewModel.FdtDetailUiState.LoadingFdtDetail -> {
-
-
+                if (state.isLoading){
+                    with(binding){
+                        viewFdtDetail.gone()
+                        cvLottieLoading.visible()
+                        fabMenu.invisible()
+                        disable(binding.fabMenu)
+                    }
+                }else{
+                    with(binding){
+                        viewFdtDetail.visible()
+                        cvLottieLoading.gone()
+                        if (session.user?.isAdmin == true){
+                            binding.fabMenu.visible()
+                            enable(binding.fabMenu)
+                        }else{
+                            binding.fabMenu.invisible()
+                            disable(binding.fabMenu)
+                        }
+                    }
+                }
             }
             is FdtDetailViewModel.FdtDetailUiState.FailedLoadFdtDetail -> {
                 state.failure.throwable.printStackTrace()
@@ -144,13 +162,9 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             tvCoreTotal.text = obj.fdtCore
             tvBackup.text = obj.fdtCoreRemaining
             tvCoreUsed.text = obj.fdtCoreUsed
-            tvFatLossNumber.text = obj.fdtLoss
-            tvFatNumber.text = obj.fdtCoveredFat
-            tvRepairNotes.text = if(obj.fdtNote == null){
-                "No note"
-            }else{
-                obj.fdtNote
-            }
+            tvFatLossNumber.text = obj.fdtLoss + " db"
+            tvFatNumber.text = obj.fdtCoveredFat + " FAT Covered"
+            tvRepairNotes.text = obj.fdtNote
             if (obj.fdtIsService == true){
                 icRepair.visible()
             }else {

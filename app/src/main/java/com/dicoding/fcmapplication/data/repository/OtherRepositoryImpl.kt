@@ -5,6 +5,7 @@ import com.dicoding.core.vo.Either
 import com.dicoding.fcmapplication.data.remote.mapper.CompanyProfileMapper
 import com.dicoding.fcmapplication.data.remote.source.RemoteDataSource
 import com.dicoding.fcmapplication.domain.model.CompanyProfile
+import com.dicoding.fcmapplication.domain.model.PostFDT
 import com.dicoding.fcmapplication.domain.repository.OtherRepository
 import timber.log.Timber
 import javax.inject.Inject
@@ -19,6 +20,18 @@ class OtherRepositoryImpl @Inject constructor(
             is Either.Success -> {
                 val companyProfile = companyProfileMapper.mapToDomain(response.body)
                 Either.Success(companyProfile)
+            }
+            is Either.Error -> {
+                Timber.e(response.failure.throwable.message.toString())
+                Either.Error(response.failure)
+            }
+        }
+    }
+
+    override suspend fun postFdtData(postFDT: PostFDT): Either<Failure, Nothing?> {
+        return when(val response = remoteDataSource.postFdtData(postFDT)) {
+            is Either.Success -> {
+                Either.Success(null)
             }
             is Either.Error -> {
                 Timber.e(response.failure.throwable.message.toString())

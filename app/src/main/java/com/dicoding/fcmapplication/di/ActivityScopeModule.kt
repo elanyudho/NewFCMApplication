@@ -25,6 +25,7 @@ import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListNoPageUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtSearchResultUseCase
 import com.dicoding.fcmapplication.domain.usecase.other.GetCompanyProfileUseCase
+import com.dicoding.fcmapplication.domain.usecase.other.PostFdtDataUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -160,4 +161,8 @@ object UseCaseModule {
     @Provides
     @ActivityScoped
     fun provideFatListNoPageUseCase(repository: FatRepository) = GetFatListNoPageUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun providePostFdtDataUseCase(repository: OtherRepository) = PostFdtDataUseCase(repository)
 }

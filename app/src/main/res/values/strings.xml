@@ -75,6 +75,8 @@
     <string name="repair_note">Repair Note</string>
     <string name="hint_fdt_repair_note">Contains repair notes or other notes about FDT</string>
     <string name="save">Save</string>
+    <string name="ex_loss">Ex: 1 (db)</string>
+    <string name="success_post_fdt">New FDT added successfully</string>
 
 
 </resources>

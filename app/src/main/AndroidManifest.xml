@@ -19,12 +19,15 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.other.adddata.addfat.AddFatActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.other.adddata.addfdt.AddFdtActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.other.adddata.AddDataActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.register.RegisterActivity"

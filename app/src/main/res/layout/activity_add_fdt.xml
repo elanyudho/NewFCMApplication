@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,9 +12,40 @@
         android:id="@+id/headerAddData"
         layout="@layout/header_app" />
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvLottieLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:cardElevation="2dp"
+        app:rippleColor="@android:color/transparent"
+        android:clickable="true"
+        android:backgroundTint="@color/black_transparent"
+        android:elevation="@dimen/mapbox_internalMinSpan23"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="ic_loading.json"
+            app:lottie_loop="true" />
+
+    </com.google.android.material.card.MaterialCardView>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerAddData">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,11 +55,11 @@
                 android:id="@+id/materialTextView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:fontFamily="@font/inter_medium"
                 android:text="@string/fdt_name"
                 android:textColor="@color/blue_lochmara"
                 android:textSize="16sp"
-                android:layout_marginTop="24dp"
                 app:layout_constraintStart_toStartOf="@+id/etFdtName"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,13 +72,13 @@
                 android:background="@drawable/bg_field"
                 android:fontFamily="@font/inter_regular"
                 android:hint="@string/ex_fdt_name"
+                android:importantForAutofill="no"
                 android:inputType="text"
+                android:maxLines="1"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/dark_grey"
                 android:textSize="14sp"
-                android:maxLines="1"
-                android:importantForAutofill="no"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView2" />
@@ -73,13 +104,13 @@
                 android:background="@drawable/bg_field"
                 android:fontFamily="@font/inter_regular"
                 android:hint="@string/ex_number_core"
+                android:importantForAutofill="no"
                 android:inputType="number"
+                android:maxLines="1"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/dark_grey"
                 android:textSize="14sp"
-                android:maxLines="1"
-                android:importantForAutofill="no"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView3" />
@@ -105,13 +136,13 @@
                 android:background="@drawable/bg_field"
                 android:fontFamily="@font/inter_regular"
                 android:hint="@string/ex_number_core"
+                android:importantForAutofill="no"
                 android:inputType="number"
+                android:maxLines="1"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/dark_grey"
                 android:textSize="14sp"
-                android:maxLines="1"
-                android:importantForAutofill="no"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView4" />
@@ -137,13 +168,13 @@
                 android:background="@drawable/bg_field"
                 android:fontFamily="@font/inter_regular"
                 android:hint="@string/ex_number_core"
+                android:importantForAutofill="no"
                 android:inputType="number"
+                android:maxLines="1"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/dark_grey"
                 android:textSize="14sp"
-                android:maxLines="1"
-                android:importantForAutofill="no"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView5" />
@@ -153,7 +184,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
-                app:constraint_referenced_ids="etCoveredFdt, materialTextView6"/>
+                app:constraint_referenced_ids="etCoveredFdt, materialTextView6" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/materialTextView6"
@@ -171,9 +202,9 @@
                 android:id="@+id/etCoveredFdt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
                 android:background="@drawable/bg_field"
                 android:drawableEnd="@drawable/ic_arrow_drop_down"
-                android:layout_marginHorizontal="24dp"
                 android:editable="false"
                 android:fontFamily="@font/inter_regular"
                 android:hint="@string/choose_fat"
@@ -189,15 +220,47 @@
                 android:id="@+id/rvFatSelect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
+                android:orientation="horizontal"
                 android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etCoveredFdt"
                 tools:listitem="@layout/item_fat_select" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="Fdt Loss"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/etLoss"
+                app:layout_constraintTop_toBottomOf="@+id/rvFatSelect" />
+
+            <EditText
+                android:id="@+id/etLoss"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/bg_field"
+                android:fontFamily="@font/inter_regular"
+                android:hint="@string/ex_loss"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView11" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/materialTextView7"
@@ -209,7 +272,7 @@
                 android:textColor="@color/blue_lochmara"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/etLocation"
-                app:layout_constraintTop_toBottomOf="@+id/rvFatSelect" />
+                app:layout_constraintTop_toBottomOf="@+id/etLoss" />
 
             <EditText
                 android:id="@+id/etLocation"
@@ -220,13 +283,13 @@
                 android:background="@drawable/bg_field"
                 android:fontFamily="@font/inter_regular"
                 android:hint="@string/ex_location"
+                android:importantForAutofill="no"
                 android:inputType="text"
+                android:maxLines="1"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/dark_grey"
                 android:textSize="14sp"
-                android:maxLines="1"
-                android:importantForAutofill="no"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView7" />
@@ -283,9 +346,9 @@
                 android:layout_marginTop="8dp"
                 android:checked="false"
                 app:kswBackDrawable="@drawable/bg_repair_status"
+                app:kswTextOff="       "
                 app:kswThumbColor="@color/white"
                 app:kswThumbMargin="3dp"
-                app:kswTextOff="       "
                 app:layout_constraintStart_toStartOf="@+id/materialTextView9"
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView9" />
 
@@ -344,4 +407,4 @@
 
     </ScrollView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

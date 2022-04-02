@@ -20,7 +20,6 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         android:backgroundTint="@color/black_transparent"
-        app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +41,7 @@
         android:id="@+id/viewFdtDetail"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -284,32 +283,37 @@
                 tools:itemCount="5"
                 tools:listitem="@layout/item_device_linear_layout" />
 
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/grpEmptyFatCoveredView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="imageNoFatCovered, tvNoFatCovered"/>
+
             <ImageView
                 android:id="@+id/imageNoFatCovered"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
                 android:src="@drawable/ic_not_found"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/tvNoFatCovered"
                 app:layout_constraintEnd_toEndOf="@+id/rowFatCovered"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/rowFatCovered"
-                app:layout_constraintTop_toBottomOf="@+id/rowFatCovered" />
+                app:layout_constraintTop_toBottomOf="@+id/rowFatCovered"
+                app:layout_constraintVertical_bias="0.449" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvNoFatCovered"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/inter_semi_bold"
                 android:text="@string/no_fat_covered"
                 android:textColor="@color/blue_lochmara"
                 android:textSize="16sp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/rowFatLoss"
-                app:layout_constraintEnd_toEndOf="@+id/rowFatCovered"
-                app:layout_constraintStart_toStartOf="@+id/rowFatCovered" />
+                app:layout_constraintEnd_toEndOf="@+id/imageNoFatCovered"
+                app:layout_constraintStart_toStartOf="@+id/imageNoFatCovered"
+                app:layout_constraintTop_toBottomOf="@+id/imageNoFatCovered" />
 
             <LinearLayout
                 android:id="@+id/rowFatCovered"
@@ -338,7 +342,7 @@
                     app:strokeColor="@color/blue_lochmara"
                     app:strokeWidth="2dp">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -348,6 +352,7 @@
                             android:id="@+id/tvFatNumber"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
                             android:layout_gravity="center"
                             android:layout_marginStart="16dp"
                             android:fontFamily="@font/inter_semi_bold"
@@ -358,10 +363,11 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
+                            android:layout_alignParentRight="true"
                             android:layout_marginEnd="8dp"
                             android:src="@drawable/ic_chevron_right_blue" />
 
-                    </LinearLayout>
+                    </RelativeLayout>
 
                     <TextView
                         android:layout_width="0dp"
@@ -440,7 +446,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="24dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"

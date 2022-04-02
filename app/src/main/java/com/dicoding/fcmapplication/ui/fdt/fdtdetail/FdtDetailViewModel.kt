@@ -29,14 +29,14 @@ class FdtDetailViewModel @Inject constructor(
             fdtDetailUseCase.run(uuid)
                 .onSuccess {
                     withContext(dispatcherProvider.main) {
-                        _uiState.value = FdtDetailUiState.FdtDetailLoaded(it)
                         _uiState.value = FdtDetailUiState.LoadingFdtDetail(false)
+                        _uiState.value = FdtDetailUiState.FdtDetailLoaded(it)
                     }
                 }
                 .onError {
                     withContext(dispatcherProvider.main) {
-                        _uiState.value = FdtDetailUiState.FailedLoadFdtDetail(it)
                         _uiState.value = FdtDetailUiState.LoadingFdtDetail(false)
+                        _uiState.value = FdtDetailUiState.FailedLoadFdtDetail(it)
                     }
                 }
         }
