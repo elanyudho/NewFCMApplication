@@ -1,6 +1,7 @@
 package com.dicoding.fcmapplication.data.remote.service
 
 import com.dicoding.fcmapplication.data.remote.response.*
+import com.dicoding.fcmapplication.domain.model.PostFAT
 import com.dicoding.fcmapplication.domain.model.PostFDT
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -65,4 +66,8 @@ interface ApiService {
     @JvmSuppressWildcards
     @POST("fdts")
     suspend fun postFDTData(@Body postFdt: PostFDT): Response<PostFdtResponse>
+
+    @JvmSuppressWildcards
+    @POST("fats")
+    suspend fun postFATData(@Body postFat: PostFAT): Response<PostFatResponse>
 }

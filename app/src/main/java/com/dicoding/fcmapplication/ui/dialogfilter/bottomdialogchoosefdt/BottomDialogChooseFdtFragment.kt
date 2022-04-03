@@ -1,25 +1,25 @@
-package com.dicoding.fcmapplication.ui.dialogfilter
+package com.dicoding.fcmapplication.ui.dialogfilter.bottomdialogchoosefdt
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.dicoding.core.abstraction.BaseBottomDialogBinding
 import com.dicoding.fcmapplication.R
-import com.dicoding.fcmapplication.databinding.BottomFilterListBinding
+import com.dicoding.fcmapplication.databinding.FragmentBottomDialogChooseFdtBinding
 import com.dicoding.fcmapplication.domain.model.Region
+import com.dicoding.fcmapplication.ui.dialogfilter.adapter.FilterBottomDialogAdapter
 import com.dicoding.fcmapplication.utils.customview.recyclerview.MarginItemDecoration
 import com.dicoding.fcmapplication.utils.extensions.dp
 
-
-class BottomDialogRegionFragment : BaseBottomDialogBinding<BottomFilterListBinding>() {
+class BottomDialogChooseFdtFragment : BaseBottomDialogBinding<FragmentBottomDialogChooseFdtBinding>() {
 
     private val adapter : FilterBottomDialogAdapter by lazy { FilterBottomDialogAdapter() }
     private var onClick :((String) -> Unit)? = null
 
     var title = ""
 
-    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> BottomFilterListBinding
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentBottomDialogChooseFdtBinding
         get() = {layoutInflater, viewGroup, b ->
-            BottomFilterListBinding.inflate(layoutInflater,viewGroup,b)
+            FragmentBottomDialogChooseFdtBinding.inflate(layoutInflater,viewGroup,b)
         }
 
     override fun setupView() {
@@ -46,8 +46,9 @@ class BottomDialogRegionFragment : BaseBottomDialogBinding<BottomFilterListBindi
     }
 
 
-    fun setTitleDialog(title:String){
+    private fun setTitleDialog(title:String){
         this.title = title
     }
+
 
 }

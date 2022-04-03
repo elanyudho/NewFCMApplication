@@ -22,19 +22,49 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/materialTextView2"
+                android:id="@+id/materialTextView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/inter_medium"
-                android:text="Fat Name"
+                android:text="@string/choose_fdt"
                 android:textColor="@color/blue_lochmara"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@+id/etFdtName"
+                app:layout_constraintStart_toStartOf="@+id/etChooseFdt"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/etFdtName"
+                android:id="@+id/etChooseFdt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:background="@drawable/bg_field"
+                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                android:editable="false"
+                android:fontFamily="@font/inter_regular"
+                android:hint="@string/choose_fdt"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView6" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="Fat Name"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/etFatName"
+                app:layout_constraintTop_toBottomOf="@id/etChooseFdt" />
+
+            <EditText
+                android:id="@+id/etFatName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -63,7 +93,7 @@
                 android:textColor="@color/blue_lochmara"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/etTotalCore"
-                app:layout_constraintTop_toBottomOf="@+id/etFdtName" />
+                app:layout_constraintTop_toBottomOf="@+id/etFatName" />
 
             <EditText
                 android:id="@+id/etTotalCore"
@@ -150,48 +180,68 @@
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView5" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/materialTextView6"
+                android:id="@+id/materialTextView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/inter_medium"
-                android:text="@string/covered_fat"
+                android:text="Fat Loss"
                 android:textColor="@color/blue_lochmara"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@+id/etCoveredFat"
+                app:layout_constraintStart_toStartOf="@+id/etLoss"
                 app:layout_constraintTop_toBottomOf="@+id/etCoreBackup" />
 
             <EditText
-                android:id="@+id/etCoveredFat"
+                android:id="@+id/etLoss"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
                 android:background="@drawable/bg_field"
-                android:drawableEnd="@drawable/ic_arrow_drop_down"
-                android:editable="false"
                 android:fontFamily="@font/inter_regular"
-                android:hint="@string/choose_fat"
+                android:hint="@string/ex_loss"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLines="1"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/dark_grey"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/materialTextView6" />
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView11" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvFatSelect"
-                android:layout_width="match_parent"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="Covered Home"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/etCoveredHome"
+                app:layout_constraintTop_toBottomOf="@+id/etLoss" />
+
+            <EditText
+                android:id="@+id/etCoveredHome"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/bg_field"
+                android:fontFamily="@font/inter_regular"
+                android:hint="@string/ex_loss"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etCoveredFat"
-                tools:listitem="@layout/item_fat_select" />
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView12" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/materialTextView7"
@@ -203,7 +253,7 @@
                 android:textColor="@color/blue_lochmara"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/etLocation"
-                app:layout_constraintTop_toBottomOf="@+id/rvFatSelect" />
+                app:layout_constraintTop_toBottomOf="@+id/etCoveredHome" />
 
             <EditText
                 android:id="@+id/etLocation"
@@ -304,7 +354,7 @@
                 android:background="@drawable/bg_field"
                 android:fontFamily="@font/inter_regular"
                 android:gravity="start|top"
-                android:hint="@string/hint_fdt_repair_note"
+                android:hint="@string/hint_fat_repair_note"
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine"
                 android:padding="12dp"

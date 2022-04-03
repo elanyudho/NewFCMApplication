@@ -1,4 +1,4 @@
-package com.dicoding.fcmapplication.ui.dialogfilter
+package com.dicoding.fcmapplication.ui.dialogfilter.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

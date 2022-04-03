@@ -25,6 +25,7 @@ import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListNoPageUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtSearchResultUseCase
 import com.dicoding.fcmapplication.domain.usecase.other.GetCompanyProfileUseCase
+import com.dicoding.fcmapplication.domain.usecase.other.PostFatDataUseCase
 import com.dicoding.fcmapplication.domain.usecase.other.PostFdtDataUseCase
 import dagger.Binds
 import dagger.Module
@@ -74,6 +75,10 @@ object MapperModule {
     @Provides
     @ActivityScoped
     fun provideRegionListMapper() = RegionListMapper()
+
+    @Provides
+    @ActivityScoped
+    fun provideFdtToAddMapper() = ChooseFdtMapper()
 
 
 }
@@ -165,4 +170,9 @@ object UseCaseModule {
     @Provides
     @ActivityScoped
     fun providePostFdtDataUseCase(repository: OtherRepository) = PostFdtDataUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun providePostFatDataUseCase(repository: OtherRepository) = PostFatDataUseCase(repository)
+
 }

@@ -51,7 +51,6 @@ class RegisterViewModel @Inject constructor(
     fun getRegionList() {
         _uiState.value = RegisterUiState.Loading
         viewModelScope.launch (dispatcherProvider.io) {
-
             regionListUseCase.run(UseCase.None)
                 .onSuccess {
                     withContext(dispatcherProvider.main) {

@@ -2,9 +2,8 @@ package com.dicoding.fcmapplication.domain.repository
 
 import com.dicoding.core.exception.Failure
 import com.dicoding.core.vo.Either
-import com.dicoding.fcmapplication.domain.model.CompanyProfile
-import com.dicoding.fcmapplication.domain.model.PostFDT
-import com.dicoding.fcmapplication.domain.model.Repair
+import com.dicoding.fcmapplication.domain.model.*
+import kotlinx.coroutines.flow.Flow
 
 interface OtherRepository {
 
@@ -12,4 +11,9 @@ interface OtherRepository {
 
     suspend fun postFdtData(postFDT: PostFDT): Either<Failure, Nothing?>
 
+    suspend fun postFatData(postFAT: PostFAT): Either<Failure, Nothing?>
+
+    suspend fun chooseFdt(queries: Map<String, String>): Either<Failure, List<FdtToAdd>>
 }
+
+

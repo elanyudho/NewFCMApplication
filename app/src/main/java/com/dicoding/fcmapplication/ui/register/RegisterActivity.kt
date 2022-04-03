@@ -9,7 +9,7 @@ import com.dicoding.core.vo.RequestResults
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.ActivityRegisterBinding
 import com.dicoding.fcmapplication.domain.model.Region
-import com.dicoding.fcmapplication.ui.dialogfilter.BottomDialogRegionFragment
+import com.dicoding.fcmapplication.ui.dialogfilter.bottomdialogregion.BottomDialogRegionFragment
 import com.dicoding.fcmapplication.ui.login.LoginActivity
 import com.dicoding.fcmapplication.utils.extensions.*
 import com.shashank.sony.fancytoastlib.FancyToast
