@@ -1,22 +1,29 @@
 package com.dicoding.fcmapplication.ui.other.adddata.addfat
 
 import android.app.DatePickerDialog
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
+import com.dicoding.core.exception.Failure
+import com.dicoding.core.vo.RequestResults
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.ActivityAddFatBinding
-import com.dicoding.fcmapplication.databinding.ActivityAddFdtBinding
+import com.dicoding.fcmapplication.domain.model.FdtToAdd
 import com.dicoding.fcmapplication.domain.model.PostFAT
-import com.dicoding.fcmapplication.domain.model.PostFDT
+import com.dicoding.fcmapplication.ui.dialogfilter.bottomdialogchoosefdt.BottomDialogChooseFdtFragment
+import com.dicoding.fcmapplication.ui.dialogfilter.bottomdialogregion.BottomDialogRegionFragment
 import com.dicoding.fcmapplication.ui.other.dialog.BackConfirmationDialogFragment
+import com.dicoding.fcmapplication.utils.extensions.fancyToast
+import com.dicoding.fcmapplication.utils.extensions.gone
+import com.dicoding.fcmapplication.utils.extensions.visible
+import com.shashank.sony.fancytoastlib.FancyToast
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
     Observer<AddFatViewModel.AddFatUiState> {
 
@@ -32,6 +39,8 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
 
     private var isService = false
 
+    private var idFdtToAdd: String = ""
+
     override val bindingInflater: (LayoutInflater) -> ActivityAddFatBinding
         get() = { ActivityAddFatBinding.inflate(layoutInflater) }
 
@@ -44,10 +53,34 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
         binding.headerAddData.btnBack.setOnClickListener {
             doBackPage()
         }
+
+        binding.btnSwRepair.setOnCheckedChangeListener { _, isChecked ->
+            isService = isChecked
+        }
+
+        binding.etChooseFdt.setOnClickListener {
+            showChooseFdt()
+        }
+
+        binding.btnSave.setOnClickListener { doAddData(isService) }
     }
 
-    override fun onChanged(t: AddFatViewModel.AddFatUiState?) {
-        TODO("Not yet implemented")
+    override fun onChanged(state: AddFatViewModel.AddFatUiState?) {
+        when(state){
+            is AddFatViewModel.AddFatUiState.SuccessPostFatData -> {
+                fancyToast(getString(R.string.success_post_fdt), FancyToast.SUCCESS)
+                onBackPressed()
+            }
+            is AddFatViewModel.AddFatUiState.Loading -> {
+                binding.cvLottieLoading.visible()
+                cursorIsNotVisible()
+            }
+            is AddFatViewModel.AddFatUiState.FailedLoadedOrTransaction -> {
+                binding.cvLottieLoading.gone()
+                cursorIsVisible()
+                handleFailure(state.failure)
+            }
+        }
     }
 
     private fun doAddData(isService: Boolean) {
@@ -81,11 +114,23 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
                 etActivationDate.error = "This field is required"
                 etActivationDate.requestFocus()
                 isEmpty = true
+            }else{
+                etActivationDate.error = null
+                etActivationDate.clearFocus()
+                isEmpty = false
             }
             if (etLoss.text.isNullOrEmpty()) {
                 etLoss.error = "This field is required"
                 etLoss.requestFocus()
                 isEmpty = true
+            }
+            if (etChooseFdt.text.isNullOrEmpty()) {
+                etChooseFdt.error = "This field is required"
+                etChooseFdt.requestFocus()
+                isEmpty = true
+            }else{
+                etChooseFdt.error = null
+                etChooseFdt.clearFocus()
             }
 
             //check everything is valid
@@ -108,7 +153,8 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
                         "None"
                     } else {
                         etRepairNote.text.toString()
-                    }
+                    },
+                    fdt = PostFAT.FDT(idFdtToAdd)
                 )
                 mViewModel.postFdtData(postFDT)
             }
@@ -146,7 +192,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
         with(binding) {
             isDefault = (etFatName.text.isNullOrEmpty() || etTotalCore.text.isNullOrEmpty() || etCoreUsed.text.isNullOrEmpty()
                     || etCoreBackup.text.isNullOrEmpty() || etLocation.text.isNullOrEmpty() || etActivationDate.text.isNullOrEmpty()
-                    || etLoss.text.isNullOrEmpty() || etRepairNote.text.isNullOrEmpty() || !isService)
+                    || etLoss.text.isNullOrEmpty() || etRepairNote.text.isNullOrEmpty() || !isService || etChooseFdt.text.isNullOrEmpty())
         }
         if (isDefault) {
             onBackPressed()
@@ -155,6 +201,68 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             dialogFragment.show(supportFragmentManager, "back_Confirmation")
         }
     }
+
+
+
+    private fun handleFailure(failure: Failure) {
+        if (failure.requestResults == RequestResults.NO_CONNECTION) {
+            fancyToast(getString(R.string.error_unstable_network), FancyToast.ERROR)
+        } else {
+            fancyToast(getString(R.string.error_unknown_error), FancyToast.ERROR)
+        }
+    }
+
+    private fun showChooseFdt() {
+        //init dialog
+        val bottomDialogChooseFdt = BottomDialogChooseFdtFragment()
+        bottomDialogChooseFdt.show(supportFragmentManager, BottomDialogChooseFdtFragment::class.java.simpleName)
+
+        bottomDialogChooseFdt.setOnClickItemListener(
+            titleDialog = getString(R.string.choose_fdt)
+        ) { data ->
+            //set region field
+            with(binding) {
+
+                binding.etChooseFdt.setText(data.fdtName)
+                idFdtToAdd = data.fdtId
+                if (etChooseFdt.text.isNullOrEmpty()) {
+                    etChooseFdt.error = "This field is required"
+                    etChooseFdt.requestFocus()
+                    isEmpty = true
+                }else{
+                    etChooseFdt.error = null
+                    etChooseFdt.clearFocus()
+                }
+            }
+            bottomDialogChooseFdt.dismiss()
+        }
+    }
+    private fun cursorIsVisible() {
+        with(binding) {
+            etFatName.isCursorVisible = true
+            etCoreUsed.isCursorVisible = true
+            etTotalCore.isCursorVisible = true
+            etLoss.isCursorVisible = true
+            etRepairNote.isCursorVisible = true
+            etLocation.isCursorVisible = true
+            etCoreBackup.isCursorVisible = true
+            etCoveredHome.isCursorVisible = true
+        }
+    }
+
+    private fun cursorIsNotVisible() {
+        with(binding) {
+            etFatName.isCursorVisible = false
+            etCoreUsed.isCursorVisible = false
+            etTotalCore.isCursorVisible = false
+            etLoss.isCursorVisible = false
+            etRepairNote.isCursorVisible = false
+            etLocation.isCursorVisible = false
+            etCoreBackup.isCursorVisible = false
+            etCoveredHome.isCursorVisible = false
+        }
+    }
+
 
 
 }

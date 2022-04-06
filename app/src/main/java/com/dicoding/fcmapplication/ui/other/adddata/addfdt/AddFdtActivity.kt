@@ -108,14 +108,14 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
                 etLocation.requestFocus()
                 isEmpty = true
             }
-            if (etActivationDate.text.isNullOrEmpty()) {
-                etActivationDate.error = "This field is required"
-                etActivationDate.requestFocus()
-                isEmpty = true
-            }
             if (etLoss.text.isNullOrEmpty()) {
                 etLoss.error = "This field is required"
                 etLoss.requestFocus()
+                isEmpty = true
+            }
+            if (etActivationDate.text.isNullOrEmpty()) {
+                etActivationDate.error = "This field is required"
+                etActivationDate.requestFocus()
                 isEmpty = true
             }
 
@@ -148,6 +148,14 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         val calFormat = "dd/MM/yyyy"
         val sdf = SimpleDateFormat(calFormat, Locale.UK)
         binding.etActivationDate.setText(sdf.format(calendar.time))
+        if (binding.etActivationDate.text.isNullOrEmpty()) {
+            binding.etActivationDate.error = "This field is required"
+            binding.etActivationDate.requestFocus()
+            isEmpty = true
+        }else{
+            binding.etActivationDate.error = null
+            binding.etActivationDate.clearFocus()
+        }
     }
 
     private fun getPurposeIntent() {

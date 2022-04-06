@@ -13,7 +13,7 @@ class GetChooseFdtListUseCase @Inject constructor(private val repository: OtherR
     override suspend fun run(params: String?): Either<Failure, List<FdtToAdd>> {
         val queries = HashMap<String, String>()
 
-        queries["_fdt_region_contains"] = params?: ""
+        queries["_fdt_name_contains"] = params?: ""
 
         return repository.chooseFdt(queries)
     }

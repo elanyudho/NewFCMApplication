@@ -78,6 +78,7 @@
     <string name="save">Save</string>
     <string name="ex_loss">Ex: 1 (db)</string>
     <string name="success_post_fdt">New FDT added successfully</string>
+    <string name="success_post_fat">New FDT added successfully</string>
     <string name="choose_fdt">Choose FDT</string>
 
 

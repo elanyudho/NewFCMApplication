@@ -12,6 +12,33 @@
         android:id="@+id/headerAddData"
         layout="@layout/header_app" />
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvLottieLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:cardElevation="2dp"
+        app:rippleColor="@android:color/transparent"
+        android:clickable="true"
+        android:backgroundTint="@color/black_transparent"
+        android:elevation="@dimen/mapbox_internalMinSpan23"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="ic_loading.json"
+            app:lottie_loop="true" />
+
+    </com.google.android.material.card.MaterialCardView>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -231,7 +258,7 @@
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/bg_field"
                 android:fontFamily="@font/inter_regular"
-                android:hint="@string/ex_loss"
+                android:hint="@string/ex_number_core"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:maxLines="1"

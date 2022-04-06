@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.ActivityAddDataBinding
+import com.dicoding.fcmapplication.ui.other.adddata.addfat.AddFatActivity
 import com.dicoding.fcmapplication.ui.other.adddata.addfdt.AddFdtActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +29,7 @@ class AddDataActivity : BaseActivityBinding<ActivityAddDataBinding>() {
                 startActivity(intent)
             }
             rowAddFat.setOnClickListener {
-
+                startActivity(Intent(this@AddDataActivity, AddFatActivity::class.java))
             }
         }
     }
