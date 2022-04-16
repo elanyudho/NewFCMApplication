@@ -15,4 +15,6 @@ interface FatRepository {
     suspend fun fatSearchResult(zone: String, fatName: String, page: String) : Either<Failure, List<Fat>>
 
     suspend fun fatListNoPage(queries: Map<String, String>) : Either<Failure, List<Fat>>
+
+    suspend fun deleteFatData(id: String): Either<Failure, Nothing?>
 }

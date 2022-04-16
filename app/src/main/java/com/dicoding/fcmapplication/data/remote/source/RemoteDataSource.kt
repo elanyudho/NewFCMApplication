@@ -91,4 +91,14 @@ class RemoteDataSource
         request{
             api.putFATData(id, putFAT)
         }
+
+    suspend fun deleteFdtData(id: String) : Either<Failure, PostFdtResponse> =
+        request {
+            api.deleteFdtData(id)
+        }
+
+    suspend fun deleteFatData(id: String) : Either<Failure, PostFatResponse> =
+        request {
+            api.deleteFatData(id)
+        }
 }

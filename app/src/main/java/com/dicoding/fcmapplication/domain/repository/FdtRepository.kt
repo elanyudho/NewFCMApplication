@@ -14,4 +14,7 @@ interface FdtRepository {
     suspend fun fdtSearchResult(zone: String, fdtName: String, page: String) : Either<Failure, List<Fdt>>
 
     suspend fun fdtListNoPage(queries: Map<String, String>) : Either<Failure, List<Fdt>>
+
+    suspend fun deleteFdtData(id: String): Either<Failure, Nothing?>
+
 }

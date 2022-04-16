@@ -67,4 +67,16 @@ class FatRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun deleteFatData(id: String): Either<Failure, Nothing?> {
+        return when(val response = remoteDataSource.deleteFatData(id)) {
+            is Either.Success -> {
+                Either.Success(null)
+            }
+            is Either.Error -> {
+                Timber.e(response.failure.throwable.message.toString())
+                Either.Error(response.failure)
+            }
+        }
+    }
 }

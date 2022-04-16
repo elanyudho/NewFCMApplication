@@ -68,7 +68,7 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                 startActivity(intent)
             }
             fabDelete.setOnClickListener {
-
+                mViewModel.deleteFdt(fatDetail?.fatId.toString())
             }
         }
 
@@ -87,7 +87,11 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                 }
 
             }
-            is FatDetailViewModel.FatDetailUiState.LoadingFatDetail -> {
+            is FatDetailViewModel.FatDetailUiState.SuccessDeleteFat -> {
+                fancyToast(getString(R.string.success_delete_fat), FancyToast.SUCCESS)
+                onBackPressed()
+            }
+            is FatDetailViewModel.FatDetailUiState.Loading -> {
                 if(state.isLoading) {
                     with(binding){
                         cvLottieLoading.visible()
@@ -107,7 +111,7 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                     }
                 }
             }
-            is FatDetailViewModel.FatDetailUiState.FailedLoadFatDetail -> {
+            is FatDetailViewModel.FatDetailUiState.Failed -> {
                 state.failure.throwable.printStackTrace()
                 fancyToast(getString(R.string.error_unknown_error), FancyToast.ERROR)
             }
@@ -124,7 +128,7 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
             tvCoreUsed.text = obj.fatCoreUsed
             tvFatLossNumber.text = obj.fatLoss
             tvHomeNumber.text = obj.fatCoveredHome
-            tvRepairNotes.text = obj.fatNote ?: "No note"
+            tvRepairNotes.text = if(obj.fatNote == null || obj.fatNote == "") "No note" else obj.fatNote
             if (obj.fatIsService == true) {
                 icRepair.visible()
             } else {

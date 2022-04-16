@@ -69,6 +69,18 @@ class FdtRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteFdtData(id: String): Either<Failure, Nothing?> {
+        return when(val response = remoteDataSource.deleteFdtData(id)) {
+            is Either.Success -> {
+                Either.Success(null)
+            }
+            is Either.Error -> {
+                Timber.e(response.failure.throwable.message.toString())
+                Either.Error(response.failure)
+            }
+        }
+    }
+
 
 }
 

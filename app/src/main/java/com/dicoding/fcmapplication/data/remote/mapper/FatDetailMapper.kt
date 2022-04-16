@@ -7,10 +7,13 @@ import com.dicoding.fcmapplication.domain.model.FatDetail
 class FatDetailMapper : BaseMapper<FatDetailResponse, FatDetail>
 {
     override fun mapToDomain(raw: FatDetailResponse): FatDetail {
-        val fdtBind = FatDetail.Fdt(
+
+        val fdtBind = if (raw.fdt == null) FatDetail.Fdt(
+            fdtId = "",
+            fdtName = ""
+        ) else FatDetail.Fdt(
             fdtId = raw.fdt.id.toString(),
-            fdtName = raw.fdt.fdtName
-        )
+            fdtName = raw.fdt.fdtName)
 
         return FatDetail(
             fatName = raw.fatName,

@@ -82,6 +82,8 @@
     <string name="ex_loss">Ex: 1 (db)</string>
     <string name="success_post_fdt">New FDT added successfully</string>
     <string name="success_post_fat">New FDT added successfully</string>
+    <string name="success_delete_fdt">FDT deleted successfully</string>
+    <string name="success_delete_fat">FAT deleted successfully</string>
     <string name="choose_fdt">Choose FDT</string>
 
 

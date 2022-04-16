@@ -74,7 +74,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                 startActivity(intent)
             }
             fabDelete.setOnClickListener {
-
+                mViewModel.deleteFdt(fdtDetail?.fdtId.toString())
             }
         }
     }
@@ -116,11 +116,12 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                         }
                     }
                 }
-
-
-
             }
-            is FdtDetailViewModel.FdtDetailUiState.LoadingFdtDetail -> {
+            is FdtDetailViewModel.FdtDetailUiState.SuccessDeleteFdt -> {
+                fancyToast(getString(R.string.success_delete_fdt), FancyToast.SUCCESS)
+                onBackPressed()
+            }
+            is FdtDetailViewModel.FdtDetailUiState.Loading -> {
                 if (state.isLoading){
                     with(binding){
                         viewFdtDetail.gone()
@@ -142,7 +143,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                     }
                 }
             }
-            is FdtDetailViewModel.FdtDetailUiState.FailedLoadFdtDetail -> {
+            is FdtDetailViewModel.FdtDetailUiState.Failed -> {
                 state.failure.throwable.printStackTrace()
                 fancyToast(getString(R.string.error_unknown_error), FancyToast.ERROR)
             }
@@ -172,7 +173,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             tvCoreUsed.text = obj.fdtCoreUsed
             tvFatLossNumber.text = obj.fdtLoss + " db"
             tvFatNumber.text = obj.fdtCoveredFat + " FAT Covered"
-            tvRepairNotes.text = obj.fdtNote ?: "No Note"
+            tvRepairNotes.text = if(obj.fdtNote == null || obj.fdtNote == "") "No note" else obj.fdtNote
             if (obj.fdtIsService == true){
                 icRepair.visible()
             }else {
