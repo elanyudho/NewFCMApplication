@@ -13,6 +13,7 @@ import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.ActivityFatDetailBinding
 import com.dicoding.fcmapplication.domain.model.FatDetail
 import com.dicoding.fcmapplication.ui.location.LocationActivity
+import com.dicoding.fcmapplication.ui.other.adddata.addfat.AddFatActivity
 import com.dicoding.fcmapplication.utils.extensions.*
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +33,8 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
     private lateinit var fatName: String
 
     private var clicked = false
+
+    private var fatDetail: FatDetail? = null
 
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
     private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
@@ -57,7 +60,12 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                 onAddButtonClicked()
             }
             fabEdit.setOnClickListener {
-
+                val intent = Intent(this@FatDetailActivity, AddFatActivity::class.java)
+                val extras = Bundle()
+                extras.putString(AddFatActivity.PURPOSE_OPEN, AddFatActivity.TO_EDIT)
+                extras.putParcelable(AddFatActivity.FAT_DETAIL, fatDetail)
+                intent.putExtras(extras)
+                startActivity(intent)
             }
             fabDelete.setOnClickListener {
 
@@ -70,6 +78,8 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
         when(state) {
             is FatDetailViewModel.FatDetailUiState.FatDetailLoaded -> {
                 initFdtDetailView(state.data)
+
+                fatDetail = state.data
 
                 with(binding){
                     cvLottieLoading.gone()
@@ -114,11 +124,7 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
             tvCoreUsed.text = obj.fatCoreUsed
             tvFatLossNumber.text = obj.fatLoss
             tvHomeNumber.text = obj.fatCoveredHome
-            tvRepairNotes.text = if(obj.fatNote == "null"){
-                "No note"
-            }else{
-                obj.fatNote
-            }
+            tvRepairNotes.text = obj.fatNote ?: "No note"
             if (obj.fatIsService == true) {
                 icRepair.visible()
             } else {

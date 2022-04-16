@@ -70,4 +70,12 @@ interface ApiService {
     @JvmSuppressWildcards
     @POST("fats")
     suspend fun postFATData(@Body postFat: PostFAT): Response<PostFatResponse>
+
+    @JvmSuppressWildcards
+    @PUT("fdts/{id}")
+    suspend fun putFDTData(@Path("id") id: String, @Body postFdt: PostFDT): Response<PostFdtResponse>
+
+    @JvmSuppressWildcards
+    @PUT("fats/{id}")
+    suspend fun putFATData(@Path("id") id: String, @Body postFat: PostFAT): Response<PostFatResponse>
 }

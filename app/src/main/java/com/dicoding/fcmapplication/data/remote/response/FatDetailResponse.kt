@@ -22,10 +22,19 @@ data class FatDetailResponse(
     val fatNote: String = "",
     @SerializedName("fat_region")
     val fatRegion: String = "",
+    @SerializedName("fdt")
+    val fdt: Fdt = Fdt(),
     @SerializedName("fat_total_core")
     val fatTotalCore: String = "",
     @SerializedName("home_covered")
     val fatHomeCovered: String = "",
     @SerializedName("id")
     val id: Int = 0
-)
+){
+    data class Fdt(
+        @SerializedName("fdt_name")
+        val fdtName: String = "",
+        @SerializedName("id")
+        val id: Int = 0
+    )
+}

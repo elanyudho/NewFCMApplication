@@ -81,4 +81,14 @@ class RemoteDataSource
         request{
             api.postFATData(postFAT)
         }
+
+    suspend fun putFdtData(id: String, putFDT: PostFDT) : Either<Failure, PostFdtResponse> =
+        request{
+            api.putFDTData(id, putFDT)
+        }
+
+    suspend fun putFatData(id: String, putFAT: PostFAT) : Either<Failure, PostFatResponse> =
+        request{
+            api.putFATData(id, putFAT)
+        }
 }

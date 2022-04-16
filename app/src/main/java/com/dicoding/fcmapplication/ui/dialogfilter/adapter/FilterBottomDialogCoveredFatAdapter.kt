@@ -8,12 +8,12 @@ import com.dicoding.fcmapplication.databinding.ItemFilterBottomDialogBinding
 import com.dicoding.fcmapplication.domain.model.FdtDetail
 import com.dicoding.fcmapplication.domain.model.FdtToAdd
 
-class FilterBottomDialogChooseFdtAdapter: BaseRecyclerViewAdapter<FilterBottomDialogChooseFdtAdapter.Holder>() {
+class FilterBottomDialogCoveredFatAdapter: BaseRecyclerViewAdapter<FilterBottomDialogCoveredFatAdapter.Holder>() {
 
-    private var listData = mutableListOf<FdtToAdd>()
-    private var onClick :((data: FdtToAdd) -> Unit)? = null
+    private var listData = mutableListOf<FdtDetail.FatList>()
+    private var onClick :((data: FdtDetail.FatList) -> Unit)? = null
 
-    fun submitList(newList : List<FdtToAdd>){
+    fun submitList(newList : List<FdtDetail.FatList>){
         listData.clear()
         listData.addAll(newList)
         notifyDataSetChanged()
@@ -28,16 +28,16 @@ class FilterBottomDialogChooseFdtAdapter: BaseRecyclerViewAdapter<FilterBottomDi
     }
 
     inner class Holder (itemView: ItemFilterBottomDialogBinding) :
-        BaseViewHolder<FdtToAdd, ItemFilterBottomDialogBinding>(itemView){
-        override fun bind(data: FdtToAdd) {
-            binding.tvArrayFilter.text = data.fdtName
+        BaseViewHolder<FdtDetail.FatList, ItemFilterBottomDialogBinding>(itemView){
+        override fun bind(data: FdtDetail.FatList) {
+            binding.tvArrayFilter.text = data.fatName
             binding.root.setOnClickListener {
                 onClick?.invoke(data)
             }
         }
     }
 
-    fun setOnClickItemListener(onClick: (data: FdtToAdd)  -> Unit){
+    fun setOnClickItemListener(onClick: (data: FdtDetail.FatList)  -> Unit){
         this.onClick = onClick
     }
     override fun getItemCount(): Int {

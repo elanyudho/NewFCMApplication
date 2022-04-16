@@ -17,6 +17,7 @@ import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
 import com.dicoding.fcmapplication.ui.fdt.adapter.CoveredAdapter
 import com.dicoding.fcmapplication.ui.fdt.more.MoreFatCoveredActivity
 import com.dicoding.fcmapplication.ui.location.LocationActivity
+import com.dicoding.fcmapplication.ui.other.adddata.addfdt.AddFdtActivity
 import com.dicoding.fcmapplication.utils.extensions.*
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +44,8 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
 
     private var clicked = false
 
+    private var fdtDetail: FdtDetail? = null
+
     override val bindingInflater: (LayoutInflater) -> ActivityFdtDetailBinding
         get() = { ActivityFdtDetailBinding.inflate(layoutInflater) }
 
@@ -63,7 +66,12 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                 onAddButtonClicked()
             }
             fabEdit.setOnClickListener {
-
+                val intent = Intent(this@FdtDetailActivity, AddFdtActivity::class.java)
+                val extras = Bundle()
+                extras.putString(AddFdtActivity.PURPOSE_OPEN, AddFdtActivity.TO_EDIT)
+                extras.putParcelable(AddFdtActivity.FDT_DETAIL, fdtDetail)
+                intent.putExtras(extras)
+                startActivity(intent)
             }
             fabDelete.setOnClickListener {
 
@@ -78,6 +86,8 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             is FdtDetailViewModel.FdtDetailUiState.FdtDetailLoaded -> {
 
                 initFdtDetailView(state.data)
+
+                fdtDetail = state.data
 
                 coveredAdapter.submitList(state.data.fatCoveredList)
                 setFdtActions()
@@ -162,7 +172,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             tvCoreUsed.text = obj.fdtCoreUsed
             tvFatLossNumber.text = obj.fdtLoss + " db"
             tvFatNumber.text = obj.fdtCoveredFat + " FAT Covered"
-            tvRepairNotes.text = obj.fdtNote
+            tvRepairNotes.text = obj.fdtNote ?: "No Note"
             if (obj.fdtIsService == true){
                 icRepair.visible()
             }else {

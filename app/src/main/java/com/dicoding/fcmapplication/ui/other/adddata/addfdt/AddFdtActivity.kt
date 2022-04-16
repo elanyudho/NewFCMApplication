@@ -9,7 +9,10 @@ import com.dicoding.core.vo.RequestResults
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.ActivityAddFdtBinding
+import com.dicoding.fcmapplication.domain.model.FdtDetail
 import com.dicoding.fcmapplication.domain.model.PostFDT
+import com.dicoding.fcmapplication.ui.dialogfilter.bottomdialogcoveredfat.BottomDialogCoveredFatFragment
+import com.dicoding.fcmapplication.ui.other.adapter.CoveredFatAdapter
 import com.dicoding.fcmapplication.ui.other.dialog.BackConfirmationDialogFragment
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
@@ -36,6 +39,14 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
 
     private var isService = false
 
+    private var fdtDetail: FdtDetail? = null
+
+    private var purposeOpen = ""
+
+    private val coveredFatAdapter : CoveredFatAdapter by lazy { CoveredFatAdapter() }
+
+    private var coveredFatList: List<FdtDetail.FatList> = mutableListOf()
+
     override val bindingInflater: (LayoutInflater) -> ActivityAddFdtBinding
         get() = { ActivityAddFdtBinding.inflate(layoutInflater) }
 
@@ -44,10 +55,15 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         mViewModel.uiState.observe(this, this)
 
         getPurposeIntent()
+        getFdtDetail()
+        fdtDetail?.let { setFdtDetailToField(it) }
 
         setDatePicker()
-
-        binding.headerAddData.tvTitleHeader.text = getString(R.string.add_fdt)
+        if(purposeOpen == TO_EDIT){
+            binding.headerAddData.tvTitleHeader.text = getString(R.string.edit_fdt)
+        }else{
+            binding.headerAddData.tvTitleHeader.text = getString(R.string.add_fdt)
+        }
         binding.headerAddData.btnBack.setOnClickListener {
             doBackPage()
         }
@@ -57,7 +73,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         }
 
         binding.btnSave.setOnClickListener {
-            doAddData(isService)
+            doAddData(isService, coveredFatList, fdtDetail?.fdtId.toString())
         }
 
 
@@ -65,15 +81,25 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
 
     override fun onChanged(state: AddFdtViewModel.AddFdtUiState?) {
         when (state) {
-            is AddFdtViewModel.AddFdtUiState.SuccessPostFdtData -> {
+            is AddFdtViewModel.AddFdtUiState.SuccessPostOrPutFdtData -> {
                 fancyToast(getString(R.string.success_post_fdt), FancyToast.SUCCESS)
                 onBackPressed()
             }
-            is AddFdtViewModel.AddFdtUiState.LoadingPostFdtData -> {
+            is AddFdtViewModel.AddFdtUiState.SuccessUpdateCoveredFatList -> {
+                if (purposeOpen == TO_EDIT){
+                    coveredFatAdapter.submitList(state.coveredFatList)
+                    coveredFatList = state.coveredFatList
+                    binding.etCoveredFdt.setOnClickListener {
+                        showCoveredFat(state.coveredFatList)
+                    }
+                    coveredFatAdapterActions(state.coveredFatList)
+                }
+            }
+            is AddFdtViewModel.AddFdtUiState.Loading -> {
                 binding.cvLottieLoading.visible()
                 cursorIsNotVisible()
             }
-            is AddFdtViewModel.AddFdtUiState.FailedPostFdtData -> {
+            is AddFdtViewModel.AddFdtUiState.FailedLoadedOrTransaction -> {
                 binding.cvLottieLoading.gone()
                 cursorIsVisible()
                 handleFailure(state.failure)
@@ -81,7 +107,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         }
     }
 
-    private fun doAddData(isService: Boolean) {
+    private fun doAddData(isService: Boolean, coveredFatList: List<FdtDetail.FatList> = emptyList(), fdtId: String = "") {
         with(binding) {
             if (etFdtName.text.isNullOrEmpty()) {
                 etFdtName.error = "This field is required"
@@ -123,25 +149,65 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
             if (isEmpty) {
                 return
             } else {
-                val postFDT = PostFDT(
-                    fdt_name = etFdtName.text.toString(),
-                    fdt_total_core = etTotalCore.text.toString(),
-                    fdt_core_used = etCoreUsed.text.toString(),
-                    fdt_backup_core = etCoreBackup.text.toString(),
-                    fdt_loss = etLoss.text.toString(),
-                    fdt_activated = etActivationDate.text.toString(),
-                    fdt_region = session.user?.region.toString(),
-                    fdt_in_repair = isService,
-                    fdt_location = etLocation.text.toString(),
-                    fdt_note = if (etRepairNote.text.isNullOrEmpty()) {
-                        "None"
-                    } else {
-                        etRepairNote.text.toString()
-                    }
-                )
-                mViewModel.postFdtData(postFDT)
+                if (purposeOpen == TO_EDIT){
+                    val postFDT = PostFDT(
+                        fdt_name = etFdtName.text.toString(),
+                        fdt_total_core = etTotalCore.text.toString(),
+                        fdt_core_used = etCoreUsed.text.toString(),
+                        fdt_backup_core = etCoreBackup.text.toString(),
+                        fdt_loss = etLoss.text.toString(),
+                        fdt_activated = etActivationDate.text.toString(),
+                        fdt_region = session.user?.region.toString(),
+                        fdt_in_repair = isService,
+                        fdt_location = etLocation.text.toString(),
+                        fdt_note = if (etRepairNote.text.isNullOrEmpty()) {
+                            "None"
+                        } else {
+                            etRepairNote.text.toString()
+                        },
+                        fat_covered_lists = coveredFatList.map { PostFDT.CoveredFAT(id = it.fatId.toString()) }
+                    )
+                    mViewModel.putFdtData(fdtId, postFDT)
+                } else {
+                    val postFDT = PostFDT(
+                        fdt_name = etFdtName.text.toString(),
+                        fdt_total_core = etTotalCore.text.toString(),
+                        fdt_core_used = etCoreUsed.text.toString(),
+                        fdt_backup_core = etCoreBackup.text.toString(),
+                        fdt_loss = etLoss.text.toString(),
+                        fdt_activated = etActivationDate.text.toString(),
+                        fdt_region = session.user?.region.toString(),
+                        fdt_in_repair = isService,
+                        fdt_location = etLocation.text.toString(),
+                        fdt_note = if (etRepairNote.text.isNullOrEmpty()) {
+                            "None"
+                        } else {
+                            etRepairNote.text.toString()
+                        }
+                    )
+                    mViewModel.postFdtData(postFDT)
+                }
             }
         }
+    }
+
+    private fun coveredFatAdapterActions(coveredFatList: List<FdtDetail.FatList>) {
+        val mutableList = coveredFatList.toMutableList()
+        with(binding.rvFatSelect) {
+            adapter = coveredFatAdapter
+            setHasFixedSize(true)
+
+            coveredFatAdapter.setOnDeleteSkill { deleteData ->
+                mutableList.remove(deleteData)
+                /*mutableList.map {
+                    if (it.fatId == deleteData.fatId && it.fatName == deleteData.fatName){
+                        mutableList.remove(it)
+                    }
+                }*/
+                mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(mutableList))
+            }
+        }
+
     }
 
     private fun setActivationDate(calendar: Calendar) {
@@ -159,18 +225,27 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
     }
 
     private fun getPurposeIntent() {
-        val purposeOpen = intent.getStringExtra(PURPOSE_OPEN)
+        purposeOpen = intent.extras?.getString(PURPOSE_OPEN) ?: ""
         if (purposeOpen == TO_ADD) {
+            purposeOpen = TO_ADD
             binding.grpCoveredFdt.gone()
         } else {
+            purposeOpen = TO_EDIT
             binding.grpCoveredFdt.visible()
+        }
+    }
+
+    private fun getFdtDetail() {
+        fdtDetail = intent.extras?.getParcelable(FDT_DETAIL)
+        fdtDetail?.fatCoveredList?.let {
+            mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(it))
         }
     }
 
     private fun setDatePicker() {
         val calendar = Calendar.getInstance()
 
-        val datePicker = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        val datePicker = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, month)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -225,7 +300,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         with(binding) {
             isDefault = (etFdtName.text.isNullOrEmpty() || etTotalCore.text.isNullOrEmpty() || etCoreUsed.text.isNullOrEmpty()
                     || etCoreBackup.text.isNullOrEmpty() || etLocation.text.isNullOrEmpty() || etActivationDate.text.isNullOrEmpty()
-                    || etLoss.text.isNullOrEmpty() || etRepairNote.text.isNullOrEmpty() || !isService)
+                    || etLoss.text.isNullOrEmpty() || !isService)
         }
         if (isDefault) {
             onBackPressed()
@@ -235,7 +310,39 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         }
     }
 
+    private fun setFdtDetailToField(fdtDetail: FdtDetail) {
+        with(binding) {
+            etFdtName.setText(fdtDetail.fdtName)
+            etTotalCore.setText(fdtDetail.fdtCore)
+            etCoreUsed.setText(fdtDetail.fdtCoreUsed)
+            etCoreBackup.setText(fdtDetail.fdtCoreRemaining)
+            etLocation.setText(fdtDetail.fdtLocation)
+            etLoss.setText(fdtDetail.fdtLoss)
+            etActivationDate.setText(fdtDetail.fdtActivationDate)
+            btnSwRepair.isChecked = fdtDetail.fdtIsService!!
+            etRepairNote.setText(fdtDetail.fdtNote)
+        }
+    }
+
+    private fun showCoveredFat(coveredFatList: List<FdtDetail.FatList>) {
+        //init dialog
+        val bottomDialogCoveredFat = BottomDialogCoveredFatFragment()
+        bottomDialogCoveredFat.show(supportFragmentManager, BottomDialogCoveredFatFragment::class.java.simpleName)
+
+        val mutableList = coveredFatList.toMutableList()
+
+        bottomDialogCoveredFat.setOnClickItemListener(
+            titleDialog = getString(R.string.choose_fdt)
+        ) { data ->
+            mutableList.add(data)
+            mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(mutableList))
+
+            bottomDialogCoveredFat.dismiss()
+        }
+    }
+
     companion object {
+        const val FDT_DETAIL = "fdt_detail"
         const val PURPOSE_OPEN = "purpose_open"
         const val TO_ADD = "to_add"
         const val TO_EDIT = "to_edit"

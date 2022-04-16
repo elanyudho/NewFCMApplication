@@ -61,8 +61,11 @@
     <string name="normal">Status: Good Condition</string>
     <string name="add_fdt">Add FDT</string>
     <string name="add_fat">Add FAT</string>
+    <string name="edit_fdt">Edit FDT</string>
+    <string name="edit_fat">Edit FAT</string>
     <string name="fdt_name">FDT Name</string>
     <string name="ex_fdt_name">Ex: FDTDIY.SLE01</string>
+    <string name="ex_fat_name">Ex: FATSLE.DPK01</string>
     <string name="choose_fat">Choose FAT</string>
     <string name="core_are_used">Core Are Used</string>
     <string name="backup_core">Backup Core</string>

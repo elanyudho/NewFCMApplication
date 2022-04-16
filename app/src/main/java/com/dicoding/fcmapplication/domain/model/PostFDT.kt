@@ -10,5 +10,10 @@ data class PostFDT(
     val fdt_note: String,
     val fdt_location: String,
     val fdt_activated: String,
-    val fdt_region: String
-)
+    val fdt_region: String,
+    val fat_covered_lists: List<CoveredFAT> = mutableListOf(),
+) {
+   data class CoveredFAT(
+    val id: String
+    )
+}

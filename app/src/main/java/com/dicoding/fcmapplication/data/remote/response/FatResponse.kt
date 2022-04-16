@@ -25,9 +25,18 @@ class FatResponse : ArrayList<FatResponse.FatResponseItem>(){
         val fatRegion: String = "",
         @SerializedName("fat_total_core")
         val fatTotalCore: String = "",
+        @SerializedName("fdt")
+        val fdt: Fdt = Fdt(),
         @SerializedName("home_covered")
-        val fatHomeCovered: String = "",
+        val homeCovered: String = "",
         @SerializedName("id")
         val id: Int = 0
-    )
+    ) {
+        data class Fdt(
+            @SerializedName("fdt_name")
+            val fdtName: String = "",
+            @SerializedName("id")
+            val id: Int = 0
+        )
+    }
 }

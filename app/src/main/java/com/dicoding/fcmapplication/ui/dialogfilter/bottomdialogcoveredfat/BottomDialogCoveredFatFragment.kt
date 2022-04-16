@@ -1,4 +1,4 @@
-package com.dicoding.fcmapplication.ui.dialogfilter.bottomdialogchoosefdt
+package com.dicoding.fcmapplication.ui.dialogfilter.bottomdialogcoveredfat
 
 import android.app.Dialog
 import android.os.Bundle
@@ -12,11 +12,12 @@ import com.dicoding.core.abstraction.BaseBottomDialogBinding
 import com.dicoding.core.exception.Failure
 import com.dicoding.core.vo.RequestResults
 import com.dicoding.fcmapplication.R
-import com.dicoding.fcmapplication.databinding.FragmentBottomDialogChooseFdtBinding
+import com.dicoding.fcmapplication.databinding.FragmentBottomDialogCoveredFatBinding
+import com.dicoding.fcmapplication.domain.model.FdtDetail
 import com.dicoding.fcmapplication.domain.model.FdtToAdd
-import com.dicoding.fcmapplication.ui.dialogfilter.adapter.FilterBottomDialogChooseFdtAdapter
 import com.dicoding.fcmapplication.ui.dialogfilter.adapter.FilterBottomDialogCoveredFatAdapter
 import com.dicoding.fcmapplication.ui.other.adddata.addfat.AddFatViewModel
+import com.dicoding.fcmapplication.ui.other.adddata.addfdt.AddFdtViewModel
 import com.dicoding.fcmapplication.utils.customview.recyclerview.MarginItemDecoration
 import com.dicoding.fcmapplication.utils.extensions.dp
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
@@ -29,19 +30,20 @@ import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BottomDialogChooseFdtFragment : BaseBottomDialogBinding<FragmentBottomDialogChooseFdtBinding>(), Observer<AddFatViewModel.AddFatUiState> {
+class BottomDialogCoveredFatFragment : BaseBottomDialogBinding<FragmentBottomDialogCoveredFatBinding>(),
+    Observer<AddFdtViewModel.AddFdtUiState> {
 
     @Inject
-    lateinit var mViewModel: AddFatViewModel
+    lateinit var mViewModel: AddFdtViewModel
 
-    private val fatAdapter : FilterBottomDialogChooseFdtAdapter by lazy { FilterBottomDialogChooseFdtAdapter() }
-    private var onClick :((FdtToAdd) -> Unit)? = null
+    private val adapter : FilterBottomDialogCoveredFatAdapter by lazy { FilterBottomDialogCoveredFatAdapter() }
+    private var onClick :((FdtDetail.FatList) -> Unit)? = null
 
     var title = ""
 
-    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentBottomDialogChooseFdtBinding
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentBottomDialogCoveredFatBinding
         get() = {layoutInflater, viewGroup, b ->
-            FragmentBottomDialogChooseFdtBinding.inflate(layoutInflater,viewGroup,b)
+            FragmentBottomDialogCoveredFatBinding.inflate(layoutInflater,viewGroup,b)
         }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -64,10 +66,10 @@ class BottomDialogChooseFdtFragment : BaseBottomDialogBinding<FragmentBottomDial
     override fun setupView() {
 
         callOnceWhenCreated {
-            mViewModel.uiState.observe(viewLifecycleOwner, this@BottomDialogChooseFdtFragment)
-            mViewModel.getChooseFdtList("")
+            mViewModel.uiState.observe(viewLifecycleOwner, this)
+            mViewModel.getCoveredFatList("")
             binding.tvTitleFilter.text = title
-            binding.recyclerBottomSheet.adapter = fatAdapter
+            binding.recyclerBottomSheet.adapter = adapter
             binding.recyclerBottomSheet.addItemDecoration(MarginItemDecoration(spaceSize = 32.dp,leftMargin = 24.dp,rightMargin = 24.dp,bottomMargin = 16.dp))
 
         }
@@ -75,13 +77,13 @@ class BottomDialogChooseFdtFragment : BaseBottomDialogBinding<FragmentBottomDial
         callOnceWhenDisplayed {
 
             with(binding) {
-                searchFdt.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
+                searchFat.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         return true
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        mViewModel.getChooseFdtList(newText.toString())
+                        mViewModel.getCoveredFatList(newText.toString())
                         return true
                     }
 
@@ -91,15 +93,15 @@ class BottomDialogChooseFdtFragment : BaseBottomDialogBinding<FragmentBottomDial
 
     }
 
-    override fun onChanged(state: AddFatViewModel.AddFatUiState?) {
+    override fun onChanged(state: AddFdtViewModel.AddFdtUiState?) {
         when(state){
-            is AddFatViewModel.AddFatUiState.ChooseFdtListLoaded -> {
+            is AddFdtViewModel.AddFdtUiState.CoveredFatListLoaded -> {
                 setItemsFilter(state.list)
             }
-            is AddFatViewModel.AddFatUiState.Loading -> {
+            is AddFdtViewModel.AddFdtUiState.Loading -> {
 
             }
-            is AddFatViewModel.AddFatUiState.FailedLoadedOrTransaction -> {
+            is AddFdtViewModel.AddFdtUiState.FailedLoadedOrTransaction -> {
                 handleFailure(state.failure)
             }
         }
@@ -117,14 +119,14 @@ class BottomDialogChooseFdtFragment : BaseBottomDialogBinding<FragmentBottomDial
         }
     }
 
-    fun setOnClickItemListener(titleDialog: String, onClick: (FdtToAdd)  -> Unit){
+    fun setOnClickItemListener(titleDialog: String, onClick: (FdtDetail.FatList)  -> Unit){
         setTitleDialog(titleDialog)
-        fatAdapter.setOnClickItemListener{ data -> onClick.invoke(data) }
+        adapter.setOnClickItemListener{ data -> onClick.invoke(data) }
         this.onClick = onClick
     }
 
-    private fun setItemsFilter(listData: List<FdtToAdd>) {
-        fatAdapter.submitList(listData)
+    private fun setItemsFilter(listData: List<FdtDetail.FatList>) {
+        adapter.submitList(listData)
     }
 
     private fun setTitleDialog(title:String){

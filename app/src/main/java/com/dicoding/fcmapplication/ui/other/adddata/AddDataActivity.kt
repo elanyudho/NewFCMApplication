@@ -1,6 +1,7 @@
 package com.dicoding.fcmapplication.ui.other.adddata
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
@@ -25,11 +26,17 @@ class AddDataActivity : BaseActivityBinding<ActivityAddDataBinding>() {
             }
             rowAddFdt.setOnClickListener {
                 val intent = Intent(this@AddDataActivity, AddFdtActivity::class.java)
-                intent.putExtra(AddFdtActivity.PURPOSE_OPEN, AddFdtActivity.TO_ADD)
+                val extras = Bundle()
+                extras.putString(AddFdtActivity.PURPOSE_OPEN, AddFdtActivity.TO_ADD)
+                intent.putExtras(extras)
                 startActivity(intent)
             }
             rowAddFat.setOnClickListener {
-                startActivity(Intent(this@AddDataActivity, AddFatActivity::class.java))
+                val intent = Intent(this@AddDataActivity, AddFatActivity::class.java)
+                val extras = Bundle()
+                extras.putString(AddFdtActivity.PURPOSE_OPEN, AddFatActivity.TO_ADD)
+                intent.putExtras(extras)
+                startActivity(intent)
             }
         }
     }

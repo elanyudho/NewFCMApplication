@@ -30,6 +30,7 @@ class FdtDetailMapper : BaseMapper<FdtDetailResponse, FdtDetail> {
             fdtNote = raw.fdtNote,
             fatCoveredList = listFatCovered,
             fdtId = raw.id.toString(),
+            fdtActivationDate = raw.fdtActivated
         )
     }
 

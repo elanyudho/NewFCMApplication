@@ -9,10 +9,9 @@ import com.dicoding.core.vo.RequestResults
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.ActivityAddFatBinding
-import com.dicoding.fcmapplication.domain.model.FdtToAdd
+import com.dicoding.fcmapplication.domain.model.FatDetail
 import com.dicoding.fcmapplication.domain.model.PostFAT
 import com.dicoding.fcmapplication.ui.dialogfilter.bottomdialogchoosefdt.BottomDialogChooseFdtFragment
-import com.dicoding.fcmapplication.ui.dialogfilter.bottomdialogregion.BottomDialogRegionFragment
 import com.dicoding.fcmapplication.ui.other.dialog.BackConfirmationDialogFragment
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
@@ -41,15 +40,28 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
 
     private var idFdtToAdd: String = ""
 
+    private var fatDetail: FatDetail? = null
+
+    private var purposeOpen = ""
+
     override val bindingInflater: (LayoutInflater) -> ActivityAddFatBinding
         get() = { ActivityAddFatBinding.inflate(layoutInflater) }
 
     override fun setupView() {
         mViewModel.uiState.observe(this, this)
 
+        getFatDetail()
+        getPurposeIntent()
+        fatDetail?.let { setFatDetailToField(it) }
+        idFdtToAdd = fatDetail?.fdtBind?.fdtId.toString()
+
         setDatePicker()
 
-        binding.headerAddData.tvTitleHeader.text = getString(R.string.add_fat)
+        if(purposeOpen == TO_EDIT){
+            binding.headerAddData.tvTitleHeader.text = getString(R.string.edit_fat)
+        }else{
+            binding.headerAddData.tvTitleHeader.text = getString(R.string.add_fat)
+        }
         binding.headerAddData.btnBack.setOnClickListener {
             doBackPage()
         }
@@ -58,17 +70,17 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             isService = isChecked
         }
 
-        binding.etChooseFdt.setOnClickListener {
+        binding.etChooseFat.setOnClickListener {
             showChooseFdt()
         }
 
-        binding.btnSave.setOnClickListener { doAddData(isService) }
+        binding.btnSave.setOnClickListener { doAddData(isService, fatDetail?.fatId.toString()) }
     }
 
     override fun onChanged(state: AddFatViewModel.AddFatUiState?) {
         when(state){
-            is AddFatViewModel.AddFatUiState.SuccessPostFatData -> {
-                fancyToast(getString(R.string.success_post_fdt), FancyToast.SUCCESS)
+            is AddFatViewModel.AddFatUiState.SuccessPostOrPutFatData -> {
+                fancyToast(getString(R.string.success_post_fat), FancyToast.SUCCESS)
                 onBackPressed()
             }
             is AddFatViewModel.AddFatUiState.Loading -> {
@@ -83,7 +95,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
         }
     }
 
-    private fun doAddData(isService: Boolean) {
+    private fun doAddData(isService: Boolean, id: String) {
         with(binding) {
             if (etFatName.text.isNullOrEmpty()) {
                 etFatName.error = "This field is required"
@@ -124,39 +136,63 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
                 etLoss.requestFocus()
                 isEmpty = true
             }
-            if (etChooseFdt.text.isNullOrEmpty()) {
-                etChooseFdt.error = "This field is required"
-                etChooseFdt.requestFocus()
+            if (etChooseFat.text.isNullOrEmpty()) {
+                etChooseFat.error = "This field is required"
+                etChooseFat.requestFocus()
                 isEmpty = true
             }else{
-                etChooseFdt.error = null
-                etChooseFdt.clearFocus()
+                etChooseFat.error = null
+                etChooseFat.clearFocus()
             }
 
             //check everything is valid
             if (isEmpty) {
                 return
             } else {
-                val postFDT = PostFAT(
+                if(purposeOpen == TO_EDIT){
+                    val postFDT = PostFAT(
 
-                    fat_name = etFatName.text.toString(),
-                    fat_total_core = etTotalCore.text.toString(),
-                    fat_core_used = etCoreUsed.text.toString(),
-                    fat_backup_core = etCoreBackup.text.toString(),
-                    fat_loss = etLoss.text.toString(),
-                    home_covered = etCoveredHome.toString(),
-                    fat_activated = etActivationDate.text.toString(),
-                    fat_region = session.user?.region.toString(),
-                    fat_in_repair = isService,
-                    fat_location = etLocation.text.toString(),
-                    fat_note = if (etRepairNote.text.isNullOrEmpty()) {
-                        "None"
-                    } else {
-                        etRepairNote.text.toString()
-                    },
-                    fdt = PostFAT.FDT(idFdtToAdd)
-                )
-                mViewModel.postFdtData(postFDT)
+                        fat_name = etFatName.text.toString(),
+                        fat_total_core = etTotalCore.text.toString(),
+                        fat_core_used = etCoreUsed.text.toString(),
+                        fat_backup_core = etCoreBackup.text.toString(),
+                        fat_loss = etLoss.text.toString(),
+                        home_covered = etCoveredHome.text.toString(),
+                        fat_activated = etActivationDate.text.toString(),
+                        fat_region = session.user?.region.toString(),
+                        fat_in_repair = isService,
+                        fat_location = etLocation.text.toString(),
+                        fat_note = if (etRepairNote.text.isNullOrEmpty()) {
+                            "None"
+                        } else {
+                            etRepairNote.text.toString()
+                        },
+                        fdt = PostFAT.FDT(idFdtToAdd)
+                    )
+                    mViewModel.putFatData(id, postFDT)
+                }else{
+                    val postFDT = PostFAT(
+
+                        fat_name = etFatName.text.toString(),
+                        fat_total_core = etTotalCore.text.toString(),
+                        fat_core_used = etCoreUsed.text.toString(),
+                        fat_backup_core = etCoreBackup.text.toString(),
+                        fat_loss = etLoss.text.toString(),
+                        home_covered = etCoveredHome.text.toString(),
+                        fat_activated = etActivationDate.text.toString(),
+                        fat_region = session.user?.region.toString(),
+                        fat_in_repair = isService,
+                        fat_location = etLocation.text.toString(),
+                        fat_note = if (etRepairNote.text.isNullOrEmpty()) {
+                            "None"
+                        } else {
+                            etRepairNote.text.toString()
+                        },
+                        fdt = PostFAT.FDT(idFdtToAdd)
+                    )
+                    mViewModel.postFdtData(postFDT)
+                }
+
             }
         }
     }
@@ -192,7 +228,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
         with(binding) {
             isDefault = (etFatName.text.isNullOrEmpty() || etTotalCore.text.isNullOrEmpty() || etCoreUsed.text.isNullOrEmpty()
                     || etCoreBackup.text.isNullOrEmpty() || etLocation.text.isNullOrEmpty() || etActivationDate.text.isNullOrEmpty()
-                    || etLoss.text.isNullOrEmpty() || etRepairNote.text.isNullOrEmpty() || !isService || etChooseFdt.text.isNullOrEmpty())
+                    || etLoss.text.isNullOrEmpty() || etRepairNote.text.isNullOrEmpty() || !isService || etChooseFat.text.isNullOrEmpty())
         }
         if (isDefault) {
             onBackPressed()
@@ -223,20 +259,50 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             //set region field
             with(binding) {
 
-                binding.etChooseFdt.setText(data.fdtName)
+                binding.etChooseFat.setText(data.fdtName)
                 idFdtToAdd = data.fdtId
-                if (etChooseFdt.text.isNullOrEmpty()) {
-                    etChooseFdt.error = "This field is required"
-                    etChooseFdt.requestFocus()
+                if (etChooseFat.text.isNullOrEmpty()) {
+                    etChooseFat.error = "This field is required"
+                    etChooseFat.requestFocus()
                     isEmpty = true
                 }else{
-                    etChooseFdt.error = null
-                    etChooseFdt.clearFocus()
+                    etChooseFat.error = null
+                    etChooseFat.clearFocus()
                 }
             }
             bottomDialogChooseFdt.dismiss()
         }
     }
+
+    private fun getPurposeIntent() {
+        purposeOpen = intent.extras?.getString(PURPOSE_OPEN) ?: ""
+        purposeOpen = if (purposeOpen == TO_ADD) {
+            TO_ADD
+        } else {
+            TO_EDIT
+        }
+    }
+
+    private fun getFatDetail() {
+        fatDetail = intent.extras?.getParcelable(FAT_DETAIL)
+    }
+
+    private fun setFatDetailToField(fatDetail: FatDetail) {
+        with(binding) {
+            etChooseFat.setText(fatDetail.fdtBind?.fdtName)
+            etFatName.setText(fatDetail.fatName)
+            etTotalCore.setText(fatDetail.fatCore)
+            etCoreUsed.setText(fatDetail.fatCoreUsed)
+            etCoreBackup.setText(fatDetail.fatCoreRemaining)
+            etCoveredHome.setText(fatDetail.fatCoveredHome)
+            etLocation.setText(fatDetail.fatLocation)
+            etLoss.setText(fatDetail.fatLoss)
+            etActivationDate.setText(fatDetail.fatActivationDate)
+            btnSwRepair.isChecked = fatDetail.fatIsService!!
+            etRepairNote.setText(fatDetail.fatNote)
+        }
+    }
+
     private fun cursorIsVisible() {
         with(binding) {
             etFatName.isCursorVisible = true
@@ -263,6 +329,11 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
         }
     }
 
-
+    companion object {
+        const val FAT_DETAIL = "fat_detail"
+        const val PURPOSE_OPEN = "purpose_open"
+        const val TO_ADD = "to_add"
+        const val TO_EDIT = "to_edit"
+    }
 
 }
