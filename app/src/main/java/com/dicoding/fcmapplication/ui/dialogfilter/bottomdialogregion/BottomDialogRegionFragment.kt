@@ -1,4 +1,4 @@
-package com.dicoding.fcmapplication.ui.dialogfilter
+package com.dicoding.fcmapplication.ui.dialogfilter.bottomdialogregion
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,6 +6,7 @@ import com.dicoding.core.abstraction.BaseBottomDialogBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.BottomFilterListBinding
 import com.dicoding.fcmapplication.domain.model.Region
+import com.dicoding.fcmapplication.ui.dialogfilter.adapter.FilterBottomDialogAdapter
 import com.dicoding.fcmapplication.utils.customview.recyclerview.MarginItemDecoration
 import com.dicoding.fcmapplication.utils.extensions.dp
 
@@ -46,7 +47,7 @@ class BottomDialogRegionFragment : BaseBottomDialogBinding<BottomFilterListBindi
     }
 
 
-    fun setTitleDialog(title:String){
+    private fun setTitleDialog(title:String){
         this.title = title
     }
 

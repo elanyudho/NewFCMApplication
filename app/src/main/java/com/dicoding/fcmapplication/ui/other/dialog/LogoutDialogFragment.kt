@@ -43,7 +43,7 @@ class LogoutDialogFragment : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentLogoutDialogBinding.inflate(inflater, container, false)
         return binding.root
     }

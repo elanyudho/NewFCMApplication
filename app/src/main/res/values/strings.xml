@@ -31,6 +31,7 @@
     <string name="fat_location">FAT Location</string>
     <string name="repair_notes">Repair Notes</string>
     <string name="are_you_sure_want_to_exit">Are you sure want to exit?</string>
+    <string name="back_confirmation">Are you sure want to exit? \nThe data you have filled in will be deleted</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -58,6 +59,32 @@
     <string name="email">Email</string>
     <string name="status">Status</string>
     <string name="normal">Status: Good Condition</string>
+    <string name="add_fdt">Add FDT</string>
+    <string name="add_fat">Add FAT</string>
+    <string name="edit_fdt">Edit FDT</string>
+    <string name="edit_fat">Edit FAT</string>
+    <string name="fdt_name">FDT Name</string>
+    <string name="ex_fdt_name">Ex: FDTDIY.SLE01</string>
+    <string name="ex_fat_name">Ex: FATSLE.DPK01</string>
+    <string name="choose_fat">Choose FAT</string>
+    <string name="core_are_used">Core Are Used</string>
+    <string name="backup_core">Backup Core</string>
+    <string name="covered_fat">Covered FAT</string>
+    <string name="ex_number_core">Ex: 9</string>
+    <string name="ex_location">Ex: -7.771129,110.405138 (Long,Lat)</string>
+    <string name="activation_date">Activation Date</string>
+    <string name="set_activation_date">Set Activation Date</string>
+    <string name="repair_status">Repair Status</string>
+    <string name="repair_note">Repair Note</string>
+    <string name="hint_fdt_repair_note">Contains repair notes or other notes about FDT</string>
+    <string name="hint_fat_repair_note">Contains repair notes or other notes about FAT</string>
+    <string name="save">Save</string>
+    <string name="ex_loss">Ex: 1 (db)</string>
+    <string name="success_post_fdt">New FDT added successfully</string>
+    <string name="success_post_fat">New FDT added successfully</string>
+    <string name="success_delete_fdt">FDT deleted successfully</string>
+    <string name="success_delete_fat">FAT deleted successfully</string>
+    <string name="choose_fdt">Choose FDT</string>
 
 
 </resources>

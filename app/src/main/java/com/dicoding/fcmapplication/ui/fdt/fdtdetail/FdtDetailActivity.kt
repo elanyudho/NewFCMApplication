@@ -1,11 +1,15 @@
 package com.dicoding.fcmapplication.ui.fdt.fdtdetail
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
@@ -16,6 +20,7 @@ import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
 import com.dicoding.fcmapplication.ui.fdt.adapter.CoveredAdapter
 import com.dicoding.fcmapplication.ui.fdt.more.MoreFatCoveredActivity
 import com.dicoding.fcmapplication.ui.location.LocationActivity
+import com.dicoding.fcmapplication.ui.other.adddata.addfdt.AddFdtActivity
 import com.dicoding.fcmapplication.utils.extensions.*
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,92 +36,121 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
     @Inject
     lateinit var session: Session
 
-    private val horizontalAdapter: CoveredAdapter by lazy { CoveredAdapter() }
+    private val coveredAdapter: CoveredAdapter by lazy { CoveredAdapter() }
 
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
     private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
     private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim)}
     private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim)}
 
-    private lateinit var uuid: String
+    private lateinit var fdtName: String
 
     private var clicked = false
+
+    private var fdtDetail: FdtDetail? = null
+
+    private var resultLauncher : ActivityResultLauncher<Intent>? = null
 
     override val bindingInflater: (LayoutInflater) -> ActivityFdtDetailBinding
         get() = { ActivityFdtDetailBinding.inflate(layoutInflater) }
 
     override fun setupView() {
-        uuid = intent.getStringExtra(EXTRA_DETAIL_FDT) ?: ""
+        fdtName = intent.getStringExtra(EXTRA_DETAIL_FDT) ?: ""
 
         with(mViewModel) {
             uiState.observe(this@FdtDetailActivity, this@FdtDetailActivity)
-            getFdtDetail(uuid)
+            getFdtDetail(fdtName)
         }
+
+        setResultLauncher()
 
         binding.headerFdtDetail.btnBack.setOnClickListener { onBackPressed() }
         binding.headerFdtDetail.tvTitleHeader.text = getString(R.string.fdt_profile)
-
-        if (session.user?.isAdmin == true){
-            binding.fabMenu.visible()
-            enable(binding.fabMenu)
-        }else{
-            binding.fabMenu.gone()
-            disable(binding.fabMenu)
-        }
 
         with(binding){
             fabMenu.setOnClickListener {
                 onAddButtonClicked()
             }
             fabEdit.setOnClickListener {
-
+                val intent = Intent(this@FdtDetailActivity, AddFdtActivity::class.java)
+                val extras = Bundle()
+                extras.putString(AddFdtActivity.PURPOSE_OPEN, AddFdtActivity.TO_EDIT)
+                extras.putParcelable(AddFdtActivity.FDT_DETAIL, fdtDetail)
+                intent.putExtras(extras)
+                resultLauncher?.launch(intent)
             }
             fabDelete.setOnClickListener {
-
+                mViewModel.deleteFdt(fdtDetail?.fdtId.toString())
             }
         }
     }
 
     override fun onChanged(state: FdtDetailViewModel.FdtDetailUiState?) {
+        val rowFatLoss = binding.rowFatLoss.layoutParams as ConstraintLayout.LayoutParams
+
         when (state) {
             is FdtDetailViewModel.FdtDetailUiState.FdtDetailLoaded -> {
 
                 initFdtDetailView(state.data)
 
-                horizontalAdapter.submitList(state.data.fatCoveredList)
+                fdtDetail = state.data
+
+                coveredAdapter.submitList(state.data.fatCoveredList)
                 setFdtActions()
 
                 val dataFat = arrayListOf<FdtDetail.FatList>()
 
                 if (state.data.fatCoveredList.isEmpty()){
                     with(binding){
-                        rvFatCovered.invisible()
-                        imageNoFatCovered.visible()
-                        tvNoFatCovered.visible()
+                        rowFatLoss.topToBottom = tvNoFatCovered.id
+                        rowFatLoss.topMargin = 24.dp
+                        rvFatCovered.gone()
+                        grpEmptyFatCoveredView.visible()
                     }
                 }else{
-                    binding.rvFatCovered.visible()
-                    binding.imageNoFatCovered.gone()
-                    binding.tvNoFatCovered.gone()
-                    dataFat.addAll(state.data.fatCoveredList)
-                    binding.rowFatCovered.setOnClickListener {
-                        val intent = Intent(this@FdtDetailActivity, MoreFatCoveredActivity::class.java)
-                        intent.putParcelableArrayListExtra(MoreFatCoveredActivity.EXTRA_FAT_COVERED, dataFat)
-                        startActivity(intent)
+                    with(binding) {
+                        rowFatLoss.topToBottom = rvFatCovered.id
+                        rowFatLoss.topMargin = 8.dp
+                        rvFatCovered.visible()
+                        grpEmptyFatCoveredView.gone()
+
+                        dataFat.addAll(state.data.fatCoveredList)
+                        rowFatCovered.setOnClickListener {
+                            val intent = Intent(this@FdtDetailActivity, MoreFatCoveredActivity::class.java)
+                            intent.putParcelableArrayListExtra(MoreFatCoveredActivity.EXTRA_FAT_COVERED, dataFat)
+                            startActivity(intent)
+                        }
                     }
                 }
-
-                with(binding){
-                    viewFdtDetail.visible()
-                    cvLottieLoading.gone()
+            }
+            is FdtDetailViewModel.FdtDetailUiState.SuccessDeleteFdt -> {
+                fancyToast(getString(R.string.success_delete_fdt), FancyToast.SUCCESS)
+                setResult(Activity.RESULT_OK)
+                onBackPressed()
+            }
+            is FdtDetailViewModel.FdtDetailUiState.Loading -> {
+                if (state.isLoading){
+                    with(binding){
+                        viewFdtDetail.gone()
+                        cvLottieLoading.visible()
+                        fabMenu.invisible()
+                        disable(binding.fabMenu)
+                    }
+                }else{
+                    with(binding){
+                        viewFdtDetail.visible()
+                        cvLottieLoading.gone()
+                        if (session.user?.isAdmin == true){
+                            binding.fabMenu.visible()
+                            enable(binding.fabMenu)
+                        }else{
+                            binding.fabMenu.invisible()
+                            disable(binding.fabMenu)
+                        }
+                    }
                 }
-
             }
-            is FdtDetailViewModel.FdtDetailUiState.LoadingFdtDetail -> {
-
-
-            }
-            is FdtDetailViewModel.FdtDetailUiState.FailedLoadFdtDetail -> {
+            is FdtDetailViewModel.FdtDetailUiState.Failed -> {
                 state.failure.throwable.printStackTrace()
                 fancyToast(getString(R.string.error_unknown_error), FancyToast.ERROR)
             }
@@ -125,10 +159,10 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
 
     private fun setFdtActions() {
         with(binding.rvFatCovered) {
-            adapter = horizontalAdapter
+            adapter = coveredAdapter
             setHasFixedSize(true)
 
-            horizontalAdapter.setOnClickData {
+            coveredAdapter.setOnClickData {
                 val intent = Intent(this@FdtDetailActivity, FatDetailActivity::class.java)
                 intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.fatName)
                 startActivity(intent)
@@ -144,13 +178,9 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             tvCoreTotal.text = obj.fdtCore
             tvBackup.text = obj.fdtCoreRemaining
             tvCoreUsed.text = obj.fdtCoreUsed
-            tvFatLossNumber.text = obj.fdtLoss
-            tvFatNumber.text = obj.fdtCoveredFat
-            tvRepairNotes.text = if(obj.fdtNote == null){
-                "No note"
-            }else{
-                obj.fdtNote
-            }
+            tvFatLossNumber.text = obj.fdtLoss + " db"
+            tvFatNumber.text = obj.fdtCoveredFat + " FAT Covered"
+            tvRepairNotes.text = if(obj.fdtNote == null || obj.fdtNote == "") "No note" else obj.fdtNote
             if (obj.fdtIsService == true){
                 icRepair.visible()
             }else {
@@ -178,6 +208,17 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             tvCapacityPercentage.text = "$percentValueStr%"
         }
 
+    }
+
+    private fun setResultLauncher() {
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                mViewModel.getFdtDetail(fdtName)
+                setResult(Activity.RESULT_OK)
+            }
+        }
     }
 
     private fun onAddButtonClicked() {

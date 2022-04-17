@@ -65,6 +65,7 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
                         mViewModel.getFdtSearchResult(session.user?.region.toString(), query?:"", 1)
                     }
 
+                    searchFdtAdapter.clearList()
                     queryFdtName = query?:""
                     searchFdt.setQuery("")
                     searchFdt.clearFocus()

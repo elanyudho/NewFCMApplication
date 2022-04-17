@@ -1,11 +1,15 @@
 package com.dicoding.fcmapplication.ui.fat.fatdetail
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
@@ -13,6 +17,7 @@ import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.ActivityFatDetailBinding
 import com.dicoding.fcmapplication.domain.model.FatDetail
 import com.dicoding.fcmapplication.ui.location.LocationActivity
+import com.dicoding.fcmapplication.ui.other.adddata.addfat.AddFatActivity
 import com.dicoding.fcmapplication.utils.extensions.*
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,6 +38,10 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
 
     private var clicked = false
 
+    private var fatDetail: FatDetail? = null
+
+    private var resultLauncher : ActivityResultLauncher<Intent>? = null
+
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
     private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
     private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim)}
@@ -49,26 +58,25 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
             getFatDetail(fatName)
         }
 
+        setResultLauncher()
+
         binding.headerFatDetail.tvTitleHeader.text = getString(R.string.fat_profile)
         binding.headerFatDetail.btnBack.setOnClickListener { onBackPressed() }
-
-        if (session.user?.isAdmin == true){
-            binding.fabMenu.visible()
-            enable(binding.fabMenu)
-        }else{
-            binding.fabMenu.invisible()
-            disable(binding.fabMenu)
-        }
 
         with(binding){
             fabMenu.setOnClickListener {
                 onAddButtonClicked()
             }
             fabEdit.setOnClickListener {
-
+                val intent = Intent(this@FatDetailActivity, AddFatActivity::class.java)
+                val extras = Bundle()
+                extras.putString(AddFatActivity.PURPOSE_OPEN, AddFatActivity.TO_EDIT)
+                extras.putParcelable(AddFatActivity.FAT_DETAIL, fatDetail)
+                intent.putExtras(extras)
+                resultLauncher?.launch(intent)
             }
             fabDelete.setOnClickListener {
-
+                mViewModel.deleteFdt(fatDetail?.fatId.toString())
             }
         }
 
@@ -79,16 +87,40 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
             is FatDetailViewModel.FatDetailUiState.FatDetailLoaded -> {
                 initFdtDetailView(state.data)
 
+                fatDetail = state.data
+
                 with(binding){
                     cvLottieLoading.gone()
                     viewFatDetail.visible()
                 }
 
             }
-            is FatDetailViewModel.FatDetailUiState.LoadingFatDetail -> {
-
+            is FatDetailViewModel.FatDetailUiState.SuccessDeleteFat -> {
+                fancyToast(getString(R.string.success_delete_fat), FancyToast.SUCCESS)
+                setResult(Activity.RESULT_OK)
+                onBackPressed()
             }
-            is FatDetailViewModel.FatDetailUiState.FailedLoadFatDetail -> {
+            is FatDetailViewModel.FatDetailUiState.Loading -> {
+                if(state.isLoading) {
+                    with(binding){
+                        cvLottieLoading.visible()
+                        viewFatDetail.gone()
+                    }
+                }else {
+                    with(binding){
+                        cvLottieLoading.gone()
+                        viewFatDetail.visible()
+                        if (session.user?.isAdmin == true){
+                            binding.fabMenu.visible()
+                            enable(binding.fabMenu)
+                        }else{
+                            binding.fabMenu.invisible()
+                            disable(binding.fabMenu)
+                        }
+                    }
+                }
+            }
+            is FatDetailViewModel.FatDetailUiState.Failed -> {
                 state.failure.throwable.printStackTrace()
                 fancyToast(getString(R.string.error_unknown_error), FancyToast.ERROR)
             }
@@ -105,11 +137,7 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
             tvCoreUsed.text = obj.fatCoreUsed
             tvFatLossNumber.text = obj.fatLoss
             tvHomeNumber.text = obj.fatCoveredHome
-            tvRepairNotes.text = if(obj.fatNote == "null"){
-                "No note"
-            }else{
-                obj.fatNote
-            }
+            tvRepairNotes.text = if(obj.fatNote == null || obj.fatNote == "") "No note" else obj.fatNote
             if (obj.fatIsService == true) {
                 icRepair.visible()
             } else {
@@ -137,6 +165,18 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
             tvCapacityPercentage.text = "$percentValueStr%"
         }
 
+    }
+
+    private fun setResultLauncher() {
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                mViewModel.getFatDetail(fatName)
+                Log.d("RefreshData", "DO REFRERSH DETAIL")
+                setResult(Activity.RESULT_OK)
+            }
+        }
     }
 
     private fun onAddButtonClicked() {

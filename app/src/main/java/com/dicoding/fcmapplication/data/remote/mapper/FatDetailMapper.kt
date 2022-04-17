@@ -2,12 +2,19 @@ package com.dicoding.fcmapplication.data.remote.mapper
 
 import com.dicoding.core.abstraction.BaseMapper
 import com.dicoding.fcmapplication.data.remote.response.FatDetailResponse
-import com.dicoding.fcmapplication.data.remote.response.FatResponse
 import com.dicoding.fcmapplication.domain.model.FatDetail
 
 class FatDetailMapper : BaseMapper<FatDetailResponse, FatDetail>
 {
     override fun mapToDomain(raw: FatDetailResponse): FatDetail {
+
+        val fdtBind = if (raw.fdt == null) FatDetail.Fdt(
+            fdtId = "",
+            fdtName = ""
+        ) else FatDetail.Fdt(
+            fdtId = raw.fdt.id.toString(),
+            fdtName = raw.fdt.fdtName)
+
         return FatDetail(
             fatName = raw.fatName,
             fatCore = raw.fatTotalCore,
@@ -19,7 +26,9 @@ class FatDetailMapper : BaseMapper<FatDetailResponse, FatDetail>
             fatLoss = raw.fatLoss,
             fatNote = raw.fatNote,
             fatId = raw.id.toString(),
-            fatRegion = raw.fatRegion.toString()
+            fatRegion = raw.fatRegion,
+            fatActivationDate = raw.fatActivated,
+            fdtBind = fdtBind
         )
     }
 

@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_dim"
+    tools:context=".ui.other.adddata.addfat.AddFatActivity">
+
+    <include
+        android:id="@+id/headerAddData"
+        layout="@layout/header_app" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvLottieLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:cardElevation="2dp"
+        app:rippleColor="@android:color/transparent"
+        android:clickable="true"
+        android:backgroundTint="@color/black_transparent"
+        android:elevation="@dimen/mapbox_internalMinSpan23"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="ic_loading.json"
+            app:lottie_loop="true" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerAddData">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/choose_fdt"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/etChooseFat"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/etChooseFat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:background="@drawable/bg_field"
+                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                android:editable="false"
+                android:fontFamily="@font/inter_regular"
+                android:hint="@string/choose_fdt"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView6" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="Fat Name"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/etFatName"
+                app:layout_constraintTop_toBottomOf="@id/etChooseFat" />
+
+            <EditText
+                android:id="@+id/etFatName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/bg_field"
+                android:fontFamily="@font/inter_regular"
+                android:hint="@string/ex_fat_name"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView2" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/total_core"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/etTotalCore"
+                app:layout_constraintTop_toBottomOf="@+id/etFatName" />
+
+            <EditText
+                android:id="@+id/etTotalCore"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/bg_field"
+                android:fontFamily="@font/inter_regular"
+                android:hint="@string/ex_number_core"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView3" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/core_are_used"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/etCoreUsed"
+                app:layout_constraintTop_toBottomOf="@+id/etTotalCore" />
+
+            <EditText
+                android:id="@+id/etCoreUsed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/bg_field"
+                android:fontFamily="@font/inter_regular"
+                android:hint="@string/ex_number_core"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView4" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/backup_core"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/etCoreBackup"
+                app:layout_constraintTop_toBottomOf="@+id/etCoreUsed" />
+
+            <EditText
+                android:id="@+id/etCoreBackup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/bg_field"
+                android:fontFamily="@font/inter_regular"
+                android:hint="@string/ex_number_core"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView5" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="Fat Loss"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/etLoss"
+                app:layout_constraintTop_toBottomOf="@+id/etCoreBackup" />
+
+            <EditText
+                android:id="@+id/etLoss"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/bg_field"
+                android:fontFamily="@font/inter_regular"
+                android:hint="@string/ex_loss"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView11" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="Covered Home"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/etCoveredHome"
+                app:layout_constraintTop_toBottomOf="@+id/etLoss" />
+
+            <EditText
+                android:id="@+id/etCoveredHome"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/bg_field"
+                android:fontFamily="@font/inter_regular"
+                android:hint="@string/ex_number_core"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView12" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="Fat Location"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/etLocation"
+                app:layout_constraintTop_toBottomOf="@+id/etCoveredHome" />
+
+            <EditText
+                android:id="@+id/etLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/bg_field"
+                android:fontFamily="@font/inter_regular"
+                android:hint="@string/ex_location"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView7" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/activation_date"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/etActivationDate"
+                app:layout_constraintTop_toBottomOf="@+id/etLocation" />
+
+            <EditText
+                android:id="@+id/etActivationDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:background="@drawable/bg_field"
+                android:drawableEnd="@drawable/ic_calendar"
+                android:editable="false"
+                android:fontFamily="@font/inter_regular"
+                android:hint="@string/set_activation_date"
+                android:paddingVertical="12dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView8" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/repair_status"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/etActivationDate"
+                app:layout_constraintTop_toBottomOf="@+id/etActivationDate" />
+
+            <com.kyleduo.switchbutton.SwitchButton
+                android:id="@+id/btnSwRepair"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="false"
+                app:kswBackDrawable="@drawable/bg_repair_status"
+                app:kswTextOff="       "
+                app:kswThumbColor="@color/white"
+                app:kswThumbMargin="3dp"
+                app:layout_constraintStart_toStartOf="@+id/materialTextView9"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView9" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/repair_note"
+                android:textColor="@color/blue_lochmara"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/btnSwRepair"
+                app:layout_constraintTop_toBottomOf="@+id/btnSwRepair" />
+
+            <EditText
+                android:id="@+id/etRepairNote"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/bg_field"
+                android:fontFamily="@font/inter_regular"
+                android:gravity="start|top"
+                android:hint="@string/hint_fat_repair_note"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:padding="12dp"
+                android:scrollbars="vertical"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView10" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSave"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="@color/yellow_selective"
+                android:fontFamily="@font/inter_bold"
+                android:paddingVertical="10dp"
+                android:text="@string/save"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:cornerRadius="6dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/etRepairNote"
+                app:layout_constraintStart_toStartOf="@+id/etRepairNote"
+                app:layout_constraintTop_toBottomOf="@+id/etRepairNote"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

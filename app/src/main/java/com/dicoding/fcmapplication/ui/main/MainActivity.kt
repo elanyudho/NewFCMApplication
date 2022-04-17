@@ -1,5 +1,6 @@
 package com.dicoding.fcmapplication.ui.main
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.WindowManager
 import com.dicoding.core.abstraction.BaseActivityBinding
@@ -57,6 +58,15 @@ class MainActivity : BaseActivityBinding<ActivityMainBinding>() {
             containerMain.offscreenPageLimit = fragments.size
 
             btmNavMain.setOnNavigationItemSelectedListener(mBottomNavigationListener)
+
+            fdtFragment.setOnRefreshData {
+                fdtFragment.getFdtListFromOutside()
+            }
+
+            fatFragment.setOnRefreshData {
+                fatFragment.getFatListFromOutside()
+                Log.d("RefreshData", "DO REFRERSH MAIN")
+            }
         }
     }
 

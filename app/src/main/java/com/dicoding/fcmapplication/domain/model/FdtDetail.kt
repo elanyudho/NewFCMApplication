@@ -15,6 +15,7 @@ data class FdtDetail(
     val fdtIsService: Boolean?,
     val fdtNote: String?,
     val fdtLocation: String?,
+    val fdtActivationDate: String?,
     val fatCoveredList: List<FatList> = mutableListOf()
 ) : Parcelable {
 

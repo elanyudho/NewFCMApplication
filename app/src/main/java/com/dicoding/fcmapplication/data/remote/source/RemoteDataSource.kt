@@ -4,6 +4,8 @@ import com.dicoding.core.exception.Failure
 import com.dicoding.core.vo.Either
 import com.dicoding.fcmapplication.data.remote.response.*
 import com.dicoding.fcmapplication.data.remote.service.ApiService
+import com.dicoding.fcmapplication.domain.model.PostFAT
+import com.dicoding.fcmapplication.domain.model.PostFDT
 import okhttp3.RequestBody
 import javax.inject.Inject
 
@@ -68,5 +70,35 @@ class RemoteDataSource
     suspend fun fatListNoPage(queries: Map<String, String>) : Either<Failure, List<FatResponse.FatResponseItem>> =
         request{
             api.getFatListNoPage(queries)
+        }
+
+    suspend fun postFdtData(postFDT: PostFDT) : Either<Failure, PostFdtResponse> =
+        request{
+            api.postFDTData(postFDT)
+        }
+
+    suspend fun postFatData(postFAT: PostFAT) : Either<Failure, PostFatResponse> =
+        request{
+            api.postFATData(postFAT)
+        }
+
+    suspend fun putFdtData(id: String, putFDT: PostFDT) : Either<Failure, PostFdtResponse> =
+        request{
+            api.putFDTData(id, putFDT)
+        }
+
+    suspend fun putFatData(id: String, putFAT: PostFAT) : Either<Failure, PostFatResponse> =
+        request{
+            api.putFATData(id, putFAT)
+        }
+
+    suspend fun deleteFdtData(id: String) : Either<Failure, PostFdtResponse> =
+        request {
+            api.deleteFdtData(id)
+        }
+
+    suspend fun deleteFatData(id: String) : Either<Failure, PostFatResponse> =
+        request {
+            api.deleteFatData(id)
         }
 }

@@ -134,7 +134,7 @@
         android:fontFamily="@font/inter_regular"
         android:hint="Region"
         android:editable="false"
-        android:padding="12dp"
+        android:padding="10dp"
         android:textSize="14sp"
         android:textColor="@color/black"
         android:textColorHint="@color/dark_grey"

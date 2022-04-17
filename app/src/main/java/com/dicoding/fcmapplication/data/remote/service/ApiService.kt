@@ -1,6 +1,8 @@
 package com.dicoding.fcmapplication.data.remote.service
 
 import com.dicoding.fcmapplication.data.remote.response.*
+import com.dicoding.fcmapplication.domain.model.PostFAT
+import com.dicoding.fcmapplication.domain.model.PostFDT
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -60,4 +62,27 @@ interface ApiService {
 
     @GET("regions")
     suspend fun getRegionList(): Response<List<RegionResponse.RegionResponseItem>>
+
+    @JvmSuppressWildcards
+    @POST("fdts")
+    suspend fun postFDTData(@Body postFdt: PostFDT): Response<PostFdtResponse>
+
+    @JvmSuppressWildcards
+    @POST("fats")
+    suspend fun postFATData(@Body postFat: PostFAT): Response<PostFatResponse>
+
+    @JvmSuppressWildcards
+    @PUT("fdts/{id}")
+    suspend fun putFDTData(@Path("id") id: String, @Body postFdt: PostFDT): Response<PostFdtResponse>
+
+    @JvmSuppressWildcards
+    @PUT("fats/{id}")
+    suspend fun putFATData(@Path("id") id: String, @Body postFat: PostFAT): Response<PostFatResponse>
+
+    @DELETE("fdts/{id}")
+    suspend fun deleteFdtData(@Path("id") id: String): Response<PostFdtResponse>
+
+    @DELETE("fats/{id}")
+    suspend fun deleteFatData(@Path("id") id: String): Response<PostFatResponse>
+
 }

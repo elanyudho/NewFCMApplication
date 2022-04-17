@@ -2,6 +2,7 @@ package com.dicoding.core.abstraction
 
 import com.dicoding.core.exception.Failure
 import com.dicoding.core.vo.Either
+import kotlinx.coroutines.flow.Flow
 
 abstract class UseCase<out Type, in Params> {
 

@@ -70,6 +70,8 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
                             queryFatName = query
                         }
                     }
+
+                    searchFatAdapter.clearList()
                     searchFat.setQuery("")
                     searchFat.clearFocus()
                     return true

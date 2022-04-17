@@ -28,51 +28,49 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="24dp">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:backgroundTint="@color/blue_dim"
-                app:strokeColor="@color/yellow_selective"
-                app:strokeWidth="2dp"
+                android:fontFamily="@font/inter_semi_bold"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
+                android:layout_marginHorizontal="16dp"
                 android:text="@string/no"
                 android:textAllCaps="false"
                 android:textColor="@color/yellow_selective"
                 android:textSize="14sp"
                 android:visibility="visible"
                 app:cornerRadius="6dp"
-                android:fontFamily="@font/inter_semi_bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnYes"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/btnYes"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/yellow_selective"
+                app:strokeWidth="2dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnYes"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/yellow_selective"
+                android:fontFamily="@font/inter_semi_bold"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
+                android:layout_marginHorizontal="16dp"
                 android:text="@string/yes"
                 android:textAllCaps="false"
                 android:textSize="14sp"
                 android:visibility="visible"
                 app:cornerRadius="6dp"
-                android:fontFamily="@font/inter_semi_bold"
-                android:backgroundTint="@color/yellow_selective"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnCancel"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/btnCancel"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

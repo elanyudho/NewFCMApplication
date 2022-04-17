@@ -1,11 +1,14 @@
 package com.dicoding.fcmapplication.ui.fat.main
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,6 +41,10 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
 
     private var paginator: RecyclerViewPaginator? = null
 
+    private var refreshDataNotify: (() -> Unit)? = null
+
+    private var resultLauncher : ActivityResultLauncher<Intent>? = null
+
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentFatBinding
         get() = { layoutInflater, viewGroup, b ->
             FragmentFatBinding.inflate(layoutInflater, viewGroup, b)
@@ -61,6 +68,8 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
                 tvFatLocation.text = "FAT in ${session.user?.region}"
             }
 
+            setResultLauncher()
+
             with(binding) {
                 searchFat.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
@@ -83,7 +92,7 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
             setFatPagination()
         }
         callOnceWhenDisplayed {
-            if (session.user?.isCenterAdmin == true) {
+            if (session.user?.isAdmin == true) {
                 session.user?.region?.let { mViewModel.getFatList(it, 1) }
             } else {
                 session.user?.region?.let { mViewModel.getFatList(it, 1) }
@@ -115,6 +124,15 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
         }
     }
 
+    fun getFatListFromOutside() {
+        fatVerticalAdapter.clearList()
+        if (session.user?.isAdmin == true) {
+            session.user?.region?.let { mViewModel.getFatList(it, 1) }
+        } else {
+            session.user?.region?.let { mViewModel.getFatList(it, 1) }
+        }
+    }
+
     private fun setFatPagination() {
         paginator = RecyclerViewPaginator(binding.rvFat.layoutManager as LinearLayoutManager)
         paginator?.setOnLoadMoreListener { page ->
@@ -133,11 +151,24 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
             fatVerticalAdapter.setOnClickData {
                 val intent = Intent(requireContext(), FatDetailActivity::class.java)
                 intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.fatName)
-                startActivity(intent)
+                resultLauncher?.launch(intent)
             }
         }
     }
 
+    private fun setResultLauncher() {
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                refreshDataNotify?.invoke()
+            }
+        }
+    }
+
+    fun setOnRefreshData(action: () -> Unit) {
+        this.refreshDataNotify = action
+    }
 
     private fun startInitialLoading() {
         binding.progressFat.visible()

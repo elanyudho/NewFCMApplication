@@ -24,7 +24,7 @@ import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtDetailUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListNoPageUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtListUseCase
 import com.dicoding.fcmapplication.domain.usecase.fdt.GetFdtSearchResultUseCase
-import com.dicoding.fcmapplication.domain.usecase.other.GetCompanyProfileUseCase
+import com.dicoding.fcmapplication.domain.usecase.other.*
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -73,6 +73,14 @@ object MapperModule {
     @Provides
     @ActivityScoped
     fun provideRegionListMapper() = RegionListMapper()
+
+    @Provides
+    @ActivityScoped
+    fun provideFdtToAddMapper() = ChooseFdtMapper()
+
+    @Provides
+    @ActivityScoped
+    fun provideCoveredFatMapper() = CoveredFatMapper()
 
 
 }
@@ -160,4 +168,30 @@ object UseCaseModule {
     @Provides
     @ActivityScoped
     fun provideFatListNoPageUseCase(repository: FatRepository) = GetFatListNoPageUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun providePostFdtDataUseCase(repository: OtherRepository) = PostFdtDataUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun providePostFatDataUseCase(repository: OtherRepository) = PostFatDataUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun providePutFdtDataUseCase(repository: OtherRepository) = PutFdtDataUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun providePutFatDataUseCase(repository: OtherRepository) = PutFatDataUseCase(repository)
+
+
+    @Provides
+    @ActivityScoped
+    fun provideGetChooseFdtListUseCase(repository: OtherRepository) = GetChooseFdtListUseCase(repository)
+
+    @Provides
+    @ActivityScoped
+    fun provideGetCoveredFatListUseCase(repository: OtherRepository) = GetCoveredFatListUseCase(repository)
+
 }

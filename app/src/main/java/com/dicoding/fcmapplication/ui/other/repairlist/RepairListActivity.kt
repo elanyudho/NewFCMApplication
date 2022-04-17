@@ -2,6 +2,7 @@ package com.dicoding.fcmapplication.ui.other.repairlist
 
 import android.content.Intent
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
@@ -35,8 +36,6 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
 
     private val repairListAdapter: RepairListAdapter by lazy { RepairListAdapter() }
 
-    private var paginator: RecyclerViewPaginator? = null
-
     private var listTab = listOf("FDT", "FAT")
 
     private var onTabSelectedListener: TabLayout.OnTabSelectedListener? = null
@@ -68,7 +67,8 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
                             deviceName = it.fdtName,
                             deviceCoreTotal = it.fdtCore,
                             deviceNote = it.fdtNote,
-                            deviceIsService = it.fdtIsService
+                            deviceIsService = it.fdtIsService,
+                            deviceCoreUsed = it.fdtCoreUsed
                         )
                         fdtRepairList.add(data)
                     }
@@ -85,7 +85,8 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
                             deviceName = it.fatName,
                             deviceCoreTotal = it.fatCore,
                             deviceNote = it.fatNote,
-                            deviceIsService = it.fatIsService
+                            deviceIsService = it.fatIsService,
+                            deviceCoreUsed = it.fatCoreUsed
                         )
                         fatRepairList.add(data)
                     }
@@ -110,12 +111,12 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
             setHasFixedSize(true)
 
             repairListAdapter.setOnClickData {
-                if (it.deviceName?.contains("fdt") == true) {
+                if (it.deviceName?.contains("FDT", true) == true) {
                     val intent = Intent(this@RepairListActivity, FdtDetailActivity::class.java)
                     intent.putExtra(FdtDetailActivity.EXTRA_DETAIL_FDT, it.deviceName)
                     startActivity(intent)
                 }
-                if (it.deviceName?.contains("fat") == true) {
+                if (it.deviceName?.contains("FAT", true) == true) {
                     val intent = Intent(this@RepairListActivity, FatDetailActivity::class.java)
                     intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.deviceName)
                     startActivity(intent)

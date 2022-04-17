@@ -1,17 +1,19 @@
-package com.dicoding.fcmapplication.ui.dialogfilter
+package com.dicoding.fcmapplication.ui.dialogfilter.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.dicoding.core.abstraction.BaseRecyclerViewAdapter
 import com.dicoding.core.abstraction.BaseViewHolder
 import com.dicoding.fcmapplication.databinding.ItemFilterBottomDialogBinding
+import com.dicoding.fcmapplication.domain.model.FdtDetail
+import com.dicoding.fcmapplication.domain.model.FdtToAdd
 
-class FilterBottomDialogAdapter: BaseRecyclerViewAdapter<FilterBottomDialogAdapter.Holder>() {
+class FilterBottomDialogChooseFdtAdapter: BaseRecyclerViewAdapter<FilterBottomDialogChooseFdtAdapter.Holder>() {
 
-    private var listData = mutableListOf<String>()
-    private var onClick :((data: String) -> Unit)? = null
+    private var listData = mutableListOf<FdtToAdd>()
+    private var onClick :((data: FdtToAdd) -> Unit)? = null
 
-    fun submitList(newList : List<String>){
+    fun submitList(newList : List<FdtToAdd>){
         listData.clear()
         listData.addAll(newList)
         notifyDataSetChanged()
@@ -25,17 +27,17 @@ class FilterBottomDialogAdapter: BaseRecyclerViewAdapter<FilterBottomDialogAdapt
         holder.bind(data = listData[position])
     }
 
-    inner class Holder (itemView:ItemFilterBottomDialogBinding) :
-        BaseViewHolder<String, ItemFilterBottomDialogBinding>(itemView){
-        override fun bind(data: String) {
-            binding.tvArrayFilter.text = data
+    inner class Holder (itemView: ItemFilterBottomDialogBinding) :
+        BaseViewHolder<FdtToAdd, ItemFilterBottomDialogBinding>(itemView){
+        override fun bind(data: FdtToAdd) {
+            binding.tvArrayFilter.text = data.fdtName
             binding.root.setOnClickListener {
                 onClick?.invoke(data)
             }
         }
     }
 
-    fun setOnClickItemListener(onClick: (data: String)  -> Unit){
+    fun setOnClickItemListener(onClick: (data: FdtToAdd)  -> Unit){
         this.onClick = onClick
     }
     override fun getItemCount(): Int {
