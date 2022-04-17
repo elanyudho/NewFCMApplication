@@ -1,11 +1,14 @@
 package com.dicoding.fcmapplication.ui.fdt.fdtdetail
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
@@ -46,6 +49,8 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
 
     private var fdtDetail: FdtDetail? = null
 
+    private var resultLauncher : ActivityResultLauncher<Intent>? = null
+
     override val bindingInflater: (LayoutInflater) -> ActivityFdtDetailBinding
         get() = { ActivityFdtDetailBinding.inflate(layoutInflater) }
 
@@ -57,9 +62,10 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             getFdtDetail(fdtName)
         }
 
+        setResultLauncher()
+
         binding.headerFdtDetail.btnBack.setOnClickListener { onBackPressed() }
         binding.headerFdtDetail.tvTitleHeader.text = getString(R.string.fdt_profile)
-
 
         with(binding){
             fabMenu.setOnClickListener {
@@ -71,7 +77,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                 extras.putString(AddFdtActivity.PURPOSE_OPEN, AddFdtActivity.TO_EDIT)
                 extras.putParcelable(AddFdtActivity.FDT_DETAIL, fdtDetail)
                 intent.putExtras(extras)
-                startActivity(intent)
+                resultLauncher?.launch(intent)
             }
             fabDelete.setOnClickListener {
                 mViewModel.deleteFdt(fdtDetail?.fdtId.toString())
@@ -119,6 +125,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             }
             is FdtDetailViewModel.FdtDetailUiState.SuccessDeleteFdt -> {
                 fancyToast(getString(R.string.success_delete_fdt), FancyToast.SUCCESS)
+                setResult(Activity.RESULT_OK)
                 onBackPressed()
             }
             is FdtDetailViewModel.FdtDetailUiState.Loading -> {
@@ -201,6 +208,17 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             tvCapacityPercentage.text = "$percentValueStr%"
         }
 
+    }
+
+    private fun setResultLauncher() {
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                mViewModel.getFdtDetail(fdtName)
+                setResult(Activity.RESULT_OK)
+            }
+        }
     }
 
     private fun onAddButtonClicked() {

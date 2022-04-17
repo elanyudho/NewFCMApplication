@@ -1,5 +1,6 @@
 package com.dicoding.fcmapplication.ui.other.adddata.addfat
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.view.LayoutInflater
 import androidx.lifecycle.Observer
@@ -81,6 +82,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
         when(state){
             is AddFatViewModel.AddFatUiState.SuccessPostOrPutFatData -> {
                 fancyToast(getString(R.string.success_post_fat), FancyToast.SUCCESS)
+                setResult(Activity.RESULT_OK)
                 onBackPressed()
             }
             is AddFatViewModel.AddFatUiState.Loading -> {

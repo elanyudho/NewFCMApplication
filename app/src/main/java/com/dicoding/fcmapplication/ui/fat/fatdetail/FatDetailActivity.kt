@@ -1,11 +1,15 @@
 package com.dicoding.fcmapplication.ui.fat.fatdetail
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.fcmapplication.R
@@ -36,6 +40,8 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
 
     private var fatDetail: FatDetail? = null
 
+    private var resultLauncher : ActivityResultLauncher<Intent>? = null
+
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
     private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
     private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim)}
@@ -52,6 +58,8 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
             getFatDetail(fatName)
         }
 
+        setResultLauncher()
+
         binding.headerFatDetail.tvTitleHeader.text = getString(R.string.fat_profile)
         binding.headerFatDetail.btnBack.setOnClickListener { onBackPressed() }
 
@@ -65,7 +73,7 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                 extras.putString(AddFatActivity.PURPOSE_OPEN, AddFatActivity.TO_EDIT)
                 extras.putParcelable(AddFatActivity.FAT_DETAIL, fatDetail)
                 intent.putExtras(extras)
-                startActivity(intent)
+                resultLauncher?.launch(intent)
             }
             fabDelete.setOnClickListener {
                 mViewModel.deleteFdt(fatDetail?.fatId.toString())
@@ -89,6 +97,7 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
             }
             is FatDetailViewModel.FatDetailUiState.SuccessDeleteFat -> {
                 fancyToast(getString(R.string.success_delete_fat), FancyToast.SUCCESS)
+                setResult(Activity.RESULT_OK)
                 onBackPressed()
             }
             is FatDetailViewModel.FatDetailUiState.Loading -> {
@@ -156,6 +165,18 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
             tvCapacityPercentage.text = "$percentValueStr%"
         }
 
+    }
+
+    private fun setResultLauncher() {
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                mViewModel.getFatDetail(fatName)
+                Log.d("RefreshData", "DO REFRERSH DETAIL")
+                setResult(Activity.RESULT_OK)
+            }
+        }
     }
 
     private fun onAddButtonClicked() {

@@ -1,6 +1,8 @@
 package com.dicoding.fcmapplication.ui.other.adddata.addfdt
 
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.view.LayoutInflater
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
@@ -83,6 +85,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         when (state) {
             is AddFdtViewModel.AddFdtUiState.SuccessPostOrPutFdtData -> {
                 fancyToast(getString(R.string.success_post_fdt), FancyToast.SUCCESS)
+
                 onBackPressed()
             }
             is AddFdtViewModel.AddFdtUiState.SuccessUpdateCoveredFatList -> {

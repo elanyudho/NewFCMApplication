@@ -1,12 +1,16 @@
 package com.dicoding.fcmapplication.ui.fdt.main
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +41,10 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
 
     private var paginator: RecyclerViewPaginator? = null
 
+    private var refreshDataNotify: (() -> Unit)? = null
+
+    private var resultLauncher : ActivityResultLauncher<Intent>? = null
+
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentFdtBinding
         get() = { layoutInflater, viewGroup, b ->
             FragmentFdtBinding.inflate(layoutInflater, viewGroup, b)
@@ -60,6 +68,8 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
                 tvFdtLocation.text = "FDT in ${session.user?.region}"
             }
 
+            setResultLauncher()
+
             with(binding) {
                 searchFdt.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
@@ -77,6 +87,7 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
 
                 })
             }
+
             setFdtActions()
             setFdtPagination()
         }
@@ -112,6 +123,15 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
         }
     }
 
+    fun getFdtListFromOutside() {
+        fdtVerticalAdapter.clearList()
+        if (session.user?.isAdmin == true) {
+            session.user?.region?.let { mViewModel.getFdtList(it, 1) }
+        } else {
+            session.user?.region?.let { mViewModel.getFdtList(it, 1) }
+        }
+    }
+
     private fun setFdtPagination() {
         paginator = RecyclerViewPaginator(binding.rvFdt.layoutManager as LinearLayoutManager)
         paginator?.setOnLoadMoreListener { page ->
@@ -130,11 +150,24 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
             fdtVerticalAdapter.setOnClickData {
                 val intent = Intent(requireContext(), FdtDetailActivity::class.java)
                 intent.putExtra(FdtDetailActivity.EXTRA_DETAIL_FDT, it.fdtName)
-                startActivity(intent)
+                resultLauncher?.launch(intent)
             }
         }
     }
 
+    fun setOnRefreshData(action: () -> Unit) {
+        this.refreshDataNotify = action
+    }
+
+    private fun setResultLauncher() {
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                refreshDataNotify?.invoke()
+            }
+        }
+    }
 
     private fun startInitialLoading() {
         binding.progressFdt.visible()
