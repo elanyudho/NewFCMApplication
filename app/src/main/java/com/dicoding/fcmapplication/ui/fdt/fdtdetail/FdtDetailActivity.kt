@@ -196,6 +196,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                 startActivity(intent)
             }
         }
+        setVisibilityByUserLevel()
     }
 
     @SuppressLint("SetTextI18n")
@@ -222,7 +223,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
     }
 
     private fun onAddButtonClicked() {
-        setVisbility(clicked)
+        setVisibility(clicked)
         setAnimation(clicked)
         setClickable(clicked)
         clicked = !clicked
@@ -242,7 +243,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
         }
     }
 
-    private fun setVisbility(clicked: Boolean) {
+    private fun setVisibility(clicked: Boolean) {
         if(!clicked){
             with(binding){
                 fabEdit.visible()
@@ -252,6 +253,18 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             with(binding){
                 fabEdit.invisible()
                 fabDelete.invisible()
+            }
+        }
+    }
+
+    private fun setVisibilityByUserLevel() {
+        if(session.user?.isAdmin == true){
+            with(binding){
+                fabMenu.visible()
+            }
+        }else {
+            with(binding){
+                fabMenu.gone()
             }
         }
     }

@@ -9,10 +9,8 @@ import com.dicoding.core.extension.onError
 import com.dicoding.core.extension.onSuccess
 import com.dicoding.fcmapplication.domain.model.Region
 import com.dicoding.fcmapplication.domain.model.User
-import com.dicoding.fcmapplication.domain.usecase.auth.GetLoginUseCase
 import com.dicoding.fcmapplication.domain.usecase.auth.GetRegionListUseCase
 import com.dicoding.fcmapplication.domain.usecase.auth.GetRegisterUseCase
-import com.dicoding.fcmapplication.ui.other.companyprofile.CompanyProfileViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

@@ -2,6 +2,7 @@ package com.dicoding.core.abstraction
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import java.lang.IllegalArgumentException
@@ -25,10 +26,15 @@ abstract class BaseActivityBinding<T: ViewBinding> : AppCompatActivity() {
 
         _binding = bindingInflater.invoke(layoutInflater)
         setContentView(requireNotNull(_binding).root)
+        setSoftInputMode()
         setupView()
     }
 
     protected abstract fun setupView()
+
+    private fun setSoftInputMode() {
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+    }
 
     override fun onDestroy() {
         _binding = null

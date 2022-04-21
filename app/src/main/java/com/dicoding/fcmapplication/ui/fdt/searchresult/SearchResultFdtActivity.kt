@@ -10,6 +10,7 @@ import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.ActivitySearchResultFdtBinding
 import com.dicoding.fcmapplication.ui.fdt.adapter.FdtVerticalAdapter
+import com.dicoding.fcmapplication.ui.fdt.dialog.FdtFilterDialogFragment
 import com.dicoding.fcmapplication.ui.fdt.fdtdetail.FdtDetailActivity
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
@@ -29,7 +30,7 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
     @Inject
     lateinit var session: Session
 
-    private lateinit var queryFdtName: String
+    private lateinit var filter: FdtFilterDialogFragment.Filter
 
     private var paginator: RecyclerViewPaginator? = null
 
@@ -41,33 +42,38 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
         get() = { ActivitySearchResultFdtBinding.inflate(layoutInflater) }
 
     override fun setupView() {
-        queryFdtName = intent.getStringExtra(EXTRA_NAME) ?: ""
+        filter = intent.getParcelableExtra(EXTRA_FILTER)!!
 
         mViewModel.uiState.observe(this, this)
 
         setFdtPagination()
 
+        setFilterButton()
+
         if (session.user?.isCenterAdmin == true){
-            mViewModel.getFdtSearchResult(session.user?.region.toString(), queryFdtName, 1)
+            mViewModel.getFdtSearchResult(filter.region, filter.search, 1)
         }else{
-            mViewModel.getFdtSearchResult(session.user?.region.toString(), queryFdtName, 1)
+            mViewModel.getFdtSearchResult(session.user?.region.toString(), filter.search, 1)
         }
 
-        binding.searchFdt.setQuery(queryFdtName)
+        binding.searchFdt.setQuery(filter.search)
 
         with(binding) {
             btnBack.setOnClickListener { onBackPressed() }
             searchFdt.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
+                    filter.search = query?: ""
+                    isFirstGet = true
+                    filter.region = ""
+
                     if (session.user?.isCenterAdmin == true){
-                        mViewModel.getFdtSearchResult(session.user?.region.toString(), query?:"", 1)
+                        mViewModel.getFdtSearchResult(filter.region, filter.search, 1)
                     }else{
-                        mViewModel.getFdtSearchResult(session.user?.region.toString(), query?:"", 1)
+                        mViewModel.getFdtSearchResult(session.user?.region.toString(), filter.search, 1)
                     }
 
                     searchFdtAdapter.clearList()
-                    queryFdtName = query?:""
-                    searchFdt.setQuery("")
+                    searchFdt.setQuery(filter.search)
                     searchFdt.clearFocus()
                     return true
                 }
@@ -77,6 +83,18 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
                 }
 
             })
+            searchFdt.setOnAdditionalButtonListener {
+                filter.search = searchFdt.getQuery()
+                FdtFilterDialogFragment.build(
+                    filter
+                ){
+                    isFirstGet = true
+                    searchFdtAdapter.clearList()
+                    searchFdt.setQuery(filter.search)
+                    mViewModel.getFdtSearchResult(filter.region, filter.search, 1)
+                    searchFdt.clearFocus()
+                }.show(supportFragmentManager, FdtFilterDialogFragment::class.java.simpleName)
+            }
         }
 
         setFdtActions()
@@ -128,15 +146,23 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
     private fun setFdtPagination() {
         paginator = RecyclerViewPaginator(binding.rvFdt.layoutManager as LinearLayoutManager)
         paginator?.setOnLoadMoreListener { page ->
-            // TODO: 14/02/2022 add condition for central admin
             if (session.user?.isCenterAdmin == true){
-                mViewModel.getFdtSearchResult(session.user?.region.toString(), queryFdtName, page)
+                mViewModel.getFdtSearchResult(filter.region, filter.search, page)
             }else{
-                mViewModel.getFdtSearchResult(session.user?.region.toString(), queryFdtName, page)
+                mViewModel.getFdtSearchResult(session.user?.region.toString(), filter.search, page)
             }
             isFirstGet = false
         }
         paginator?.let { binding.rvFdt.addOnScrollListener(it) }
+    }
+
+    private fun setFilterButton() {
+        binding.searchFdt.setAdditionalButtonImage(R.drawable.ic_filter)
+        if (session.user?.isCenterAdmin == true){
+            binding.searchFdt.isUsingAdditionalButton(true)
+        }else{
+            binding.searchFdt.isUsingAdditionalButton(false)
+        }
     }
 
     private fun emptyDataView() {
@@ -178,7 +204,7 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
 
     companion object {
 
-        const val EXTRA_NAME = "device name"
+        const val EXTRA_FILTER = "filter"
 
     }
 

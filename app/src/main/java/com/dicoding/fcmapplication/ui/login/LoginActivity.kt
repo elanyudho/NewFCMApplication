@@ -139,17 +139,13 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
 
     private fun saveStateUser(user: User) {
         encryptedPreferences.encryptedToken = user.token
+        user.token = ""
         session.isLogin = true
         session.user = user
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finishAffinity()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
     }
 
 }

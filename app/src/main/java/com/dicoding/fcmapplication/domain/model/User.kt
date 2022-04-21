@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class User (
 
     val username: String = "",
-    val token:String = "",
+    var token:String = "",
     val isAdmin: Boolean = false,
     val isCenterAdmin: Boolean = false,
     val region: String? = ""

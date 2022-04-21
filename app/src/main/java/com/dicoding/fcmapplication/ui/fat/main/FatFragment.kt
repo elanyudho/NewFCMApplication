@@ -17,8 +17,11 @@ import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.FragmentFatBinding
 import com.dicoding.fcmapplication.ui.fat.adapter.FatVerticalAdapter
+import com.dicoding.fcmapplication.ui.fat.dialog.FatFilterDialogFragment
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
 import com.dicoding.fcmapplication.ui.fat.searchresult.SearchResultFatActivity
+import com.dicoding.fcmapplication.ui.fdt.dialog.FdtFilterDialogFragment
+import com.dicoding.fcmapplication.ui.fdt.searchresult.SearchResultFdtActivity
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.setStatusBar
@@ -68,13 +71,15 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
                 tvFatLocation.text = "FAT in ${session.user?.region}"
             }
 
+            setFilterButton()
+
             setResultLauncher()
 
             with(binding) {
                 searchFat.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         val intent = Intent(requireContext(), SearchResultFatActivity::class.java)
-                        intent.putExtra(SearchResultFatActivity.EXTRA_NAME, query)
+                        intent.putExtra(SearchResultFatActivity.EXTRA_FILTER, FatFilterDialogFragment.Filter(search = query?: ""))
                         startActivity(intent)
                         searchFat.setQuery("")
                         searchFat.clearFocus()
@@ -86,6 +91,18 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
                     }
 
                 })
+                searchFat.setOnAdditionalButtonListener {
+                    val filter = FatFilterDialogFragment.Filter()
+                    filter.search = searchFat.getQuery()
+                    FatFilterDialogFragment.build(
+                        filter = filter
+                    ){
+                        val intent = Intent(requireActivity(), SearchResultFatActivity::class.java).apply {
+                            putExtra(SearchResultFatActivity.EXTRA_FILTER, it)
+                        }
+                        startActivity(intent)
+                    }.show(childFragmentManager, this.javaClass.simpleName)
+                }
             }
 
             setFatActions()
@@ -163,6 +180,15 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
             if (result.resultCode == Activity.RESULT_OK) {
                 refreshDataNotify?.invoke()
             }
+        }
+    }
+
+    private fun setFilterButton() {
+        binding.searchFat.setAdditionalButtonImage(R.drawable.ic_filter)
+        if (session.user?.isCenterAdmin == true){
+            binding.searchFat.isUsingAdditionalButton(true)
+        }else{
+            binding.searchFat.isUsingAdditionalButton(false)
         }
     }
 

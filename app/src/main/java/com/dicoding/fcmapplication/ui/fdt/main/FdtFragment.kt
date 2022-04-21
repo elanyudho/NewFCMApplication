@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.core.abstraction.BaseFragmentBinding
@@ -19,6 +20,7 @@ import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.FragmentFdtBinding
 import com.dicoding.fcmapplication.ui.fdt.adapter.FdtVerticalAdapter
+import com.dicoding.fcmapplication.ui.fdt.dialog.FdtFilterDialogFragment
 import com.dicoding.fcmapplication.ui.fdt.fdtdetail.FdtDetailActivity
 import com.dicoding.fcmapplication.ui.fdt.searchresult.SearchResultFdtActivity
 import com.dicoding.fcmapplication.utils.extensions.*
@@ -68,13 +70,15 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
                 tvFdtLocation.text = "FDT in ${session.user?.region}"
             }
 
+            setFilterButton()
+
             setResultLauncher()
 
             with(binding) {
                 searchFdt.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         val intent = Intent(requireContext(), SearchResultFdtActivity::class.java)
-                        intent.putExtra(SearchResultFdtActivity.EXTRA_NAME, query)
+                        intent.putExtra(SearchResultFdtActivity.EXTRA_FILTER, FdtFilterDialogFragment.Filter(search = query?: ""))
                         startActivity(intent)
                         searchFdt.setQuery("")
                         searchFdt.clearFocus()
@@ -86,6 +90,18 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
                     }
 
                 })
+                searchFdt.setOnAdditionalButtonListener {
+                    val filter = FdtFilterDialogFragment.Filter()
+                    filter.search = searchFdt.getQuery()
+                    FdtFilterDialogFragment.build(
+                        filter = filter
+                    ){
+                        val intent = Intent(requireActivity(), SearchResultFdtActivity::class.java).apply {
+                            putExtra(SearchResultFdtActivity.EXTRA_FILTER, it)
+                        }
+                        startActivity(intent)
+                    }.show(childFragmentManager, this.javaClass.simpleName)
+                }
             }
 
             setFdtActions()
@@ -166,6 +182,15 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
             if (result.resultCode == Activity.RESULT_OK) {
                 refreshDataNotify?.invoke()
             }
+        }
+    }
+
+    private fun setFilterButton() {
+        binding.searchFdt.setAdditionalButtonImage(R.drawable.ic_filter)
+        if (session.user?.isCenterAdmin == true){
+            binding.searchFdt.isUsingAdditionalButton(true)
+        }else{
+            binding.searchFdt.isUsingAdditionalButton(false)
         }
     }
 

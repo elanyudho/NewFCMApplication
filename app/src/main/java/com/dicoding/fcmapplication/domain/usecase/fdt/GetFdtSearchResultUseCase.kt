@@ -11,12 +11,20 @@ class GetFdtSearchResultUseCase @Inject constructor(private val repository: FdtR
 UseCase<List<Fdt>, GetFdtSearchResultUseCase.Params>() {
 
     data class Params(
-        val zone: String,
-        val fdtName: String = "%00",
+        var zone: String,
+        var fdtName: String = "%00",
         val page: Long
     )
 
     override suspend fun run(params: Params): Either<Failure, List<Fdt>> {
+
+        if (params.fdtName == "" || params.fdtName.isNullOrEmpty()){
+            params.fdtName = "null"
+        }
+
+        if (params.zone == "" || params.zone.isNullOrEmpty()){
+            params.zone = "null"
+        }
 
         return repository.fdtSearchResult(params.zone, params.fdtName, params.page.toString())
     }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="FullScreenDialog" parent="Theme.MaterialComponents.Light.DialogWhenLarge">
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="colorAccent">@color/yellow_selective</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
+    </style>
+</resources>
