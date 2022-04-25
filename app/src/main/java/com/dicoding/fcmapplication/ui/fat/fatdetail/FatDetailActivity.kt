@@ -174,7 +174,6 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
         ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 mViewModel.getFatDetail(fatName)
-                Log.d("RefreshData", "DO REFRERSH DETAIL")
                 setResult(Activity.RESULT_OK)
             }
         }

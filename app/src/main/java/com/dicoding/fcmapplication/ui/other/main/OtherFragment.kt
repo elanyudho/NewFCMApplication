@@ -1,8 +1,11 @@
 package com.dicoding.fcmapplication.ui.other.main
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.dicoding.core.abstraction.BaseFragmentBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
@@ -11,6 +14,7 @@ import com.dicoding.fcmapplication.ui.other.adddata.AddDataActivity
 import com.dicoding.fcmapplication.ui.other.companyprofile.CompanyProfileActivity
 import com.dicoding.fcmapplication.ui.other.dialog.LogoutDialogFragment
 import com.dicoding.fcmapplication.ui.other.repairlist.RepairListActivity
+import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.invisible
 import com.dicoding.fcmapplication.utils.extensions.visible
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,22 +26,31 @@ class OtherFragment : BaseFragmentBinding<FragmentOtherBinding>() {
     @Inject
     lateinit var session: Session
 
+    private var refreshDataNotify: (() -> Unit)? = null
+
+    private var resultLauncher: ActivityResultLauncher<Intent>? = null
+
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentOtherBinding
-        get() = {layoutInflater, viewGroup, b ->
+        get() = { layoutInflater, viewGroup, b ->
             FragmentOtherBinding.inflate(layoutInflater, viewGroup, b)
         }
 
     override fun setupView() {
         callOnceWhenCreated {
 
-            if (session.user?.isAdmin == true){
-                if (session.user?.isCenterAdmin == true){
-                    // TODO: add logic
+            when {
+                session.user?.isCenterAdmin == true -> {
+                    centerAdminState()
                 }
-                else{
-                    binding.rowAddFdtFat.visible()
+                session.user?.isAdmin == true -> {
+                    adminState()
+                }
+                else -> {
+                    publicState()
                 }
             }
+
+            setResultLauncher()
 
             with(binding) {
                 headerOther.btnBack.invisible()
@@ -54,18 +67,45 @@ class OtherFragment : BaseFragmentBinding<FragmentOtherBinding>() {
                 }
 
                 rowAddFdtFat.setOnClickListener {
-                    startActivity(Intent(requireContext(), AddDataActivity::class.java))
+                    resultLauncher?.launch(Intent(requireContext(), AddDataActivity::class.java))
                 }
 
-                rowRegionAdmin.setOnClickListener {  }
+                rowRegionAdmin.setOnClickListener { }
 
                 rowLogout.setOnClickListener {
                     val dialogFragment = LogoutDialogFragment()
                     dialogFragment.show(childFragmentManager, "dialog")
                 }
-        }
+            }
 
         }
+    }
+
+    fun setOnRefreshData(action: () -> Unit) {
+        this.refreshDataNotify = action
+    }
+
+    private fun setResultLauncher() {
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                refreshDataNotify?.invoke()
+            }
+        }
+    }
+
+    private fun centerAdminState() {
+        binding.rowRegionAdmin.visible()
+    }
+
+    private fun adminState() {
+        binding.rowAddFdtFat.visible()
+    }
+
+    private fun publicState() {
+        binding.rowAddFdtFat.gone()
+        binding.rowRegionAdmin.gone()
     }
 
 }

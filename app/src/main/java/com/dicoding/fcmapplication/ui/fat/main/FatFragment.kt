@@ -10,23 +10,22 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.core.abstraction.BaseFragmentBinding
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.FragmentFatBinding
+import com.dicoding.fcmapplication.domain.model.Region
 import com.dicoding.fcmapplication.ui.fat.adapter.FatVerticalAdapter
 import com.dicoding.fcmapplication.ui.fat.dialog.FatFilterDialogFragment
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
 import com.dicoding.fcmapplication.ui.fat.searchresult.SearchResultFatActivity
-import com.dicoding.fcmapplication.ui.fdt.dialog.FdtFilterDialogFragment
-import com.dicoding.fcmapplication.ui.fdt.searchresult.SearchResultFdtActivity
-import com.dicoding.fcmapplication.utils.extensions.fancyToast
-import com.dicoding.fcmapplication.utils.extensions.gone
-import com.dicoding.fcmapplication.utils.extensions.setStatusBar
-import com.dicoding.fcmapplication.utils.extensions.visible
+import com.dicoding.fcmapplication.ui.fdt.main.FdtViewModel
+import com.dicoding.fcmapplication.utils.extensions.*
 import com.dicoding.fcmapplication.utils.pagination.RecyclerViewPaginator
+import com.google.android.material.tabs.TabLayout
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -48,6 +47,14 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
 
     private var resultLauncher : ActivityResultLauncher<Intent>? = null
 
+    private var regionName = ""
+
+    private var listRegion = listOf<Region>()
+
+    private var isFirstGet = true
+
+    private var onTabSelectedListener: TabLayout.OnTabSelectedListener? = null
+
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentFatBinding
         get() = { layoutInflater, viewGroup, b ->
             FragmentFatBinding.inflate(layoutInflater, viewGroup, b)
@@ -67,13 +74,17 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
         callOnceWhenCreated {
             mViewModel.uiState.observe(viewLifecycleOwner, this@FatFragment)
 
-            with(binding){
-                tvFatLocation.text = "FAT in ${session.user?.region}"
+            if (session.user?.isCenterAdmin == false){
+                with(binding){
+                    tvFatLocation.text = "FAT in ${session.user?.region}"
+                }
             }
 
             setFilterButton()
 
             setResultLauncher()
+
+            setRegionTabView()
 
             with(binding) {
                 searchFat.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
@@ -109,8 +120,9 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
             setFatPagination()
         }
         callOnceWhenDisplayed {
-            if (session.user?.isAdmin == true) {
-                session.user?.region?.let { mViewModel.getFatList(it, 1) }
+            isFirstGet = true
+            if (session.user?.isCenterAdmin == true) {
+                mViewModel.getRegionList()
             } else {
                 session.user?.region?.let { mViewModel.getFatList(it, 1) }
             }
@@ -122,8 +134,27 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
             is FatViewModel.FatUiState.FatLoaded -> {
                 stopLoading()
 
-                fatVerticalAdapter.appendList(state.list)
+                if (state.list.isEmpty() && isFirstGet) {
+                    emptyDataView()
+                }else {
+                    dataIsNotEmptyView()
+                    fatVerticalAdapter.appendList(state.list)
+                }
 
+            }
+            is FatViewModel.FatUiState.RegionLoaded -> {
+                listRegion = state.list
+                regionName = state.list[0].regionName ?: ""
+
+                setTabItems()
+                setTabAction()
+
+                //init tvFatLocation
+                with(binding) {
+                    tvFatLocation.text = "FAT in $regionName"
+                }
+
+                mViewModel.getFatList(regionName, 1)
             }
             is FatViewModel.FatUiState.InitialLoading -> {
                 startInitialLoading()
@@ -131,7 +162,12 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
             is FatViewModel.FatUiState.PagingLoading -> {
                 startPagingLoading()
             }
-            is FatViewModel.FatUiState.FailedLoadFat -> {
+            is FatViewModel.FatUiState.LoadingRegion -> {
+                if (state.isLoading) {
+                    startInitialLoading()
+                }
+            }
+            is FatViewModel.FatUiState.FailedLoad -> {
                 requireActivity().fancyToast(
                     getString(R.string.error_unknown_error),
                     FancyToast.ERROR
@@ -153,10 +189,54 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
     private fun setFatPagination() {
         paginator = RecyclerViewPaginator(binding.rvFat.layoutManager as LinearLayoutManager)
         paginator?.setOnLoadMoreListener { page ->
-            // TODO: 14/02/2022 Add Condition for central admin
-            session.user?.region?.let { mViewModel.getFatList(it, page) }
+            if (session.user?.isCenterAdmin == true) {
+                mViewModel.getFatList(regionName, page)
+            } else {
+                session.user?.region?.let { mViewModel.getFatList(it, page) }
+            }
+            isFirstGet = false
         }
         paginator?.let { binding.rvFat.addOnScrollListener(it) }
+    }
+
+    private fun setTabAction() {
+        onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                val tabPosition = tab?.position?.let { listRegion[it] }
+                regionName = tabPosition?.regionName ?: ""
+
+                with(binding) {
+                    tvFatLocation.text = "FAT in $regionName"
+                }
+
+                fatVerticalAdapter.clearList()
+                mViewModel.getFatList(regionName, 1)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        }
+
+        onTabSelectedListener?.let {
+            binding.tabLayoutCourse.addOnTabSelectedListener(it)
+        }
+    }
+
+    private fun setTabItems() {
+        with(binding.tabLayoutCourse) {
+            val tabList = mutableListOf<String>()
+            listRegion.forEach {
+                tabList.add(it.regionName!!)
+            }
+            // Add tabs
+            addTitleOnlyTabs(tabList)
+
+            // Set margins
+            setTabsMargin(0, 6.dp, 12.dp, 6.dp)
+        }
     }
 
     private fun setFatActions() {
@@ -192,6 +272,24 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
         }
     }
 
+    private fun setRegionTabView() {
+        val tvFatLocation = binding.tvFatLocation.layoutParams as ConstraintLayout.LayoutParams
+
+        if (session.user?.isCenterAdmin == true) {
+            with(binding) {
+                tabLayoutCourse.visible()
+                tvFatLocation.topToBottom = tabLayoutCourse.id
+                tvFatLocation.topMargin = 16.dp
+            }
+        } else {
+            with(binding) {
+                tabLayoutCourse.gone()
+                tvFatLocation.topToBottom = searchFat.id
+                tvFatLocation.topMargin = 16.dp
+            }
+        }
+    }
+
     fun setOnRefreshData(action: () -> Unit) {
         this.refreshDataNotify = action
     }
@@ -206,6 +304,20 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
 
     private fun startPagingLoading() {
         binding.progressFat.visible()
+    }
+
+    private fun emptyDataView() {
+        with(binding){
+            grpEmptyData.visible()
+            rvFat.gone()
+        }
+    }
+
+    private fun dataIsNotEmptyView() {
+        with(binding){
+            grpEmptyData.gone()
+            rvFat.visible()
+        }
     }
 
 }

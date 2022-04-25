@@ -67,13 +67,9 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
                     filter.region = ""
 
                     if (session.user?.isCenterAdmin == true){
-                        if (query != null) {
-                            mViewModel.getFatSearchResult(filter.region, filter.search, 1)
-                        }
+                        mViewModel.getFatSearchResult(filter.region, filter.search, 1)
                     }else{
-                        if (query != null) {
-                            mViewModel.getFatSearchResult(session.user?.region.toString(), filter.search, 1)
-                        }
+                        mViewModel.getFatSearchResult(session.user?.region.toString(), filter.search, 1)
                     }
 
                     searchFatAdapter.clearList()

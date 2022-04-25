@@ -32,7 +32,7 @@
     <string name="fat_location">FAT Location</string>
     <string name="repair_notes">Repair Notes</string>
     <string name="are_you_sure_want_to_exit">Are you sure want to exit?</string>
-    <string name="back_confirmation">Are you sure want to exit? \nThe data you have filled in will be deleted</string>
+    <string name="back_confirmation">Are you sure want to exit? \nAll unsaved changes will be lost without saving</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -47,6 +47,8 @@
     <string name="search_result">Search Result</string>
     <string name="search_fat">Search FAT</string>
     <string name="sorry_no_result_found">Sorry, No Result Found</string>
+    <string name="data_is_not_available">Sorry, Data Is Not Available</string>
+    <string name="data_is_not_available_desc">Data For This Region Is Not Yet Available, Please Come Back Later For The Latest Information</string>
     <string name="we_cannot_find_what_are_you_looking_for_please_try_another_keyword">We Cannot Find What Are You Looking For. Please Try Another Keyword.</string>
     <string name="need_service">Status: Need Service</string>
     <string name="no_fat_covered">No FAT Covered</string>
