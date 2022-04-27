@@ -64,6 +64,8 @@ dependencies {
 
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:$hiltx_version"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.4.0'
     kapt "com.google.dagger:hilt-android-compiler:$hiltx_version"
 
     // Glide

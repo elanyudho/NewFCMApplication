@@ -21,7 +21,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvDeviceName"
+                android:id="@+id/tvRegion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -37,7 +37,7 @@
                 android:id="@+id/imgCapacityIndicator"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_toEndOf="@+id/tvDeviceName"
+                android:layout_toEndOf="@+id/tvRegion"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="14dp"
                 android:src="@drawable/ic_circle"
@@ -68,10 +68,10 @@
             android:textColor="@color/blue_lochmara"
             android:textSize="12sp"
             android:fontFamily="@font/inter_regular"
-            app:layout_constraintEnd_toEndOf="@+id/tvDeviceName"
+            app:layout_constraintEnd_toEndOf="@+id/tvRegion"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/tvDeviceName"
-            app:layout_constraintTop_toBottomOf="@+id/tvDeviceName"
+            app:layout_constraintStart_toStartOf="@+id/tvRegion"
+            app:layout_constraintTop_toBottomOf="@+id/tvRegion"
             tools:text="Status: Normal" />
 
         <LinearLayout
@@ -91,7 +91,7 @@
                 android:textColor="@color/blue_lochmara"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/tvDeviceName"
+                app:layout_constraintStart_toStartOf="@+id/tvRegion"
                 app:layout_constraintTop_toBottomOf="@+id/tvTagCondition" />
 
 

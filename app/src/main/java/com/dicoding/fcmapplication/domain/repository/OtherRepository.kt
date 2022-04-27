@@ -19,6 +19,8 @@ interface OtherRepository {
     suspend fun putFdtData(id: String, putFDT: PostFDT): Either<Failure, Nothing?>
 
     suspend fun putFatData(id: String, putFAT: PostFAT): Either<Failure, Nothing?>
+
+    suspend fun regionAdminList(page: String): Either<Failure, List<RegionAdmin>>
 }
 
 

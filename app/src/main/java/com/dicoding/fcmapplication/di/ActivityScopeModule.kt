@@ -82,6 +82,10 @@ object MapperModule {
     @ActivityScoped
     fun provideCoveredFatMapper() = CoveredFatMapper()
 
+    @Provides
+    @ActivityScoped
+    fun provideRegionAdminListMapper() = RegionAdminListMapper()
+
 
 }
 

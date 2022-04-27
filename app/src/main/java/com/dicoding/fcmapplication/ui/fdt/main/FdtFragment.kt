@@ -172,6 +172,7 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
                 }
             }
             is FdtViewModel.FdtUiState.FailedLoaded -> {
+                stopLoading()
                 requireActivity().fancyToast(
                     getString(R.string.error_unknown_error),
                     FancyToast.ERROR

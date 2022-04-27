@@ -101,4 +101,9 @@ class RemoteDataSource
         request {
             api.deleteFatData(id)
         }
+
+    suspend fun regionAdminList(page: String): Either<Failure, List<RegionAdminResponse.RegionAdminResponseItem>> =
+        request {
+            api.getRegionAdminList(page)
+        }
 }

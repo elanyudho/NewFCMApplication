@@ -5,6 +5,7 @@ import com.dicoding.core.vo.Either
 import com.dicoding.fcmapplication.data.remote.mapper.ChooseFdtMapper
 import com.dicoding.fcmapplication.data.remote.mapper.CompanyProfileMapper
 import com.dicoding.fcmapplication.data.remote.mapper.CoveredFatMapper
+import com.dicoding.fcmapplication.data.remote.mapper.RegionAdminListMapper
 import com.dicoding.fcmapplication.data.remote.source.RemoteDataSource
 import com.dicoding.fcmapplication.domain.model.*
 import com.dicoding.fcmapplication.domain.repository.OtherRepository
@@ -15,7 +16,8 @@ class OtherRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val companyProfileMapper: CompanyProfileMapper,
     private val chooseFdtMapper: ChooseFdtMapper,
-    private val coveredFatMapper: CoveredFatMapper
+    private val coveredFatMapper: CoveredFatMapper,
+    private val regionAdminListMapper: RegionAdminListMapper
 ) : OtherRepository {
 
     override suspend fun companyProfile(): Either<Failure, CompanyProfile> {
@@ -97,6 +99,19 @@ class OtherRepositoryImpl @Inject constructor(
         return when (val response = remoteDataSource.putFatData(id, putFAT)) {
             is Either.Success -> {
                 Either.Success(null)
+            }
+            is Either.Error -> {
+                Timber.e(response.failure.throwable.message.toString())
+                Either.Error(response.failure)
+            }
+        }
+    }
+
+    override suspend fun regionAdminList(page: String): Either<Failure, List<RegionAdmin>> {
+        return when (val response = remoteDataSource.regionAdminList(page)) {
+            is Either.Success -> {
+                val regionAdminList = regionAdminListMapper.mapToDomain(response.body)
+                Either.Success(regionAdminList)
             }
             is Either.Error -> {
                 Timber.e(response.failure.throwable.message.toString())
