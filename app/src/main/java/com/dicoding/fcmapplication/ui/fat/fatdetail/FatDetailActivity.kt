@@ -153,6 +153,7 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                 startActivity(intent)
             }
         }
+        setVisibilityByUserLevel()
     }
 
     @SuppressLint("SetTextI18n")
@@ -173,14 +174,13 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
         ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 mViewModel.getFatDetail(fatName)
-                Log.d("RefreshData", "DO REFRERSH DETAIL")
                 setResult(Activity.RESULT_OK)
             }
         }
     }
 
     private fun onAddButtonClicked() {
-        setVisbility(clicked)
+        setVisibility(clicked)
         setAnimation(clicked)
         setClickable(clicked)
         clicked = !clicked
@@ -200,7 +200,7 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
         }
     }
 
-    private fun setVisbility(clicked: Boolean) {
+    private fun setVisibility(clicked: Boolean) {
         if(!clicked){
             with(binding){
                 fabEdit.visible()
@@ -210,6 +210,18 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
             with(binding){
                 fabEdit.invisible()
                 fabDelete.invisible()
+            }
+        }
+    }
+
+    private fun setVisibilityByUserLevel() {
+        if(session.user?.isAdmin == true){
+            with(binding){
+                fabMenu.visible()
+            }
+        }else {
+            with(binding){
+                fabMenu.gone()
             }
         }
     }

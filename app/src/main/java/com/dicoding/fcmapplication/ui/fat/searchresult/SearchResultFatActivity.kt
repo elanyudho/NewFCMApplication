@@ -10,7 +10,9 @@ import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.data.pref.Session
 import com.dicoding.fcmapplication.databinding.ActivitySearchResultFatBinding
 import com.dicoding.fcmapplication.ui.fat.adapter.FatVerticalAdapter
+import com.dicoding.fcmapplication.ui.fat.dialog.FatFilterDialogFragment
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
+import com.dicoding.fcmapplication.ui.fdt.dialog.FdtFilterDialogFragment
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.visible
@@ -29,7 +31,7 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
     @Inject
     lateinit var session: Session
 
-    private lateinit var queryFatName: String
+    private lateinit var filter: FatFilterDialogFragment.Filter
 
     private val searchFatAdapter: FatVerticalAdapter by lazy { FatVerticalAdapter() }
 
@@ -41,38 +43,37 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
         get() = { ActivitySearchResultFatBinding.inflate(layoutInflater) }
 
     override fun setupView() {
-        queryFatName = intent.getStringExtra(EXTRA_NAME) ?: ""
+        filter = intent.getParcelableExtra(EXTRA_FILTER)!!
+
+        setFatPagination()
+
+        setFilterButton()
 
         mViewModel.uiState.observe(this, this)
         if (session.user?.isCenterAdmin == true){
-            mViewModel.getFatSearchResult(session.user?.region.toString(), queryFatName, 1)
+            mViewModel.getFatSearchResult(filter.region, filter.search, 1)
         }else{
-            mViewModel.getFatSearchResult(session.user?.region.toString(), queryFatName, 1)
+            mViewModel.getFatSearchResult(session.user?.region.toString(), filter.search, 1)
         }
 
-        binding.searchFat.setQuery(queryFatName)
-
-        setFatPagination()
+        binding.searchFat.setQuery(filter.search)
 
         with(binding) {
             btnBack.setOnClickListener { onBackPressed() }
             searchFat.setOnQueryChangeListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
+                    filter.search = query?: ""
+                    isFirstGet = true
+                    filter.region = ""
+
                     if (session.user?.isCenterAdmin == true){
-                        // TODO: 20/02/2022 add logic for isCenterAdmin
-                        if (query != null) {
-                            mViewModel.getFatSearchResult(session.user?.region.toString(), query, 1)
-                            queryFatName = query
-                        }
+                        mViewModel.getFatSearchResult(filter.region, filter.search, 1)
                     }else{
-                        if (query != null) {
-                            mViewModel.getFatSearchResult(session.user?.region.toString(), query, 1)
-                            queryFatName = query
-                        }
+                        mViewModel.getFatSearchResult(session.user?.region.toString(), filter.search, 1)
                     }
 
                     searchFatAdapter.clearList()
-                    searchFat.setQuery("")
+                    searchFat.setQuery(filter.search)
                     searchFat.clearFocus()
                     return true
                 }
@@ -82,15 +83,21 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
                 }
 
             })
+            searchFat.setOnAdditionalButtonListener {
+                filter.search = searchFat.getQuery()
+                FatFilterDialogFragment.build(
+                    filter
+                ){
+                    isFirstGet = true
+                    searchFatAdapter.clearList()
+                    searchFat.setQuery(filter.search)
+                    mViewModel.getFatSearchResult(filter.region, filter.search, 1)
+                    searchFat.clearFocus()
+                }.show(supportFragmentManager, FatFilterDialogFragment::class.java.simpleName)
+            }
         }
 
         setFatActions()
-    }
-
-    companion object {
-
-        const val EXTRA_NAME = "device name"
-
     }
 
     override fun onChanged(state: SearchResultFatViewModel.SearchResultFatUiState?) {
@@ -138,11 +145,10 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
     private fun setFatPagination() {
         paginator = RecyclerViewPaginator(binding.rvFat.layoutManager as LinearLayoutManager)
         paginator?.setOnLoadMoreListener { page ->
-            // TODO: 14/02/2022 add condition for central admin
             if (session.user?.isCenterAdmin == true){
-                mViewModel.getFatSearchResult(session.user?.region.toString(), queryFatName, page)
+                mViewModel.getFatSearchResult(filter.region, filter.search, page)
             }else{
-                mViewModel.getFatSearchResult(session.user?.region.toString(), queryFatName, page)
+                mViewModel.getFatSearchResult(session.user?.region.toString(), filter.search, page)
             }
             isFirstGet = false
         }
@@ -155,6 +161,15 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
             tvNotFound2.visible()
             imageNotFound.visible()
             rvFat.gone()
+        }
+    }
+
+    private fun setFilterButton() {
+        binding.searchFat.setAdditionalButtonImage(R.drawable.ic_filter)
+        if (session.user?.isCenterAdmin == true){
+            binding.searchFat.isUsingAdditionalButton(true)
+        }else{
+            binding.searchFat.isUsingAdditionalButton(false)
         }
     }
 
@@ -185,5 +200,11 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
     private fun startPagingLoading() {
         binding.progressFat.visible()
     }
+    companion object {
+
+        const val EXTRA_FILTER = "filter"
+
+    }
+
 
 }

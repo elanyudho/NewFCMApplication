@@ -65,7 +65,11 @@ class MainActivity : BaseActivityBinding<ActivityMainBinding>() {
 
             fatFragment.setOnRefreshData {
                 fatFragment.getFatListFromOutside()
-                Log.d("RefreshData", "DO REFRERSH MAIN")
+            }
+
+            otherFragment.setOnRefreshData {
+                fdtFragment.getFdtListFromOutside()
+                fatFragment.getFatListFromOutside()
             }
         }
     }

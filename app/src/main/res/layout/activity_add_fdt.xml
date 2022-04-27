@@ -250,7 +250,7 @@
                 android:fontFamily="@font/inter_regular"
                 android:hint="@string/ex_loss"
                 android:importantForAutofill="no"
-                android:inputType="text"
+                android:inputType="number"
                 android:maxLines="1"
                 android:padding="12dp"
                 android:textColor="@color/black"

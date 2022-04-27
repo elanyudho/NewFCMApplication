@@ -25,4 +25,9 @@
         <attr name="paddingButtonRight" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="FilterButton">
+        <attr name="textFilter" format="string"/>
+        <attr name="backgroundFilter" format="reference"/>
+    </declare-styleable>
+
 </resources>

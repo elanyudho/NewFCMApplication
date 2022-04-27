@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue_dim"
@@ -11,29 +11,40 @@
         android:id="@+id/searchFdt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/bg_rounded_searchview"
         android:backgroundTint="@color/white"
         android:queryHint="@string/search_fdt"
-        android:layout_marginTop="32dp"
-        android:layout_marginHorizontal="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:queryHint="@string/search_fdt"
         app:useAdditionalButton="false" />
 
+    <com.dicoding.fcmapplication.utils.customview.tablayout.CustomTabLayout
+        android:id="@+id/tabLayoutCourse"
+        style="@style/Theme.FCMApplication.ChooserTabLayout.Region"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchFdt" />
+
     <TextView
         android:id="@+id/tvFdtLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/inter_semi_bold"
         android:textColor="@color/blue_lochmara"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/searchFdt"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/searchFdt"
-        app:layout_constraintTop_toBottomOf="@+id/searchFdt"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayoutCourse"
         tools:text="FDT in Sleman" />
 
 
@@ -41,10 +52,10 @@
         android:id="@+id/rvFdt"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:paddingHorizontal="18dp"
-        android:layout_marginTop="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/progressFdt"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,12 +68,66 @@
         android:id="@+id/progressFdt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
         android:layout_marginBottom="8dp"
-        android:visibility="gone"
+        android:indeterminate="true"
         android:indeterminateTint="@color/yellow_selective"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageNotFound"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="24dp"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/ic_not_found"
+        app:layout_constraintBottom_toTopOf="@+id/tvNotFound2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNotFound"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvNotFound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="212dp"
+        android:text="@string/data_is_not_available"
+        android:textColor="@color/blue_lochmara"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/imageNotFound"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvNotFound2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="46dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginBottom="240dp"
+        android:gravity="center"
+        android:text="@string/data_is_not_available_desc"
+        android:textColor="@color/blue_lochmara"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageNotFound" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/grpEmptyData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="imageNotFound, tvNotFound, tvNotFound2"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

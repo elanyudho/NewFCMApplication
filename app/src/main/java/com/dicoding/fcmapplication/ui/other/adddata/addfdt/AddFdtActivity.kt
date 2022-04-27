@@ -2,8 +2,11 @@ package com.dicoding.fcmapplication.ui.other.adddata.addfdt
 
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.core.exception.Failure
@@ -25,6 +28,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
     Observer<AddFdtViewModel.AddFdtUiState> {
@@ -37,15 +41,15 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
 
     private var isEmpty = false
 
-    private var isDefault = false
-
     private var isService = false
 
     private var fdtDetail: FdtDetail? = null
 
     private var purposeOpen = ""
 
-    private val coveredFatAdapter : CoveredFatAdapter by lazy { CoveredFatAdapter() }
+    private var isDefault = true
+
+    private val coveredFatAdapter: CoveredFatAdapter by lazy { CoveredFatAdapter() }
 
     private var coveredFatList: List<FdtDetail.FatList> = mutableListOf()
 
@@ -61,9 +65,12 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         fdtDetail?.let { setFdtDetailToField(it) }
 
         setDatePicker()
-        if(purposeOpen == TO_EDIT){
+
+        checkDataChanged()
+
+        if (purposeOpen == TO_EDIT) {
             binding.headerAddData.tvTitleHeader.text = getString(R.string.edit_fdt)
-        }else{
+        } else {
             binding.headerAddData.tvTitleHeader.text = getString(R.string.add_fdt)
         }
         binding.headerAddData.btnBack.setOnClickListener {
@@ -85,11 +92,11 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         when (state) {
             is AddFdtViewModel.AddFdtUiState.SuccessPostOrPutFdtData -> {
                 fancyToast(getString(R.string.success_post_fdt), FancyToast.SUCCESS)
-
+                setResult(Activity.RESULT_OK)
                 onBackPressed()
             }
             is AddFdtViewModel.AddFdtUiState.SuccessUpdateCoveredFatList -> {
-                if (purposeOpen == TO_EDIT){
+                if (purposeOpen == TO_EDIT) {
                     coveredFatAdapter.submitList(state.coveredFatList)
                     coveredFatList = state.coveredFatList
                     binding.etCoveredFdt.setOnClickListener {
@@ -110,7 +117,11 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         }
     }
 
-    private fun doAddData(isService: Boolean, coveredFatList: List<FdtDetail.FatList> = emptyList(), fdtId: String = "") {
+    private fun doAddData(
+        isService: Boolean,
+        coveredFatList: List<FdtDetail.FatList> = emptyList(),
+        fdtId: String = ""
+    ) {
         with(binding) {
             if (etFdtName.text.isNullOrEmpty()) {
                 etFdtName.error = "This field is required"
@@ -152,7 +163,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
             if (isEmpty) {
                 return
             } else {
-                if (purposeOpen == TO_EDIT){
+                if (purposeOpen == TO_EDIT) {
                     val postFDT = PostFDT(
                         fdt_name = etFdtName.text.toString(),
                         fdt_total_core = etTotalCore.text.toString(),
@@ -201,12 +212,9 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
             setHasFixedSize(true)
 
             coveredFatAdapter.setOnDeleteSkill { deleteData ->
+                //for data changed
+                isDefault = false
                 mutableList.remove(deleteData)
-                /*mutableList.map {
-                    if (it.fatId == deleteData.fatId && it.fatName == deleteData.fatName){
-                        mutableList.remove(it)
-                    }
-                }*/
                 mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(mutableList))
             }
         }
@@ -221,7 +229,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
             binding.etActivationDate.error = "This field is required"
             binding.etActivationDate.requestFocus()
             isEmpty = true
-        }else{
+        } else {
             binding.etActivationDate.error = null
             binding.etActivationDate.clearFocus()
         }
@@ -300,17 +308,13 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
 
 
     private fun doBackPage() {
-        with(binding) {
-            isDefault = (etFdtName.text.isNullOrEmpty() || etTotalCore.text.isNullOrEmpty() || etCoreUsed.text.isNullOrEmpty()
-                    || etCoreBackup.text.isNullOrEmpty() || etLocation.text.isNullOrEmpty() || etActivationDate.text.isNullOrEmpty()
-                    || etLoss.text.isNullOrEmpty() || !isService)
-        }
         if (isDefault) {
             onBackPressed()
-        }else {
+        } else {
             val dialogFragment = BackConfirmationDialogFragment()
             dialogFragment.show(supportFragmentManager, "back_Confirmation")
         }
+        hideKeyboard(this)
     }
 
     private fun setFdtDetailToField(fdtDetail: FdtDetail) {
@@ -330,7 +334,10 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
     private fun showCoveredFat(coveredFatList: List<FdtDetail.FatList>) {
         //init dialog
         val bottomDialogCoveredFat = BottomDialogCoveredFatFragment()
-        bottomDialogCoveredFat.show(supportFragmentManager, BottomDialogCoveredFatFragment::class.java.simpleName)
+        bottomDialogCoveredFat.show(
+            supportFragmentManager,
+            BottomDialogCoveredFatFragment::class.java.simpleName
+        )
 
         val mutableList = coveredFatList.toMutableList()
 
@@ -339,9 +346,63 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         ) { data ->
             mutableList.add(data)
             mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(mutableList))
+            //for data changed
+            isDefault = false
 
             bottomDialogCoveredFat.dismiss()
         }
+    }
+
+    private fun checkDataChanged() {
+        with(binding) {
+            etFdtName.doAfterTextChanged {
+                isDefault = false
+            }
+
+            etTotalCore.doAfterTextChanged {
+                isDefault = false
+            }
+
+            etCoreUsed.doAfterTextChanged {
+                isDefault = false
+            }
+
+            etCoreBackup.doAfterTextChanged {
+                isDefault = false
+            }
+
+            etLocation.doAfterTextChanged {
+                isDefault = false
+            }
+
+            etActivationDate.doAfterTextChanged {
+                isDefault = false
+            }
+
+            etLoss.doAfterTextChanged {
+                isDefault = false
+            }
+
+            btnSwRepair.setOnClickListener {
+                isDefault = fdtDetail?.fdtIsService == btnSwRepair.isChecked
+            }
+
+            etRepairNote.doAfterTextChanged {
+                isDefault = false
+            }
+        }
+    }
+
+    private fun hideKeyboard(activity: Activity) {
+        val imm: InputMethodManager =
+            activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        //Find the currently focused view, so we can grab the correct window token from it.
+        var view: View? = activity.currentFocus
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     companion object {

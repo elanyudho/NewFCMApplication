@@ -30,7 +30,7 @@
 
         <com.dicoding.fcmapplication.utils.customview.tablayout.CustomTabLayout
             android:id="@+id/tabLayoutRepair"
-            style="@style/Theme.FCMApplication.ChooserTabLayout"
+            style="@style/Theme.FCMApplication.ChooserTabLayout.Device"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

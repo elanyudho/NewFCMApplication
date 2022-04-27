@@ -10,7 +10,7 @@ import com.dicoding.fcmapplication.domain.model.Repair
 
 class CoveredFatAdapter: RecyclerView.Adapter<CoveredFatAdapter.Holder>() {
 
-    private var listData = ArrayList<FdtDetail.FatList>()
+    var listData = ArrayList<FdtDetail.FatList>()
     private var onClickDelete: ((data: FdtDetail.FatList) -> Unit?)? = null
 
     fun submitList(newList: List<FdtDetail.FatList>) {
