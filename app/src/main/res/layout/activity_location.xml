@@ -51,7 +51,7 @@
         app:mapbox_cameraZoom="6.0" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tvRegion"
+        android:id="@+id/tvDeviceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"

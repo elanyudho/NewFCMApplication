@@ -198,4 +198,7 @@ object UseCaseModule {
     @ActivityScoped
     fun provideGetCoveredFatListUseCase(repository: OtherRepository) = GetCoveredFatListUseCase(repository)
 
+    @Provides
+    @ActivityScoped
+    fun provideGetRegionAdminListUseCase(repository: OtherRepository) = GetRegionAdminListUseCase(repository)
 }

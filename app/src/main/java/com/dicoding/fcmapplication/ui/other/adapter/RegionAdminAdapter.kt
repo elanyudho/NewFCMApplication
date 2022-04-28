@@ -26,7 +26,7 @@ class RegionAdminAdapter : PagingRecyclerViewAdapter<RegionAdminAdapter.RegionAd
         override fun bind(data: RegionAdmin) {
             with(binding) {
                 tvAdminName.text = data.adminName
-                tvRegion.text = data.adminRegion + "Region"
+                tvRegion.text = data.adminRegion + " Region"
                 tvAdminPosition.text = data.adminPosition
                 tvAdminEmail.text = data.adminEmail
                 tvAdminPhone.text = data.adminPhone

@@ -11,7 +11,7 @@ class RegionAdminListMapper : BaseMapper<List<RegionAdminResponse.RegionAdminRes
         return raw.map {
             RegionAdmin(
                 adminName = it.adminName,
-                adminImage = BASE_URL + it.adminImage[0].url,
+                adminImage = BASE_URL + it.adminImage.url,
                 adminPosition = it.adminPositon,
                 adminEmail = it.adminEmail,
                 adminRegion = it.adminRegion,

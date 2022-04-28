@@ -14,6 +14,7 @@ import com.dicoding.fcmapplication.utils.pagination.RecyclerViewPaginator
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 @AndroidEntryPoint
 class RegionAdminActivity : BaseActivityBinding<ActivityRegionAdminBinding>(),
     Observer<RegionAdminViewModel.RegionAdminUiState> {

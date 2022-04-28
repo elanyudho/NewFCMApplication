@@ -13,6 +13,7 @@ import com.dicoding.fcmapplication.databinding.FragmentOtherBinding
 import com.dicoding.fcmapplication.ui.other.adddata.AddDataActivity
 import com.dicoding.fcmapplication.ui.other.companyprofile.CompanyProfileActivity
 import com.dicoding.fcmapplication.ui.other.dialog.LogoutDialogFragment
+import com.dicoding.fcmapplication.ui.other.regionadmin.RegionAdminActivity
 import com.dicoding.fcmapplication.ui.other.repairlist.RepairListActivity
 import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.invisible
@@ -70,7 +71,9 @@ class OtherFragment : BaseFragmentBinding<FragmentOtherBinding>() {
                     resultLauncher?.launch(Intent(requireContext(), AddDataActivity::class.java))
                 }
 
-                rowRegionAdmin.setOnClickListener { }
+                rowRegionAdmin.setOnClickListener {
+                    startActivity(Intent(requireContext(), RegionAdminActivity::class.java))
+                }
 
                 rowLogout.setOnClickListener {
                     val dialogFragment = LogoutDialogFragment()

@@ -1,5 +1,6 @@
 package com.dicoding.fcmapplication.domain.usecase.other
 
+import android.util.Log
 import com.dicoding.core.abstraction.UseCase
 import com.dicoding.core.exception.Failure
 import com.dicoding.core.vo.Either
@@ -11,6 +12,7 @@ class GetRegionAdminListUseCase @Inject constructor(private val repository: Othe
     UseCase<List<RegionAdmin>, Long>() {
 
     override suspend fun run(params: Long): Either<Failure, List<RegionAdmin>> {
+        Log.d("Data Region", repository.regionAdminList((params.toString())).toString())
         return repository.regionAdminList(params.toString())
     }
 }

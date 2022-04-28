@@ -8,7 +8,7 @@ class RegionAdminResponse : ArrayList<RegionAdminResponse.RegionAdminResponseIte
         @SerializedName("admin_email")
         val adminEmail: String = "",
         @SerializedName("admin_image")
-        val adminImage: List<AdminImage> = listOf(),
+        val adminImage: AdminImage = AdminImage(),
         @SerializedName("admin_name")
         val adminName: String = "",
         @SerializedName("admin_phone")
