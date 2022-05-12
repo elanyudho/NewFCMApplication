@@ -85,4 +85,9 @@ interface ApiService {
     @DELETE("fats/{id}")
     suspend fun deleteFatData(@Path("id") id: String): Response<PostFatResponse>
 
+    @GET("region-admins/page/{page}")
+    suspend fun getRegionAdminList(
+        @Path("page") page: String
+    ): Response<List<RegionAdminResponse.RegionAdminResponseItem>>
+
 }

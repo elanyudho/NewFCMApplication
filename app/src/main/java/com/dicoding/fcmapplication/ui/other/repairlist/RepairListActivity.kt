@@ -187,7 +187,7 @@ class RepairListActivity : BaseActivityBinding<ActivityRepairListBinding>(),
         const val FDT = "FDT"
         const val FAT = "FAT"
 
-        const val NO_ZONE = "%00"
+        const val NO_ZONE = ""
     }
 
 }

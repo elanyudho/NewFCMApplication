@@ -18,17 +18,20 @@
         android:theme="@style/Theme.FCMApplication"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.other.adddata.addfat.AddFatActivity"
-            android:screenOrientation="portrait"
+            android:name=".ui.other.regionadmin.RegionAdminActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.other.adddata.addfat.AddFatActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.other.adddata.addfdt.AddFdtActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.other.adddata.AddDataActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.register.RegisterActivity"
             android:screenOrientation="portrait"
