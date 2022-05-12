@@ -4,6 +4,8 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.WindowManager
+import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.core.exception.Failure
@@ -57,6 +59,8 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
             disable(binding.etUsername)
             disable(binding.etPassword)
         }
+
+        checkDataChanged()
     }
 
     override fun onChanged(state: LoginViewModel.LoginUiState?) {
@@ -99,12 +103,12 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
         with(binding) {
 
             if (etUsername.text.isNullOrEmpty()) {
-                etUsername.error = "This field is required"
+                etEmailInputLayout.error = "This field is required"
                 etUsername.requestFocus()
                 isEmpty = true
             }
             if (etPassword.text.isNullOrEmpty()) {
-                binding.etPassword.error = "This field is required"
+                binding.etPasswordInputLayout.error = "This field is required"
                 binding.etPassword.requestFocus()
                 isEmpty = true
             }
@@ -146,6 +150,17 @@ class LoginActivity : BaseActivityBinding<ActivityLoginBinding>(),
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finishAffinity()
+    }
+
+    private fun checkDataChanged() {
+        with(binding) {
+            etUsername.doAfterTextChanged {
+                etEmailInputLayout.error = null
+            }
+            etPassword.doAfterTextChanged {
+                etPasswordInputLayout.error = null
+            }
+        }
     }
 
 }

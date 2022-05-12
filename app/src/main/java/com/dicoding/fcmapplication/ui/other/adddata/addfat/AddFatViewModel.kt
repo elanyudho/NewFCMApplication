@@ -28,7 +28,7 @@ class AddFatViewModel @Inject constructor(
     private var failure : Failure? = null
     private var errorCode = 0
 
-    sealed class AddFatUiState() {
+    sealed class AddFatUiState {
         data class ChooseFdtListLoaded(val list: List<FdtToAdd>) : AddFatUiState()
         object SuccessPostOrPutFatData : AddFatUiState()
         data class FailedLoadedOrTransaction(val failure: Failure) : AddFatUiState()

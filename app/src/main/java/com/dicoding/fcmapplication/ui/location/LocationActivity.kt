@@ -60,6 +60,10 @@ class LocationActivity : AppCompatActivity() {
 
     private lateinit var destination: Point
 
+    var isGranted = false
+
+    var isFirstOpen = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token))
@@ -88,15 +92,7 @@ class LocationActivity : AppCompatActivity() {
             this.mapboxMap = mapboxMap
             mapboxMap.setStyle(Style.MAPBOX_STREETS) { style ->
 
-                showMyLocation(style)
-
-                val latLng = dataLocation.split(",")
-                showPosition(latLng[1].toDouble(), latLng[0].toDouble(), deviceName)
-                val startPoint = Point.fromLngLat(mylocation.longitude, mylocation.latitude)
-                val endPoint = Point.fromLngLat(latLng[1].toDouble(), latLng[0].toDouble())
-                getRoute(startPoint,endPoint, mapboxMap)
-                destination = Point.fromLngLat(latLng[1].toDouble(),latLng[0].toDouble())
-                showNavigation()
+                showMyLocation(style, mapboxMap)
             }
         }
 
@@ -116,7 +112,7 @@ class LocationActivity : AppCompatActivity() {
     }
 
     @SuppressLint("MissingPermission")
-    private fun showMyLocation(style: Style) {
+    private fun showMyLocation(style: Style, mapboxMap: MapboxMap) {
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
             val locationComponentOptions = LocationComponentOptions.builder(this)
                 .pulseEnabled(true)
@@ -128,7 +124,7 @@ class LocationActivity : AppCompatActivity() {
                 .builder(this, style)
                 .locationComponentOptions(locationComponentOptions)
                 .build()
-            locationComponent = mapboxMap?.locationComponent!!
+            locationComponent = mapboxMap.locationComponent
             locationComponent.activateLocationComponent(locationComponentActivationOptions)
             locationComponent.isLocationComponentEnabled = true
             locationComponent.cameraMode = CameraMode.TRACKING
@@ -137,24 +133,34 @@ class LocationActivity : AppCompatActivity() {
                 locationComponent.lastKnownLocation?.latitude as Double,
                 locationComponent.lastKnownLocation?.longitude as Double
             )
-            mapboxMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(mylocation, 12.0))
+            mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylocation, 12.0))
         } else {
             permissionsManager = PermissionsManager(object : PermissionsListener {
                 override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
                     Toast.makeText(
                         this@LocationActivity,
-                        "Anda harus mengizinkan location permission untuk menggunakan aplikasi ini",
+                        "You must allow location permission to use this feature",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
 
                 override fun onPermissionResult(granted: Boolean) {
+                    isFirstOpen = false
                     if (granted) {
-                        mapboxMap?.getStyle { style ->
-                            showMyLocation(style)
+                        isGranted = granted
+                        mapboxMap.getStyle { style ->
+                            showMyLocation(style, mapboxMap)
+
+                            val latLng = dataLocation.split(",")
+                            showPosition(latLng[1].toDouble(), latLng[0].toDouble(), deviceName)
+                            val startPoint = Point.fromLngLat(mylocation.longitude, mylocation.latitude)
+                            val endPoint = Point.fromLngLat(latLng[1].toDouble(), latLng[0].toDouble())
+                            getRoute(startPoint,endPoint, mapboxMap)
+                            destination = Point.fromLngLat(latLng[1].toDouble(),latLng[0].toDouble())
+                            showNavigation()
                         }
                     } else {
-                        finish()
+                        isGranted = granted
                     }
                 }
             })
@@ -221,7 +227,15 @@ class LocationActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        binding.mapView.onResume()
+        if (isGranted && isFirstOpen) {
+            binding.mapView.onResume()
+        } else if (isGranted && !isFirstOpen) {
+            binding.mapView.onResume()
+        } else if (!isGranted && isFirstOpen) {
+            binding.mapView.onResume()
+        } else if (!isGranted && !isFirstOpen) {
+            onBackPressed()
+        }
     }
 
     override fun onPause() {

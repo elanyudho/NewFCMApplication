@@ -106,51 +106,49 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
     private fun doAddData(isService: Boolean, id: String) {
         with(binding) {
             if (etFatName.text.isNullOrEmpty()) {
-                etFatName.error = "This field is required"
-                etFatName.requestFocus()
+                etFatNameInputLayout.error = "This field is required"
                 isEmpty = true
             }
             if (etTotalCore.text.isNullOrEmpty()) {
-                etTotalCore.error = "This field is required"
-                etTotalCore.requestFocus()
+                etTotalCoreInputLayout.error = "This field is required"
                 isEmpty = true
             }
             if (etCoreUsed.text.isNullOrEmpty()) {
-                etCoreUsed.error = "This field is required"
-                etCoreUsed.requestFocus()
+                etCoreUsedInputLayout.error = "This field is required"
                 isEmpty = true
             }
             if (etCoreBackup.text.isNullOrEmpty()) {
-                etCoreBackup.error = "This field is required"
-                etCoreBackup.requestFocus()
+                etCoreBackupInputLayout.error = "This field is required"
                 isEmpty = true
             }
-            if (etLocation.text.isNullOrEmpty()) {
-                etLocation.error = "This field is required"
-                etLocation.requestFocus()
+            if (etLongitude.text.isNullOrEmpty()) {
+                etLongitudeInputLayout.error = "This field is required"
+                isEmpty = true
+            }
+            if (etLatitude.text.isNullOrEmpty()) {
+                etLatitudeInputLayout.error = "This field is required"
                 isEmpty = true
             }
             if (etActivationDate.text.isNullOrEmpty()) {
-                etActivationDate.error = "This field is required"
-                etActivationDate.requestFocus()
+                etActivationDateInputLayout.error = "This field is required"
                 isEmpty = true
             }else{
-                etActivationDate.error = null
-                etActivationDate.clearFocus()
+                etActivationDateInputLayout.error = null
                 isEmpty = false
             }
             if (etLoss.text.isNullOrEmpty()) {
-                etLoss.error = "This field is required"
-                etLoss.requestFocus()
+                etLossInputLayout.error = "This field is required"
+                isEmpty = true
+            }
+            if (etCoveredHome.text.isNullOrEmpty()) {
+                etCoveredHomeInputLayout.error = "This field is required"
                 isEmpty = true
             }
             if (etChooseFat.text.isNullOrEmpty()) {
-                etChooseFat.error = "This field is required"
-                etChooseFat.requestFocus()
+                etChooseFatInputLayout.error = "This field is required"
                 isEmpty = true
             }else{
                 etChooseFat.error = null
-                etChooseFat.clearFocus()
             }
 
             //check everything is valid
@@ -169,7 +167,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
                         fat_activated = etActivationDate.text.toString(),
                         fat_region = session.user?.region.toString(),
                         fat_in_repair = isService,
-                        fat_location = etLocation.text.toString(),
+                        fat_location = etLongitude.text.toString() + "," + etLatitude.text.toString(),
                         fat_note = if (etRepairNote.text.isNullOrEmpty()) {
                             "None"
                         } else {
@@ -190,7 +188,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
                         fat_activated = etActivationDate.text.toString(),
                         fat_region = session.user?.region.toString(),
                         fat_in_repair = isService,
-                        fat_location = etLocation.text.toString(),
+                        fat_location = etLongitude.text.toString() + "," + etLatitude.text.toString(),
                         fat_note = if (etRepairNote.text.isNullOrEmpty()) {
                             "None"
                         } else {
@@ -266,12 +264,8 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
                 binding.etChooseFat.setText(data.fdtName)
                 idFdtToAdd = data.fdtId
                 if (etChooseFat.text.isNullOrEmpty()) {
-                    etChooseFat.error = "This field is required"
-                    etChooseFat.requestFocus()
+                    etChooseFatInputLayout.error = "This field is required"
                     isEmpty = true
-                }else{
-                    etChooseFat.error = null
-                    etChooseFat.clearFocus()
                 }
             }
             bottomDialogChooseFdt.dismiss()
@@ -292,6 +286,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
     }
 
     private fun setFatDetailToField(fatDetail: FatDetail) {
+        val latLng = fatDetail.fatLocation?.split(",")
         with(binding) {
             etChooseFat.setText(fatDetail.fdtBind?.fdtName)
             etFatName.setText(fatDetail.fatName)
@@ -299,7 +294,8 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             etCoreUsed.setText(fatDetail.fatCoreUsed)
             etCoreBackup.setText(fatDetail.fatCoreRemaining)
             etCoveredHome.setText(fatDetail.fatCoveredHome)
-            etLocation.setText(fatDetail.fatLocation)
+            etLongitude.setText(latLng?.get(0) ?: "")
+            etLatitude.setText(latLng?.get(1) ?: "")
             etLoss.setText(fatDetail.fatLoss)
             etActivationDate.setText(fatDetail.fatActivationDate)
             btnSwRepair.isChecked = fatDetail.fatIsService!!
@@ -309,38 +305,52 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
     private fun checkDataChanged() {
         with(binding) {
             etFatName.doAfterTextChanged {
+                etFatNameInputLayout.error = null
                 isDefault = false
             }
 
             etChooseFat.doAfterTextChanged {
+                etChooseFatInputLayout.error = null
                 isDefault = false
             }
 
             etTotalCore.doAfterTextChanged {
+                etTotalCoreInputLayout.error = null
                 isDefault = false
             }
 
             etCoreUsed.doAfterTextChanged {
-
-            }
-
-            etCoreBackup.doAfterTextChanged {
+                etCoreUsedInputLayout.error = null
                 isDefault = false
             }
 
-            etLocation.doAfterTextChanged {
+            etCoreBackup.doAfterTextChanged {
+                etCoreBackupInputLayout.error = null
+                isDefault = false
+            }
+
+            etLongitude.doAfterTextChanged {
+                etLongitudeInputLayout.error = null
+                isDefault = false
+            }
+
+            etLatitude.doAfterTextChanged {
+                etLatitudeInputLayout.error = null
                 isDefault = false
             }
 
             etCoveredHome.doAfterTextChanged {
+                etCoveredHomeInputLayout.error = null
                 isDefault = false
             }
 
             etActivationDate.doAfterTextChanged {
+                etActivationDateInputLayout.error = null
                 isDefault = false
             }
 
             etLoss.doAfterTextChanged {
+                etLossInputLayout.error = null
                 isDefault = false
             }
 
@@ -374,7 +384,8 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             etTotalCore.isCursorVisible = true
             etLoss.isCursorVisible = true
             etRepairNote.isCursorVisible = true
-            etLocation.isCursorVisible = true
+            etLongitude.isCursorVisible = true
+            etLatitude.isCursorVisible = true
             etCoreBackup.isCursorVisible = true
             etCoveredHome.isCursorVisible = true
         }
@@ -387,7 +398,8 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             etTotalCore.isCursorVisible = false
             etLoss.isCursorVisible = false
             etRepairNote.isCursorVisible = false
-            etLocation.isCursorVisible = false
+            etLongitude.isCursorVisible = false
+            etLatitude.isCursorVisible = false
             etCoreBackup.isCursorVisible = false
             etCoveredHome.isCursorVisible = false
         }

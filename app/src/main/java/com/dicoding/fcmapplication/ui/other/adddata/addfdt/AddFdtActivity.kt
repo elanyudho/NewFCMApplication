@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.core.exception.Failure
@@ -85,7 +84,6 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
             doAddData(isService, coveredFatList, fdtDetail?.fdtId.toString())
         }
 
-
     }
 
     override fun onChanged(state: AddFdtViewModel.AddFdtUiState?) {
@@ -124,38 +122,38 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
     ) {
         with(binding) {
             if (etFdtName.text.isNullOrEmpty()) {
-                etFdtName.error = "This field is required"
-                etFdtName.requestFocus()
+                etFdtNameInputLayout.error = "This field is required"
                 isEmpty = true
             }
             if (etTotalCore.text.isNullOrEmpty()) {
-                etTotalCore.error = "This field is required"
-                etTotalCore.requestFocus()
+                etTotalCoreInputLayout.error = "This field is required"
                 isEmpty = true
             }
             if (etCoreUsed.text.isNullOrEmpty()) {
-                etCoreUsed.error = "This field is required"
-                etCoreUsed.requestFocus()
+                etCoreUsedInputLayout.error = "This field is required"
                 isEmpty = true
             }
             if (etCoreBackup.text.isNullOrEmpty()) {
-                etCoreBackup.error = "This field is required"
-                etCoreBackup.requestFocus()
+                etCoreBackupInputLayout.error = "This field is required"
                 isEmpty = true
             }
-            if (etLocation.text.isNullOrEmpty()) {
-                etLocation.error = "This field is required"
-                etLocation.requestFocus()
+            if (etLongitude.text.isNullOrEmpty()) {
+                etLongitudeInputLayout.error = "This field is required"
                 isEmpty = true
             }
+
+            if (etLatitude.text.isNullOrEmpty()) {
+                etLatitudeInputLayout.error = "This field is required"
+                isEmpty = true
+            }
+
             if (etLoss.text.isNullOrEmpty()) {
-                etLoss.error = "This field is required"
-                etLoss.requestFocus()
+                etLossInputLayout.error = "This field is required"
                 isEmpty = true
             }
+
             if (etActivationDate.text.isNullOrEmpty()) {
-                etActivationDate.error = "This field is required"
-                etActivationDate.requestFocus()
+                etActivationDateInputLayout.error = "This field is required"
                 isEmpty = true
             }
 
@@ -173,7 +171,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
                         fdt_activated = etActivationDate.text.toString(),
                         fdt_region = session.user?.region.toString(),
                         fdt_in_repair = isService,
-                        fdt_location = etLocation.text.toString(),
+                        fdt_location = etLongitude.text.toString() + "," + etLatitude.text.toString(),
                         fdt_note = if (etRepairNote.text.isNullOrEmpty()) {
                             "None"
                         } else {
@@ -192,7 +190,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
                         fdt_activated = etActivationDate.text.toString(),
                         fdt_region = session.user?.region.toString(),
                         fdt_in_repair = isService,
-                        fdt_location = etLocation.text.toString(),
+                        fdt_location = etLongitude.text.toString() + "," + etLatitude.text.toString(),
                         fdt_note = if (etRepairNote.text.isNullOrEmpty()) {
                             "None"
                         } else {
@@ -226,12 +224,8 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         val sdf = SimpleDateFormat(calFormat, Locale.UK)
         binding.etActivationDate.setText(sdf.format(calendar.time))
         if (binding.etActivationDate.text.isNullOrEmpty()) {
-            binding.etActivationDate.error = "This field is required"
-            binding.etActivationDate.requestFocus()
+            binding.etActivationDateInputLayout.error = "This field is required"
             isEmpty = true
-        } else {
-            binding.etActivationDate.error = null
-            binding.etActivationDate.clearFocus()
         }
     }
 
@@ -289,7 +283,8 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
             etTotalCore.isCursorVisible = true
             etLoss.isCursorVisible = true
             etRepairNote.isCursorVisible = true
-            etLocation.isCursorVisible = true
+            etLongitude.isCursorVisible = true
+            etLatitude.isCursorVisible = true
             etCoreBackup.isCursorVisible = true
         }
     }
@@ -300,8 +295,8 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
             etCoreUsed.isCursorVisible = false
             etTotalCore.isCursorVisible = false
             etLoss.isCursorVisible = false
-            etRepairNote.isCursorVisible = false
-            etLocation.isCursorVisible = false
+            etLongitude.isCursorVisible = false
+            etLatitude.isCursorVisible = false
             etCoreBackup.isCursorVisible = false
         }
     }
@@ -318,12 +313,14 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
     }
 
     private fun setFdtDetailToField(fdtDetail: FdtDetail) {
+        val latLng = fdtDetail.fdtLocation?.split(",")
         with(binding) {
             etFdtName.setText(fdtDetail.fdtName)
             etTotalCore.setText(fdtDetail.fdtCore)
             etCoreUsed.setText(fdtDetail.fdtCoreUsed)
             etCoreBackup.setText(fdtDetail.fdtCoreRemaining)
-            etLocation.setText(fdtDetail.fdtLocation)
+            etLongitude.setText(latLng?.get(0) ?: "")
+            etLatitude.setText(latLng?.get(1) ?: "")
             etLoss.setText(fdtDetail.fdtLoss)
             etActivationDate.setText(fdtDetail.fdtActivationDate)
             btnSwRepair.isChecked = fdtDetail.fdtIsService!!
@@ -340,12 +337,29 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         )
 
         val mutableList = coveredFatList.toMutableList()
+        var isNotSame = false
 
         bottomDialogCoveredFat.setOnClickItemListener(
-            titleDialog = getString(R.string.choose_fdt)
+            titleDialog = getString(R.string.choose_fat)
         ) { data ->
-            mutableList.add(data)
-            mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(mutableList))
+            if (mutableList.isEmpty()) {
+                mutableList.add(data)
+                mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(mutableList))
+            } else {
+                for (it in mutableList) {
+                    if (it == data) {
+                        fancyToast("FAT has been added", FancyToast.INFO)
+                        isNotSame = false
+                        break
+                    } else {
+                        isNotSame = true
+                    }
+                }
+                if (isNotSame){
+                    mutableList.add(data)
+                    mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(mutableList))
+                }
+            }
             //for data changed
             isDefault = false
 
@@ -356,30 +370,42 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
     private fun checkDataChanged() {
         with(binding) {
             etFdtName.doAfterTextChanged {
+                etFdtNameInputLayout.error = null
                 isDefault = false
             }
 
             etTotalCore.doAfterTextChanged {
+                etTotalCoreInputLayout.error = null
                 isDefault = false
             }
 
             etCoreUsed.doAfterTextChanged {
+                etCoreUsedInputLayout.error = null
                 isDefault = false
             }
 
             etCoreBackup.doAfterTextChanged {
+                etCoreBackupInputLayout.error = null
                 isDefault = false
             }
 
-            etLocation.doAfterTextChanged {
+            etLongitude.doAfterTextChanged {
+                etLongitudeInputLayout.error = null
+                isDefault = false
+            }
+
+            etLatitude.doAfterTextChanged {
+                etLatitudeInputLayout.error = null
                 isDefault = false
             }
 
             etActivationDate.doAfterTextChanged {
+                etActivationDateInputLayout.error = null
                 isDefault = false
             }
 
             etLoss.doAfterTextChanged {
+                etLossInputLayout.error = null
                 isDefault = false
             }
 
