@@ -4,9 +4,9 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import com.dicoding.core.abstraction.BaseActivityBinding
 import com.dicoding.core.exception.Failure
@@ -26,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
@@ -80,6 +81,11 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
         binding.etChooseFat.setOnClickListener {
             showChooseFdt()
         }
+
+        binding.etRepairNote.setOnTouchListener({ view, motionEvent ->
+            view.parent.requestDisallowInterceptTouchEvent(true)
+            false
+        })
 
         binding.btnSave.setOnClickListener { doAddData(isService, fatDetail?.fatId.toString()) }
     }

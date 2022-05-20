@@ -80,6 +80,11 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
             isService = isChecked
         }
 
+        binding.etRepairNote.setOnTouchListener({ view, motionEvent ->
+            view.parent.requestDisallowInterceptTouchEvent(true)
+            false
+        })
+
         binding.btnSave.setOnClickListener {
             doAddData(isService, coveredFatList, fdtDetail?.fdtId.toString())
         }
