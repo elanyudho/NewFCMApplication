@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
@@ -19,6 +20,8 @@ import com.dicoding.fcmapplication.domain.model.FatDetail
 import com.dicoding.fcmapplication.ui.location.LocationActivity
 import com.dicoding.fcmapplication.ui.other.adddata.addfat.AddFatActivity
 import com.dicoding.fcmapplication.utils.extensions.*
+import com.mapbox.android.core.permissions.PermissionsListener
+import com.mapbox.android.core.permissions.PermissionsManager
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -41,6 +44,8 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
     private var fatDetail: FatDetail? = null
 
     private var resultLauncher : ActivityResultLauncher<Intent>? = null
+
+    private lateinit var permissionsManager: PermissionsManager
 
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
     private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
@@ -144,13 +149,41 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                 icRepair.invisible()
             }
            cvLocation.setOnClickListener {
-                val intent = Intent(this@FatDetailActivity, LocationActivity::class.java)
-                val extras = Bundle()
-                extras.putInt(LocationActivity.EXTRA_TYPE, 2)
-                extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fatLocation)
-                extras.putString(LocationActivity.EXTRA_NAME, obj.fatName)
-                intent.putExtras(extras)
-                startActivity(intent)
+               if (PermissionsManager.areLocationPermissionsGranted(this@FatDetailActivity)){
+                   val intent = Intent(this@FatDetailActivity, LocationActivity::class.java)
+                   val extras = Bundle()
+                   extras.putInt(LocationActivity.EXTRA_TYPE, 2)
+                   extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fatLocation)
+                   extras.putString(LocationActivity.EXTRA_NAME, obj.fatName)
+                   intent.putExtras(extras)
+                   startActivity(intent)
+               } else {
+                   permissionsManager = PermissionsManager(object : PermissionsListener {
+                       override fun onPermissionResult(granted: Boolean) {
+                           if (granted) {
+                               val intent = Intent(this@FatDetailActivity, LocationActivity::class.java)
+                               val extras = Bundle()
+                               extras.putInt(LocationActivity.EXTRA_TYPE, 2)
+                               extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fatLocation)
+                               extras.putString(LocationActivity.EXTRA_NAME, obj.fatName)
+                               intent.putExtras(extras)
+                               startActivity(intent)
+                           } else {
+                               finish()
+                           }
+                       }
+
+                       override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
+                           Toast.makeText(
+                               this@FatDetailActivity,
+                               "This feature need your location",
+                               Toast.LENGTH_SHORT
+                           ).show()
+                       }
+
+                   })
+                   permissionsManager.requestLocationPermissions(this@FatDetailActivity)
+               }
             }
         }
         setVisibilityByUserLevel()

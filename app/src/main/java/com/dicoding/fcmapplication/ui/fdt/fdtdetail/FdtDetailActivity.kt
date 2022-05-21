@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +23,8 @@ import com.dicoding.fcmapplication.ui.fdt.more.MoreFatCoveredActivity
 import com.dicoding.fcmapplication.ui.location.LocationActivity
 import com.dicoding.fcmapplication.ui.other.adddata.addfdt.AddFdtActivity
 import com.dicoding.fcmapplication.utils.extensions.*
+import com.mapbox.android.core.permissions.PermissionsListener
+import com.mapbox.android.core.permissions.PermissionsManager
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -35,6 +38,8 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
 
     @Inject
     lateinit var session: Session
+
+    private lateinit var permissionsManager: PermissionsManager
 
     private val coveredAdapter: CoveredAdapter by lazy { CoveredAdapter() }
 
@@ -187,13 +192,42 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                 icRepair.invisible()
             }
             cvLocation.setOnClickListener {
-                val intent = Intent(this@FdtDetailActivity, LocationActivity::class.java)
-                val extras = Bundle()
-                extras.putInt(LocationActivity.EXTRA_TYPE, 1)
-                extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fdtLocation)
-                extras.putString(LocationActivity.EXTRA_NAME, obj.fdtName)
-                intent.putExtras(extras)
-                startActivity(intent)
+
+                if (PermissionsManager.areLocationPermissionsGranted(this@FdtDetailActivity)){
+                    val intent = Intent(this@FdtDetailActivity, LocationActivity::class.java)
+                    val extras = Bundle()
+                    extras.putInt(LocationActivity.EXTRA_TYPE, 1)
+                    extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fdtLocation)
+                    extras.putString(LocationActivity.EXTRA_NAME, obj.fdtName)
+                    intent.putExtras(extras)
+                    startActivity(intent)
+                } else {
+                    permissionsManager = PermissionsManager(object : PermissionsListener {
+                        override fun onPermissionResult(granted: Boolean) {
+                            if (granted) {
+                                val intent = Intent(this@FdtDetailActivity, LocationActivity::class.java)
+                                val extras = Bundle()
+                                extras.putInt(LocationActivity.EXTRA_TYPE, 1)
+                                extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fdtLocation)
+                                extras.putString(LocationActivity.EXTRA_NAME, obj.fdtName)
+                                intent.putExtras(extras)
+                                startActivity(intent)
+                            } else {
+                                finish()
+                            }
+                        }
+
+                        override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
+                            Toast.makeText(
+                                this@FdtDetailActivity,
+                                "This feature need your location",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                    })
+                    permissionsManager.requestLocationPermissions(this@FdtDetailActivity)
+                }
             }
         }
         setVisibilityByUserLevel()

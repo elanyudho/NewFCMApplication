@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,16 +12,22 @@
         android:id="@+id/btnBack"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
         android:background="@color/white"
         app:contentPadding="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/CircleImageView"
         app:srcCompat="@drawable/ic_back_register" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnBack">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -31,11 +37,11 @@
                 android:id="@+id/materialTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
                 android:text="@string/register_now"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/inter_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -71,19 +77,19 @@
                     android:id="@+id/et_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding ="14dp"
-                    android:hint="@string/email"
-                    android:textSize="14sp"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/dark_grey"
-                    android:fontFamily="@font/inter_regular"
                     android:background="@drawable/bg_field"
                     android:drawableStart="@drawable/ic_email"
                     android:drawablePadding="8dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:padding="14dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/dark_grey"
+                    android:textSize="14sp"
                     app:layout_constraintEnd_toStartOf="@+id/guideline11"
                     app:layout_constraintStart_toStartOf="@+id/guideline8"
-                    app:layout_constraintTop_toBottomOf="@+id/etEmailInputLayout"/>
+                    app:layout_constraintTop_toBottomOf="@+id/etEmailInputLayout" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,16 +113,16 @@
                     android:id="@+id/et_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="14dp"
-                    android:textSize="14sp"
-                    android:hint="@string/username"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/dark_grey"
-                    android:fontFamily="@font/inter_regular"
                     android:background="@drawable/bg_field"
                     android:drawableStart="@drawable/ic_person_login"
-                    android:drawablePadding="8dp"/>
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:hint="@string/username"
+                    android:inputType="text"
+                    android:padding="14dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/dark_grey"
+                    android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -136,22 +142,22 @@
                 app:hintTextColor="@color/white"
                 app:layout_constraintEnd_toEndOf="@+id/etUsernameInputLayout"
                 app:layout_constraintStart_toStartOf="@+id/etUsernameInputLayout"
-                app:layout_constraintTop_toBottomOf="@+id/etUsernameInputLayout" >
+                app:layout_constraintTop_toBottomOf="@+id/etUsernameInputLayout">
 
                 <EditText
                     android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="14dp"
-                    android:textSize="14sp"
+                    android:background="@drawable/bg_field"
+                    android:drawableStart="@drawable/ic_lock"
+                    android:drawablePadding="8dp"
                     android:fontFamily="@font/inter_regular"
                     android:hint="@string/password"
                     android:inputType="textPassword"
+                    android:padding="14dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/dark_grey"
-                    android:background="@drawable/bg_field"
-                    android:drawableStart="@drawable/ic_lock"
-                    android:drawablePadding="8dp" />
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -176,16 +182,16 @@
                     android:id="@+id/et_confirm_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="14dp"
-                    android:textSize="14sp"
+                    android:background="@drawable/bg_field"
+                    android:drawableStart="@drawable/ic_confirm_pass"
+                    android:drawablePadding="8dp"
                     android:fontFamily="@font/inter_regular"
                     android:hint="@string/confirm_password"
                     android:inputType="textPassword"
+                    android:padding="14dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/dark_grey"
-                    android:background="@drawable/bg_field"
-                    android:drawableStart="@drawable/ic_confirm_pass"
-                    android:drawablePadding="8dp" />
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -210,25 +216,25 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_field"
                     android:drawableStart="@drawable/ic_location_field"
+                    android:drawableEnd="@drawable/ic_arrow_drop_down"
                     android:drawablePadding="8dp"
+                    android:editable="false"
+                    android:focusable="false"
                     android:fontFamily="@font/inter_regular"
                     android:hint="Region"
-                    android:focusable="false"
-                    android:editable="false"
-                    android:paddingEnd="10dp"
                     android:paddingVertical="10dp"
-                    android:textSize="14sp"
+                    android:paddingEnd="10dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/dark_grey"
-                    android:drawableEnd="@drawable/ic_arrow_drop_down" />
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRegister"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
                 android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
                 android:backgroundTint="@color/yellow_selective"
                 android:fontFamily="@font/inter_bold"
                 android:paddingVertical="10dp"
@@ -261,35 +267,35 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.43" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cvLottieLoading"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:backgroundTint="@color/black_transparent"
-                android:clickable="true"
-                app:rippleColor="@android:color/transparent"
-                android:visibility="gone"
-                app:cardCornerRadius="12dp"
-                android:elevation="2dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/lottieAnimationView"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    app:lottie_autoPlay="true"
-                    app:lottie_fileName="ic_loading.json"
-                    app:lottie_loop="true" />
-
-            </com.google.android.material.card.MaterialCardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
-</LinearLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvLottieLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/black_transparent"
+        android:clickable="true"
+        android:elevation="2dp"
+        android:visibility="gone"
+        app:cardCornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@android:color/transparent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="ic_loading.json"
+            app:lottie_loop="true" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
