@@ -92,7 +92,7 @@ class LocationActivity : AppCompatActivity() {
             this.mapboxMap = mapboxMap
             mapboxMap.setStyle(Style.MAPBOX_STREETS) { style ->
 
-                showMyLocation(style, mapboxMap)
+                showMyLocation(style, mapboxMap, dataLocation)
             }
         }
 
@@ -112,7 +112,7 @@ class LocationActivity : AppCompatActivity() {
     }
 
     @SuppressLint("MissingPermission")
-    private fun showMyLocation(style: Style, mapboxMap: MapboxMap) {
+    private fun showMyLocation(style: Style, mapboxMap: MapboxMap, dataLocation: String) {
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
             val locationComponentOptions = LocationComponentOptions.builder(this)
                 .pulseEnabled(true)
@@ -149,7 +149,7 @@ class LocationActivity : AppCompatActivity() {
                     if (granted) {
                         isGranted = granted
                         mapboxMap.getStyle { style ->
-                            showMyLocation(style, mapboxMap)
+                            showMyLocation(style, mapboxMap, dataLocation)
 
                             val latLng = dataLocation.split(",")
                             showPosition(latLng[1].toDouble(), latLng[0].toDouble(), deviceName)
