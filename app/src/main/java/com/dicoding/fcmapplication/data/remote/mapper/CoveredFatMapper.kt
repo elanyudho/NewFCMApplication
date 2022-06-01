@@ -13,7 +13,8 @@ class CoveredFatMapper : BaseMapper<List<FatResponse.FatResponseItem>, List<FdtD
                 fatId = it.id.toString(),
                 fatIsService = it.fatInRepair,
                 coreUsed = it.fatCoreUsed,
-                total = it.fatTotalCore
+                total = it.fatTotalCore,
+                fdt = if (it.fdt == null){""} else {it.fdt.fdtName}
             )
         }
     }

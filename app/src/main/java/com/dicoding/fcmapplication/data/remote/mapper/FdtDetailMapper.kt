@@ -14,7 +14,8 @@ class FdtDetailMapper : BaseMapper<FdtDetailResponse, FdtDetail> {
                 fatId = it.id.toString(),
                 fatActivated = it.fatActivated,
                 total = it.fatTotalCore,
-                coreUsed = it.fatCoreUsed
+                coreUsed = it.fatCoreUsed,
+                fdt = raw.fdtName
             )
             listFatCovered.add(data)
         }

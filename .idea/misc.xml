@@ -33,7 +33,7 @@
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/tab_field_inactive.xml" value="0.1" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_add_data.xml" value="0.2" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_add_fat.xml" value="0.25" />
-        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_add_fdt.xml" value="0.33" />
+        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_add_fdt.xml" value="0.2" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_company_profile.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_fat_detail.xml" value="0.22" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_fdt_detail.xml" value="0.34385964912280703" />
@@ -52,11 +52,12 @@
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/dialog_filter_fdt_fragment.xml" value="0.1" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/dilog_filter_fdt_fragment.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/filter_button.xml" value="0.2" />
-        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_back_confirmation_dialog.xml" value="0.25" />
+        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_back_confirmation_dialog.xml" value="0.18" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_bottom_dialog_choose_fdt.xml" value="0.1" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_bottom_dialog_covered_fat.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_fat.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_fat_filter_dialog.xml" value="0.15" />
+        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_fat_has_covered_confirmation.xml" value="0.25" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_fdt.xml" value="0.25" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_logout_dialog.xml" value="0.2" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_other.xml" value="0.33" />
@@ -65,7 +66,7 @@
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/item_fat_select.xml" value="0.5607476635514018" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/item_filter_bottom_dialog.xml" value="0.2" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/item_rectangle.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/item_region_admin.xml" value="0.1" />
+        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/item_region_admin.xml" value="0.2" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/item_service_list.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20416666666666666" />
       </map>
