@@ -60,10 +60,6 @@ class LocationActivity : AppCompatActivity() {
 
     private lateinit var destination: Point
 
-    var isGranted = false
-
-    var isFirstOpen = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token))
@@ -93,12 +89,13 @@ class LocationActivity : AppCompatActivity() {
             mapboxMap.setStyle(Style.MAPBOX_STREETS) { style ->
 
                 showMyLocation(style, mapboxMap)
+
             }
         }
 
     }
 
-    private fun showPosition( long: Double, lat: Double, deviceName: String) {
+    private fun showPosition(long: Double, lat: Double, deviceName: String) {
         val locationDevice = LatLng(lat, long)
         val position = CameraPosition.Builder()
             .target(LatLng(lat, long))
@@ -113,59 +110,35 @@ class LocationActivity : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun showMyLocation(style: Style, mapboxMap: MapboxMap) {
-        if (PermissionsManager.areLocationPermissionsGranted(this)) {
-            val locationComponentOptions = LocationComponentOptions.builder(this)
-                .pulseEnabled(true)
-                .pulseColor(Color.BLUE)
-                .pulseAlpha(.4f)
-                .pulseInterpolator(BounceInterpolator())
-                .build()
-            val locationComponentActivationOptions = LocationComponentActivationOptions
-                .builder(this, style)
-                .locationComponentOptions(locationComponentOptions)
-                .build()
-            locationComponent = mapboxMap.locationComponent
-            locationComponent.activateLocationComponent(locationComponentActivationOptions)
-            locationComponent.isLocationComponentEnabled = true
-            locationComponent.cameraMode = CameraMode.TRACKING
-            locationComponent.renderMode = RenderMode.COMPASS
-            mylocation = LatLng(
-                locationComponent.lastKnownLocation?.latitude as Double,
-                locationComponent.lastKnownLocation?.longitude as Double
-            )
-            mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylocation, 12.0))
-        } else {
-            permissionsManager = PermissionsManager(object : PermissionsListener {
-                override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
-                    Toast.makeText(
-                        this@LocationActivity,
-                        "You must allow location permission to use this feature",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        val locationComponentOptions = LocationComponentOptions.builder(this)
+            .pulseEnabled(true)
+            .pulseColor(Color.BLUE)
+            .pulseAlpha(.4f)
+            .pulseInterpolator(BounceInterpolator())
+            .build()
+        val locationComponentActivationOptions = LocationComponentActivationOptions
+            .builder(this, style)
+            .locationComponentOptions(locationComponentOptions)
+            .build()
+        locationComponent = mapboxMap?.locationComponent!!
+        locationComponent.activateLocationComponent(locationComponentActivationOptions)
+        locationComponent.isLocationComponentEnabled = true
+        locationComponent.cameraMode = CameraMode.TRACKING
+        locationComponent.renderMode = RenderMode.COMPASS
+        mylocation = LatLng(
+            locationComponent.lastKnownLocation?.latitude as Double,
+            locationComponent.lastKnownLocation?.longitude as Double
+        )
+        mapboxMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(mylocation, 12.0))
 
-                override fun onPermissionResult(granted: Boolean) {
-                    isFirstOpen = false
-                    if (granted) {
-                        isGranted = granted
-                        mapboxMap.getStyle { style ->
-                            showMyLocation(style, mapboxMap)
+        val latLng = dataLocation.split(",")
+        showPosition(latLng[1].toDouble(), latLng[0].toDouble(), deviceName)
+        val startPoint = Point.fromLngLat(mylocation.longitude, mylocation.latitude)
+        val endPoint = Point.fromLngLat(latLng[1].toDouble(), latLng[0].toDouble())
+        getRoute(startPoint, endPoint, mapboxMap)
+        destination = Point.fromLngLat(latLng[1].toDouble(), latLng[0].toDouble())
+        showNavigation()
 
-                            val latLng = dataLocation.split(",")
-                            showPosition(latLng[1].toDouble(), latLng[0].toDouble(), deviceName)
-                            val startPoint = Point.fromLngLat(mylocation.longitude, mylocation.latitude)
-                            val endPoint = Point.fromLngLat(latLng[1].toDouble(), latLng[0].toDouble())
-                            getRoute(startPoint,endPoint, mapboxMap)
-                            destination = Point.fromLngLat(latLng[1].toDouble(),latLng[0].toDouble())
-                            showNavigation()
-                        }
-                    } else {
-                        isGranted = granted
-                    }
-                }
-            })
-            permissionsManager.requestLocationPermissions(this)
-        }
     }
 
     private fun getRoute(originPoint: Point, endPoint: Point, mapboxMap: MapboxMap) {
@@ -180,8 +153,9 @@ class LocationActivity : AppCompatActivity() {
 
                 }
 
-                override fun onResponse(call: Call<DirectionsResponse>,
-                                        response: Response<DirectionsResponse>
+                override fun onResponse(
+                    call: Call<DirectionsResponse>,
+                    response: Response<DirectionsResponse>
                 ) {
 
                     if (navigationMapRoute != null) {
@@ -227,15 +201,7 @@ class LocationActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (isGranted && isFirstOpen) {
-            binding.mapView.onResume()
-        } else if (isGranted && !isFirstOpen) {
-            binding.mapView.onResume()
-        } else if (!isGranted && isFirstOpen) {
-            binding.mapView.onResume()
-        } else if (!isGranted && !isFirstOpen) {
-            onBackPressed()
-        }
+        binding.mapView.onResume()
     }
 
     override fun onPause() {

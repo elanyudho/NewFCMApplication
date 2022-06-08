@@ -18,6 +18,7 @@ import com.dicoding.fcmapplication.domain.model.PostFDT
 import com.dicoding.fcmapplication.ui.dialogfilter.bottomdialogcoveredfat.BottomDialogCoveredFatFragment
 import com.dicoding.fcmapplication.ui.other.adapter.CoveredFatAdapter
 import com.dicoding.fcmapplication.ui.other.dialog.BackConfirmationDialogFragment
+import com.dicoding.fcmapplication.ui.other.dialog.FatHasCoveredConfirmationFragment
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.visible
@@ -79,6 +80,11 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         binding.btnSwRepair.setOnCheckedChangeListener { _, isChecked ->
             isService = isChecked
         }
+
+        binding.etRepairNote.setOnTouchListener({ view, motionEvent ->
+            view.parent.requestDisallowInterceptTouchEvent(true)
+            false
+        })
 
         binding.btnSave.setOnClickListener {
             doAddData(isService, coveredFatList, fdtDetail?.fdtId.toString())
@@ -342,22 +348,68 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         bottomDialogCoveredFat.setOnClickItemListener(
             titleDialog = getString(R.string.choose_fat)
         ) { data ->
-            if (mutableList.isEmpty()) {
-                mutableList.add(data)
-                mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(mutableList))
-            } else {
-                for (it in mutableList) {
-                    if (it == data) {
-                        fancyToast("FAT has been added", FancyToast.INFO)
-                        isNotSame = false
-                        break
-                    } else {
-                        isNotSame = true
-                    }
-                }
-                if (isNotSame){
+            if (data.fdt.isNullOrEmpty() || data.fdt == ""){
+                if (mutableList.isEmpty()) {
                     mutableList.add(data)
                     mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(mutableList))
+                } else {
+                    for (it in mutableList) {
+                        if (it == data) {
+                            fancyToast("${data.fatName} has been added", FancyToast.INFO)
+                            isNotSame = false
+                            break
+                        } else {
+                            isNotSame = true
+                        }
+                    }
+                    if (isNotSame){
+                        mutableList.add(data)
+                        mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(mutableList))
+                    }
+                }
+            } else if (data.fdt == fdtDetail?.fdtName) {
+
+                if (mutableList.isEmpty()) {
+                    mutableList.add(data)
+                    mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(mutableList))
+                } else {
+                    for (it in mutableList) {
+                        if (it == data) {
+                            fancyToast("${data.fatName} has been added", FancyToast.INFO)
+                            isNotSame = false
+                            break
+                        } else {
+                            isNotSame = true
+                        }
+                    }
+                    if (isNotSame) {
+                        mutableList.add(data)
+                        mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(mutableList))
+                    }
+                }
+            } else {
+                val fatHasCoveredDialog = FatHasCoveredConfirmationFragment()
+                fatHasCoveredDialog.show(
+                    supportFragmentManager,
+                    FatHasCoveredConfirmationFragment::class.java.simpleName
+                )
+
+                fatHasCoveredDialog.setConfirmationListener(fdtDetail?.fdtName.toString()) { isConfirm ->
+                    if (isConfirm) {
+                        for (it in mutableList) {
+                            if (it == data) {
+                                fancyToast("${data.fatName} has been added", FancyToast.INFO)
+                                isNotSame = false
+                                break
+                            } else {
+                                isNotSame = true
+                            }
+                        }
+                        if (isNotSame){
+                            mutableList.add(data)
+                            mViewModel.doSomething(AddFdtViewModel.Event.UpdateCoveredFat(mutableList))
+                        }
+                    }
                 }
             }
             //for data changed

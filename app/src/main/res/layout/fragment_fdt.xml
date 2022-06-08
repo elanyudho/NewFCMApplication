@@ -79,9 +79,9 @@
     <ImageView
         android:id="@+id/imageNotFound"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/ic_not_found"
         app:layout_constraintBottom_toTopOf="@+id/tvNotFound2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -93,7 +93,6 @@
         android:id="@+id/tvNotFound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="212dp"
         android:text="@string/data_is_not_available"
         android:textColor="@color/blue_lochmara"
         android:textSize="18sp"
@@ -102,8 +101,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread" />
+        app:layout_constraintTop_toBottomOf="@+id/tvFdtLocation"
+        app:layout_constraintVertical_bias="0.18"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvNotFound2"
@@ -111,7 +111,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="46dp"
         android:layout_marginEnd="46dp"
-        android:layout_marginBottom="240dp"
         android:gravity="center"
         android:text="@string/data_is_not_available_desc"
         android:textColor="@color/blue_lochmara"
@@ -127,7 +126,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="imageNotFound, tvNotFound, tvNotFound2"/>
+        app:constraint_referenced_ids="imageNotFound, tvNotFound, tvNotFound2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -97,43 +97,37 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
         with(binding) {
 
             if (etEmail.text.isNullOrEmpty()) {
-                etEmail.error = "This field is required"
-                etEmail.requestFocus()
+                etEmailInputLayout.error = "This field is required"
                 isEmpty = true
             }else{
                 val emailCheck = etEmail.text.toString().isValidEmail()
                 if(!emailCheck){
-                    etEmail.error = "Enter the email with the correct format"
-                    etEmail.requestFocus()
+                    etEmailInputLayout.error = "Enter the email with the correct format"
                 }else{
                     isEmailValid = true
                 }
             }
             if (etUsername.text.isNullOrEmpty()) {
-                etUsername.error = "This field is required"
-                etUsername.requestFocus()
+                etUsernameInputLayout.error = "This field is required"
                 isEmpty = true
             }
             if (etPassword.text.isNullOrEmpty()) {
-                binding.etPassword.error = "This field is required"
-                binding.etPassword.requestFocus()
+                binding.etPasswordInputLayout.error = "This field is required"
                 isEmpty = true
             }
             if (etConfirmPassword.text.isNullOrEmpty()) {
-                etConfirmPassword.error = "This field is required"
-                etConfirmPassword.requestFocus()
+                etConfirmPasswordInputLayout.error = "This field is required"
                 isEmpty = true
             }else {
                 if (etConfirmPassword.text.toString() != etPassword.text.toString()) {
                     etConfirmPassword.setText("")
-                    etConfirmPassword.error = "Password does not match"
-                    etConfirmPassword.requestFocus()
+                    etConfirmPasswordInputLayout.error = "Password does not match"
                 }else{
                     isPasswordValid =true
                 }
             }
             if (etRegion.text.isNullOrEmpty()){
-                etRegion.error = "This field is required"
+                etRegionInputLayout.error = "This field is required"
                 etEmail.requestFocus()
                 isEmpty = true
             }else{
@@ -186,12 +180,10 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
             with(binding) {
                 binding.etRegion.setText(data)
                 if (etRegion.text.isNullOrEmpty()) {
-                    etRegion.error = "This field is required"
-                    etRegion.requestFocus()
+                    etRegionInputLayout.error = "This field is required"
                     isEmpty = true
                 }else{
-                    etRegion.error = null
-                    etRegion.clearFocus()
+                    etRegionInputLayout.error = null
                 }
             }
             bottomDialogRegion.dismiss()

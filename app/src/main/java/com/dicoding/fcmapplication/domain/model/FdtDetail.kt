@@ -26,6 +26,7 @@ data class FdtDetail(
         val coreUsed: String?,
         val total: String?,
         val fatActivated: String?,
-        val fatIsService: Boolean?
+        val fatIsService: Boolean?,
+        val fdt: String?
     ): Parcelable
 }

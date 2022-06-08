@@ -86,7 +86,8 @@ class AddFdtViewModel @Inject constructor(
                         fatIsService = coveredFat.fatIsService,
                         fatActivated = coveredFat.fatActivated,
                         total = coveredFat.total,
-                        coreUsed = coveredFat.coreUsed
+                        coreUsed = coveredFat.coreUsed,
+                        fdt = coveredFat.fdt
                     )
                     fdtToAddList.add(data)
                 }
