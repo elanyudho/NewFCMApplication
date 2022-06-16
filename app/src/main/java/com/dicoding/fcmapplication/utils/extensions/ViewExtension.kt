@@ -99,6 +99,7 @@ fun View.invisible() {
 fun View.gone() {
     visibility = View.GONE
 }
+
 fun ImageView.setTint(@ColorRes colorRes: Int) {
     ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(ContextCompat.getColor(context, colorRes)))
 }

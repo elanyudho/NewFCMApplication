@@ -19,6 +19,7 @@
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_add_fdt.xml" value="0.1945" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_add_fdt_fat.xml" value="0.181" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_admin_name.xml" value="0.156" />
+        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_back.xml" value="0.127" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_chevron_right.xml" value="0.13" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_company.xml" value="0.2115" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_email.xml" value="0.156" />
@@ -68,6 +69,7 @@
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/item_rectangle.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/item_region_admin.xml" value="0.2" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/item_service_list.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/searchview_custom.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20416666666666666" />
       </map>
     </option>
