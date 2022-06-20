@@ -22,6 +22,7 @@
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_back.xml" value="0.127" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_chevron_right.xml" value="0.13" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_company.xml" value="0.2115" />
+        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_delete.xml" value="0.145" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_email.xml" value="0.156" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_email_region.xml" value="0.1" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/drawable/ic_filter.xml" value="0.13" />
@@ -35,7 +36,7 @@
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_add_data.xml" value="0.2" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_add_fat.xml" value="0.25" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_add_fdt.xml" value="0.2" />
-        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_company_profile.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_company_profile.xml" value="0.22" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_fat_detail.xml" value="0.22" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_fdt_detail.xml" value="0.34385964912280703" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_location.xml" value="0.1" />
