@@ -14,6 +14,7 @@ class GetFdtListNoPageUseCase @Inject constructor(private val repository: FdtRep
         val queries = HashMap<String, String>()
 
         queries["_fdt_region_contains"] = params?: ""
+        queries["_sort"] = "fdt_name:ASC"
 
         return repository.fdtListNoPage(queries)
     }

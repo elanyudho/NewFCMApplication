@@ -245,7 +245,6 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
         with(binding.rvFat) {
             adapter = fatVerticalAdapter
             setHasFixedSize(true)
-            setItemViewCacheSize(5)
 
             fatVerticalAdapter.setOnClickData {
                 val intent = Intent(requireContext(), FatDetailActivity::class.java)

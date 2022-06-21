@@ -247,7 +247,6 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
         with(binding.rvFdt) {
             adapter = fdtVerticalAdapter
             setHasFixedSize(true)
-            setItemViewCacheSize(5)
 
             fdtVerticalAdapter.setOnClickData {
                 val intent = Intent(requireContext(), FdtDetailActivity::class.java)

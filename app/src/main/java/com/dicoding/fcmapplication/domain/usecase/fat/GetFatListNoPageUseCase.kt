@@ -14,6 +14,7 @@ class GetFatListNoPageUseCase @Inject constructor(private val repository: FatRep
         val queries = HashMap<String, String>()
 
         queries["_fat_region_contains"] = params?: ""
+        queries["_sort"] = "fat_name:ASC"
 
         return repository.fatListNoPage(queries)
     }
