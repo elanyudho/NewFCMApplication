@@ -47,7 +47,7 @@ class FatDetailViewModel @Inject constructor(
 
     }
 
-    fun deleteFdt(uuid: String) {
+    fun deleteFat(uuid: String) {
         _uiState.value = FatDetailUiState.Loading(true)
         viewModelScope.launch(dispatcherProvider.io)  {
             deleteFatDataUseCase.run(uuid)

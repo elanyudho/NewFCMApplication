@@ -38,7 +38,7 @@
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_add_fdt.xml" value="0.2" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_company_profile.xml" value="0.22" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_fat_detail.xml" value="0.22" />
-        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_fdt_detail.xml" value="0.34385964912280703" />
+        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_fdt_detail.xml" value="0.22" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_location.xml" value="0.1" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
@@ -57,6 +57,7 @@
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_back_confirmation_dialog.xml" value="0.18" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_bottom_dialog_choose_fdt.xml" value="0.1" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_bottom_dialog_covered_fat.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_delete_confirmation_dialog.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_fat.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_fat_filter_dialog.xml" value="0.15" />
         <entry key="..\:/Users/Elan Yudho/AndroidStudioProjects/NewFCMApplication/app/src/main/res/layout/fragment_fat_has_covered_confirmation.xml" value="0.25" />
