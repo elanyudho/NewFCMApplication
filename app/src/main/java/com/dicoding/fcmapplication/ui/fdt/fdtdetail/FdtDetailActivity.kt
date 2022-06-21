@@ -22,6 +22,7 @@ import com.dicoding.fcmapplication.ui.fdt.adapter.CoveredAdapter
 import com.dicoding.fcmapplication.ui.fdt.more.MoreFatCoveredActivity
 import com.dicoding.fcmapplication.ui.location.LocationActivity
 import com.dicoding.fcmapplication.ui.other.adddata.addfdt.AddFdtActivity
+import com.dicoding.fcmapplication.ui.other.dialog.DeleteConfirmationDialogFragment
 import com.dicoding.fcmapplication.utils.extensions.*
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
@@ -85,7 +86,14 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
                 resultLauncher?.launch(intent)
             }
             fabDelete.setOnClickListener {
-                mViewModel.deleteFdt(fdtDetail?.fdtId.toString())
+                val dialogFragment = DeleteConfirmationDialogFragment()
+                dialogFragment.show(supportFragmentManager, "dialog")
+
+                dialogFragment.setConfirmationListener(DeleteConfirmationDialogFragment.FDT) { isConfirm ->
+                    if (isConfirm) {
+                        mViewModel.deleteFdt(fdtDetail?.fdtId.toString())
+                    }
+                }
             }
         }
     }

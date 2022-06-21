@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -19,6 +18,7 @@ import com.dicoding.fcmapplication.databinding.ActivityFatDetailBinding
 import com.dicoding.fcmapplication.domain.model.FatDetail
 import com.dicoding.fcmapplication.ui.location.LocationActivity
 import com.dicoding.fcmapplication.ui.other.adddata.addfat.AddFatActivity
+import com.dicoding.fcmapplication.ui.other.dialog.DeleteConfirmationDialogFragment
 import com.dicoding.fcmapplication.utils.extensions.*
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
@@ -81,7 +81,14 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                 resultLauncher?.launch(intent)
             }
             fabDelete.setOnClickListener {
-                mViewModel.deleteFdt(fatDetail?.fatId.toString())
+                val dialogFragment = DeleteConfirmationDialogFragment()
+                dialogFragment.show(supportFragmentManager, "dialog")
+
+                dialogFragment.setConfirmationListener(DeleteConfirmationDialogFragment.FAT) { isConfirm ->
+                    if (isConfirm) {
+                        mViewModel.deleteFat(fatDetail?.fatId.toString())
+                    }
+                }
             }
         }
 

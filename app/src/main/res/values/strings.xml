@@ -89,6 +89,8 @@
     <string name="success_delete_fdt">FDT deleted successfully</string>
     <string name="success_delete_fat">FAT deleted successfully</string>
     <string name="choose_fdt">Choose FDT</string>
+    <string name="fdt_delete_confirmation">Are you sure want to delete this FDT?</string>
+    <string name="fat_delete_confirmation">Are you sure want to delete this FAT?</string>
 
 
 </resources>
