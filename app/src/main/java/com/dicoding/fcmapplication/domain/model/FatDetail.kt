@@ -17,7 +17,8 @@ data class FatDetail(
     val fatActivationDate: String?,
     val fatId: String?,
     val fatRegion: String?,
-    val fdtBind: Fdt?
+    val fdtBind: Fdt?,
+    val fatLastUpdated: String?
 ) : Parcelable {
     @Parcelize
     data class Fdt(

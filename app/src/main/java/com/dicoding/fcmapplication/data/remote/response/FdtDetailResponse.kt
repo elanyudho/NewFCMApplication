@@ -27,7 +27,10 @@ data class FdtDetailResponse(
     @SerializedName("fdt_total_core")
     val fdtTotalCore: String = "",
     @SerializedName("id")
-    val id: Int = 0
+    val id: Int = 0,
+    @SerializedName("updated_at")
+    val updatedAt: String = ""
+
 ) {
     data class FatCoveredLists(
 

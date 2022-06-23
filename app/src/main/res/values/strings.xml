@@ -22,6 +22,7 @@
     <string name="hi">Hi,</string>
     <string name="exclamation_mark">!</string>
     <string name="company_profile">Company Profile</string>
+    <string name="information">Information</string>
     <string name="logout">Logout</string>
     <string name="others">Others</string>
     <string name="used">Used</string>
@@ -91,6 +92,7 @@
     <string name="choose_fdt">Choose FDT</string>
     <string name="fdt_delete_confirmation">Are you sure want to delete this FDT?</string>
     <string name="fat_delete_confirmation">Are you sure want to delete this FAT?</string>
+    <string name="last_updated_data">Last Updated Data</string>
 
 
 </resources>

@@ -193,6 +193,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             tvCoreUsed.text = obj.fdtCoreUsed
             tvFatLossNumber.text = obj.fdtLoss + " db"
             tvFatNumber.text = obj.fdtCoveredFat + " FAT Covered"
+            tvLastUpdate.text = obj.fdtLastUpdated?.convertDate()
             tvRepairNotes.text = if(obj.fdtNote == null || obj.fdtNote == "") "No note" else obj.fdtNote
             if (obj.fdtIsService == true){
                 icRepair.visible()

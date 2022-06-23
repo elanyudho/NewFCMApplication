@@ -29,7 +29,10 @@ data class FatDetailResponse(
     @SerializedName("home_covered")
     val fatHomeCovered: String = "",
     @SerializedName("id")
-    val id: Int = 0
+    val id: Int = 0,
+    @SerializedName("updated_at")
+    val updatedAt: String = ""
+
 ){
     data class Fdt(
         @SerializedName("fdt_name")

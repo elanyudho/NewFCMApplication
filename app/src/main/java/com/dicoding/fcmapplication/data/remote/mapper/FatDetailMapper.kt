@@ -28,7 +28,8 @@ class FatDetailMapper : BaseMapper<FatDetailResponse, FatDetail>
             fatId = raw.id.toString(),
             fatRegion = raw.fatRegion,
             fatActivationDate = raw.fatActivated,
-            fdtBind = fdtBind
+            fdtBind = fdtBind,
+            fatLastUpdated = raw.updatedAt
         )
     }
 
