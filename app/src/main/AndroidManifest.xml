@@ -18,6 +18,9 @@
         android:theme="@style/Theme.FCMApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.other.information.InformationActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.other.regionadmin.RegionAdminActivity"
             android:exported="false" />
         <activity

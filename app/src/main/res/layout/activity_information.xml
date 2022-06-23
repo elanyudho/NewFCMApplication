@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_dim"
+    tools:context=".ui.other.information.InformationActivity">
+
+    <include
+        android:id="@+id/headerInformation"
+        layout="@layout/header_app" />
+
+    <LinearLayout
+        android:id="@+id/rowCompanyProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerInformation">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:srcCompat="@drawable/ic_company" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/company_profile"
+            android:textColor="@color/blue_lochmara"
+            android:textSize="18sp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btnDetail1"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@color/blue_lochmara"
+            app:contentPadding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:shapeAppearanceOverlay="@style/CircleImageView"
+            app:srcCompat="@drawable/ic_chevron_right" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

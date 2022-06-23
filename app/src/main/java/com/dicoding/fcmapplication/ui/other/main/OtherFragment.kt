@@ -13,6 +13,7 @@ import com.dicoding.fcmapplication.databinding.FragmentOtherBinding
 import com.dicoding.fcmapplication.ui.other.adddata.AddDataActivity
 import com.dicoding.fcmapplication.ui.other.companyprofile.CompanyProfileActivity
 import com.dicoding.fcmapplication.ui.other.dialog.LogoutDialogFragment
+import com.dicoding.fcmapplication.ui.other.information.InformationActivity
 import com.dicoding.fcmapplication.ui.other.regionadmin.RegionAdminActivity
 import com.dicoding.fcmapplication.ui.other.repairlist.RepairListActivity
 import com.dicoding.fcmapplication.utils.extensions.gone
@@ -59,8 +60,8 @@ class OtherFragment : BaseFragmentBinding<FragmentOtherBinding>() {
 
                 tvUserName.text = session.user?.username
 
-                rowCompanyProfile.setOnClickListener {
-                    startActivity(Intent(requireContext(), CompanyProfileActivity::class.java))
+                rowInformation.setOnClickListener {
+                    startActivity(Intent(requireContext(), InformationActivity::class.java))
                 }
 
                 rowRepairList.setOnClickListener {
