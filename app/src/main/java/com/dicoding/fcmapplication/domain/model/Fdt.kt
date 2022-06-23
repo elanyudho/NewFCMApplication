@@ -1,8 +1,5 @@
 package com.dicoding.fcmapplication.domain.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
 data class Fdt(
     val fdtId: String?,
     val fdtName: String?,

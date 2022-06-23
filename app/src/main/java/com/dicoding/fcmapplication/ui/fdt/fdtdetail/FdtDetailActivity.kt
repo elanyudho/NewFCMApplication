@@ -87,7 +87,7 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             }
             fabDelete.setOnClickListener {
                 val dialogFragment = DeleteConfirmationDialogFragment()
-                dialogFragment.show(supportFragmentManager, "dialog")
+                dialogFragment.show(supportFragmentManager, DeleteConfirmationDialogFragment::class.java.simpleName)
 
                 dialogFragment.setConfirmationListener(DeleteConfirmationDialogFragment.FDT) { isConfirm ->
                     if (isConfirm) {

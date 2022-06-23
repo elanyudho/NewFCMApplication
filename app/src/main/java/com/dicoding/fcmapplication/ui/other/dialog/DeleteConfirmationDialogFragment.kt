@@ -9,9 +9,10 @@ import com.dicoding.fcmapplication.databinding.FragmentDeleteConfirmationDialogB
 
 class DeleteConfirmationDialogFragment : BaseDialogBinding<FragmentDeleteConfirmationDialogBinding>(false) {
 
-    private var tvFdtName = ""
-
     private var onClick :((Boolean) -> Unit)? = null
+
+    private var deviceType = FDT
+
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDeleteConfirmationDialogBinding
         get() = { layoutInflater, viewGroup, b ->
@@ -23,6 +24,9 @@ class DeleteConfirmationDialogFragment : BaseDialogBinding<FragmentDeleteConfirm
         }
 
     override fun setupView() {
+
+        setTextDialog(deviceType)
+
         binding.btnCancel.setOnClickListener { dismiss() }
 
         binding.btnYes.setOnClickListener {
@@ -32,12 +36,16 @@ class DeleteConfirmationDialogFragment : BaseDialogBinding<FragmentDeleteConfirm
     }
 
     fun setConfirmationListener(device: String, onClick: (Boolean)  -> Unit){
-        if (device == FDT) {
-            binding.materialTextView3.setText(R.string.fdt_delete_confirmation)
-        } else {
-            binding.materialTextView3.setText(R.string.fat_delete_confirmation)
-        }
+        deviceType = device
         this.onClick = onClick
+    }
+
+    private fun setTextDialog(deviceType: String) {
+        if (deviceType == FDT) {
+            binding.materialTextView3.text = getString(R.string.fdt_delete_confirmation)
+        } else {
+            binding.materialTextView3.text = getString(R.string.fat_delete_confirmation)
+        }
     }
 
     companion object {
