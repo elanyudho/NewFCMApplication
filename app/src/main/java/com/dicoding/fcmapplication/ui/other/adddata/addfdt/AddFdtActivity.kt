@@ -22,6 +22,7 @@ import com.dicoding.fcmapplication.ui.other.dialog.FatHasCoveredConfirmationFrag
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.visible
+import com.dicoding.fcmapplication.utils.variables.longlat.LongLatRegex
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -127,6 +128,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         fdtId: String = ""
     ) {
         with(binding) {
+
             if (etFdtName.text.isNullOrEmpty()) {
                 etFdtNameInputLayout.error = "This field is required"
                 isEmpty = true
@@ -146,18 +148,26 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
             if (etLongitude.text.isNullOrEmpty()) {
                 etLongitudeInputLayout.error = "This field is required"
                 isEmpty = true
+            } else {
+                if (!etLongitude.text.matches(LongLatRegex.LONGITUDE_PATTERN)) {
+                    etLongitudeInputLayout.error =
+                        "Enter the longitude number with the correct format"
+                    isEmpty = true
+                }
             }
-
             if (etLatitude.text.isNullOrEmpty()) {
                 etLatitudeInputLayout.error = "This field is required"
                 isEmpty = true
+            } else {
+                if (!etLatitude.text.matches(LongLatRegex.LATITUDE_PATTERN)) {
+                    etLatitudeInputLayout.error = "Enter the latitude number with the correct format"
+                    isEmpty = true
+                }
             }
-
             if (etLoss.text.isNullOrEmpty()) {
                 etLossInputLayout.error = "This field is required"
                 isEmpty = true
             }
-
             if (etActivationDate.text.isNullOrEmpty()) {
                 etActivationDateInputLayout.error = "This field is required"
                 isEmpty = true
@@ -169,7 +179,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
             } else {
                 if (purposeOpen == TO_EDIT) {
                     val postFDT = PostFDT(
-                        fdt_name = etFdtName.text.toString(),
+                        fdt_name = etFdtName.text.toString().uppercase(),
                         fdt_total_core = etTotalCore.text.toString(),
                         fdt_core_used = etCoreUsed.text.toString(),
                         fdt_backup_core = etCoreBackup.text.toString(),
@@ -188,7 +198,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
                     mViewModel.putFdtData(fdtId, postFDT)
                 } else {
                     val postFDT = PostFDT(
-                        fdt_name = etFdtName.text.toString(),
+                        fdt_name = etFdtName.text.toString().uppercase(),
                         fdt_total_core = etTotalCore.text.toString(),
                         fdt_core_used = etCoreUsed.text.toString(),
                         fdt_backup_core = etCoreBackup.text.toString(),
@@ -196,7 +206,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
                         fdt_activated = etActivationDate.text.toString(),
                         fdt_region = session.user?.region.toString(),
                         fdt_in_repair = isService,
-                        fdt_location = etLongitude.text.toString() + "," + etLatitude.text.toString(),
+                        fdt_location = etLatitude.text.toString() + "," + etLongitude.text.toString(),
                         fdt_note = if (etRepairNote.text.isNullOrEmpty()) {
                             "None"
                         } else {
@@ -325,8 +335,8 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
             etTotalCore.setText(fdtDetail.fdtCore)
             etCoreUsed.setText(fdtDetail.fdtCoreUsed)
             etCoreBackup.setText(fdtDetail.fdtCoreRemaining)
-            etLongitude.setText(latLng?.get(0) ?: "")
-            etLatitude.setText(latLng?.get(1) ?: "")
+            etLongitude.setText(latLng?.get(1) ?: "")
+            etLatitude.setText(latLng?.get(0) ?: "")
             etLoss.setText(fdtDetail.fdtLoss)
             etActivationDate.setText(fdtDetail.fdtActivationDate)
             btnSwRepair.isChecked = fdtDetail.fdtIsService!!

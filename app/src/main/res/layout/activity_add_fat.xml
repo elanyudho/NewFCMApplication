@@ -132,7 +132,7 @@
                     android:fontFamily="@font/inter_regular"
                     android:hint="@string/ex_fat_name"
                     android:importantForAutofill="no"
-                    android:inputType="text"
+                    android:inputType="textCapCharacters"
                     android:maxLines="1"
                     android:padding="14dp"
                     android:textColor="@color/black"

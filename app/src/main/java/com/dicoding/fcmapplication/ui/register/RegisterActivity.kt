@@ -130,8 +130,6 @@ class RegisterActivity : BaseActivityBinding<ActivityRegisterBinding>(),
                 etRegionInputLayout.error = "This field is required"
                 etEmail.requestFocus()
                 isEmpty = true
-            }else{
-                isEmpty= false
             }
 
             // check everything is valid

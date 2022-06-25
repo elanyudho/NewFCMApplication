@@ -94,7 +94,7 @@ class FdtFragment : BaseFragmentBinding<FragmentFdtBinding>(),
                             SearchResultFdtActivity.EXTRA_FILTER,
                             FdtFilterDialogFragment.Filter(search = query ?: "")
                         )
-                        startActivity(intent)
+                        resultLauncher?.launch(intent)
                         searchFdt.setQuery("")
                         searchFdt.clearFocus()
                         return true

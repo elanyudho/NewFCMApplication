@@ -1,7 +1,10 @@
 package com.dicoding.fcmapplication.ui.fat.searchresult
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +40,8 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
 
     private var paginator: RecyclerViewPaginator? = null
 
+    private var resultLauncher : ActivityResultLauncher<Intent>? = null
+
     private var isFirstGet = true
 
     override val bindingInflater: (LayoutInflater) -> ActivitySearchResultFatBinding
@@ -48,6 +53,8 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
         setFatPagination()
 
         setFilterButton()
+
+        setResultLauncher()
 
         mViewModel.uiState.observe(this, this)
         if (session.user?.isCenterAdmin == true){
@@ -137,7 +144,7 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
             searchFatAdapter.setOnClickData {
                 val intent = Intent(this@SearchResultFatActivity, FatDetailActivity::class.java)
                 intent.putExtra(FatDetailActivity.EXTRA_DETAIL_FAT, it.fatName)
-                startActivity(intent)
+                resultLauncher?.launch(intent)
             }
         }
     }
@@ -170,6 +177,18 @@ class SearchResultFatActivity : BaseActivityBinding<ActivitySearchResultFatBindi
             binding.searchFat.isUsingAdditionalButton(true)
         }else{
             binding.searchFat.isUsingAdditionalButton(false)
+        }
+    }
+
+    private fun setResultLauncher() {
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                searchFatAdapter.clearList()
+                mViewModel.getFatSearchResult(session.user?.region.toString(), filter.search, 1)
+                setResult(Activity.RESULT_OK)
+            }
         }
     }
 

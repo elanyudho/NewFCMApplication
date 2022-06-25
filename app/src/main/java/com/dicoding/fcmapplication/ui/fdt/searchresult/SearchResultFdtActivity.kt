@@ -1,7 +1,10 @@
 package com.dicoding.fcmapplication.ui.fdt.searchresult
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +37,8 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
 
     private var paginator: RecyclerViewPaginator? = null
 
+    private var resultLauncher : ActivityResultLauncher<Intent>? = null
+
     private val searchFdtAdapter: FdtVerticalAdapter by lazy { FdtVerticalAdapter() }
 
     private var isFirstGet = true
@@ -49,6 +54,8 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
         setFdtPagination()
 
         setFilterButton()
+
+        setResultLauncher()
 
         if (session.user?.isCenterAdmin == true){
             mViewModel.getFdtSearchResult(filter.region, filter.search, 1)
@@ -134,11 +141,10 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
         with(binding.rvFdt) {
             adapter = searchFdtAdapter
             setHasFixedSize(true)
-
             searchFdtAdapter.setOnClickData {
                 val intent = Intent(this@SearchResultFdtActivity, FdtDetailActivity::class.java)
                 intent.putExtra(FdtDetailActivity.EXTRA_DETAIL_FDT, it.fdtName)
-                startActivity(intent)
+                resultLauncher?.launch(intent)
             }
         }
     }
@@ -162,6 +168,18 @@ class SearchResultFdtActivity : BaseActivityBinding<ActivitySearchResultFdtBindi
             binding.searchFdt.isUsingAdditionalButton(true)
         }else{
             binding.searchFdt.isUsingAdditionalButton(false)
+        }
+    }
+
+    private fun setResultLauncher() {
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                searchFdtAdapter.clearList()
+                mViewModel.getFdtSearchResult(session.user?.region.toString(), filter.search, 1)
+                setResult(Activity.RESULT_OK)
+            }
         }
     }
 

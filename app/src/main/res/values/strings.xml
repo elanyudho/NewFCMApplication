@@ -75,8 +75,8 @@
     <string name="backup_core">Backup Core</string>
     <string name="covered_fat">Covered FAT</string>
     <string name="ex_number_core">Ex: 9</string>
-    <string name="ex_longitude">Ex: -7.771129</string>
-    <string name="ex_latitude">Ex: 110.405138</string>
+    <string name="ex_longitude">Ex: 110.405138</string>
+    <string name="ex_latitude">Ex: -7.771129</string>
     <string name="activation_date">Activation Date</string>
     <string name="set_activation_date">Set Activation Date</string>
     <string name="repair_status">Repair Status</string>

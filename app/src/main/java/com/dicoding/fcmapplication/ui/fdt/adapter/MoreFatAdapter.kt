@@ -33,6 +33,7 @@ class MoreFatAdapter :
             with(binding) {
 
                 tvDeviceName.text = data.fatName
+                valueIndicator = setIndicatorValue(data.total!!, data.coreUsed!!)
                 if (data.fatIsService == true) {
                     imageIsService.visible()
                     tvTagCondition.setText(R.string.need_service)
@@ -42,15 +43,18 @@ class MoreFatAdapter :
                 }
                 tvActiveDate.text = data.fatActivated
 
-                if (valueIndicator <= 50) {
-                    imgCapacityIndicator.setTint(R.color.green_lime)
-                }
-                if (valueIndicator in 51..75) {
-                    imgCapacityIndicator.setTint(R.color.yellow_tangerine)
-                }
-                if (valueIndicator > 75) {
-                    imgCapacityIndicator.setTint(R.color.red_orange)
-                }
+                imgCapacityIndicator.setTint(
+                    when{
+
+                        valueIndicator <= 50 -> R.color.green_lime
+
+                        valueIndicator in 51..75 -> R.color.yellow_tangerine
+
+                        valueIndicator > 75 -> R.color.red_orange
+
+                        else -> R.color.white
+                    }
+                )
 
                 binding.root.setOnClickListener {
                     onClick.invoke(data)
@@ -79,5 +83,10 @@ class MoreFatAdapter :
 
     fun setOnClickData(onClick: (data: FdtDetail.FatList) -> Unit) {
         this.onClick = onClick
+    }
+
+    private fun setIndicatorValue(total: String, used: String): Int {
+        val totalCoreInDouble = used.toDouble() / total.toDouble() * 100
+        return totalCoreInDouble.toInt()
     }
 }

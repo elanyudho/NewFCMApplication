@@ -24,7 +24,6 @@ import com.dicoding.fcmapplication.ui.fat.adapter.FatVerticalAdapter
 import com.dicoding.fcmapplication.ui.fat.dialog.FatFilterDialogFragment
 import com.dicoding.fcmapplication.ui.fat.fatdetail.FatDetailActivity
 import com.dicoding.fcmapplication.ui.fat.searchresult.SearchResultFatActivity
-import com.dicoding.fcmapplication.ui.fdt.main.FdtViewModel
 import com.dicoding.fcmapplication.utils.extensions.*
 import com.dicoding.fcmapplication.utils.pagination.RecyclerViewPaginator
 import com.google.android.material.tabs.TabLayout
@@ -93,7 +92,7 @@ class FatFragment : BaseFragmentBinding<FragmentFatBinding>(), Observer<FatViewM
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         val intent = Intent(requireContext(), SearchResultFatActivity::class.java)
                         intent.putExtra(SearchResultFatActivity.EXTRA_FILTER, FatFilterDialogFragment.Filter(search = query?: ""))
-                        startActivity(intent)
+                        resultLauncher?.launch(intent)
                         searchFat.setQuery("")
                         searchFat.clearFocus()
                         return true

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
@@ -21,6 +20,7 @@ import com.dicoding.fcmapplication.ui.other.dialog.BackConfirmationDialogFragmen
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
 import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.visible
+import com.dicoding.fcmapplication.utils.variables.longlat.LongLatRegex
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -111,8 +111,9 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
 
     private fun doAddData(isService: Boolean, id: String) {
         with(binding) {
+
             if (etFatName.text.isNullOrEmpty()) {
-                etFatNameInputLayout.error = "This field is required"
+                etFatName.error = "This field is required"
                 isEmpty = true
             }
             if (etTotalCore.text.isNullOrEmpty()) {
@@ -130,10 +131,20 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             if (etLongitude.text.isNullOrEmpty()) {
                 etLongitudeInputLayout.error = "This field is required"
                 isEmpty = true
+            } else {
+                if (!etLongitude.text.matches(LongLatRegex.LONGITUDE_PATTERN)) {
+                    etLongitudeInputLayout.error = "Enter the longitude number with the correct format"
+                    isEmpty = true
+                }
             }
             if (etLatitude.text.isNullOrEmpty()) {
                 etLatitudeInputLayout.error = "This field is required"
                 isEmpty = true
+            } else {
+                if (!etLatitude.text.matches(LongLatRegex.LATITUDE_PATTERN)) {
+                    etLatitudeInputLayout.error = "Enter the latitude number with the correct format"
+                    isEmpty = true
+                }
             }
             if (etActivationDate.text.isNullOrEmpty()) {
                 etActivationDateInputLayout.error = "This field is required"
@@ -164,7 +175,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
                 if(purposeOpen == TO_EDIT){
                     val postFDT = PostFAT(
 
-                        fat_name = etFatName.text.toString(),
+                        fat_name = etFatName.text.toString().uppercase(),
                         fat_total_core = etTotalCore.text.toString(),
                         fat_core_used = etCoreUsed.text.toString(),
                         fat_backup_core = etCoreBackup.text.toString(),
@@ -173,7 +184,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
                         fat_activated = etActivationDate.text.toString(),
                         fat_region = session.user?.region.toString(),
                         fat_in_repair = isService,
-                        fat_location = etLongitude.text.toString() + "," + etLatitude.text.toString(),
+                        fat_location = etLatitude.text.toString() + "," + etLongitude.text.toString(),
                         fat_note = if (etRepairNote.text.isNullOrEmpty()) {
                             "None"
                         } else {
@@ -185,7 +196,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
                 }else{
                     val postFDT = PostFAT(
 
-                        fat_name = etFatName.text.toString(),
+                        fat_name = etFatName.text.toString().uppercase(),
                         fat_total_core = etTotalCore.text.toString(),
                         fat_core_used = etCoreUsed.text.toString(),
                         fat_backup_core = etCoreBackup.text.toString(),
@@ -300,8 +311,8 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             etCoreUsed.setText(fatDetail.fatCoreUsed)
             etCoreBackup.setText(fatDetail.fatCoreRemaining)
             etCoveredHome.setText(fatDetail.fatCoveredHome)
-            etLongitude.setText(latLng?.get(0) ?: "")
-            etLatitude.setText(latLng?.get(1) ?: "")
+            etLongitude.setText(latLng?.get(1) ?: "")
+            etLatitude.setText(latLng?.get(0) ?: "")
             etLoss.setText(fatDetail.fatLoss)
             etActivationDate.setText(fatDetail.fatActivationDate)
             btnSwRepair.isChecked = fatDetail.fatIsService!!
