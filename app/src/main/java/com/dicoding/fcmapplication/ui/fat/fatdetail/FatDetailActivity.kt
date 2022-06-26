@@ -2,7 +2,9 @@ package com.dicoding.fcmapplication.ui.fat.fatdetail
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.animation.Animation
@@ -47,6 +49,8 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
 
     private lateinit var permissionsManager: PermissionsManager
 
+    private var isEnabledGPS = false
+
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
     private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
     private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim)}
@@ -64,6 +68,8 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
         }
 
         setResultLauncher()
+
+        checkGPSAndNetwork()
 
         binding.headerFatDetail.tvTitleHeader.text = getString(R.string.fat_profile)
         binding.headerFatDetail.btnBack.setOnClickListener { onBackPressed() }
@@ -157,40 +163,46 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                 icRepair.invisible()
             }
            cvLocation.setOnClickListener {
-               if (PermissionsManager.areLocationPermissionsGranted(this@FatDetailActivity)){
-                   val intent = Intent(this@FatDetailActivity, LocationActivity::class.java)
-                   val extras = Bundle()
-                   extras.putInt(LocationActivity.EXTRA_TYPE, 2)
-                   extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fatLocation)
-                   extras.putString(LocationActivity.EXTRA_NAME, obj.fatName)
-                   intent.putExtras(extras)
-                   startActivity(intent)
-               } else {
-                   permissionsManager = PermissionsManager(object : PermissionsListener {
-                       override fun onPermissionResult(granted: Boolean) {
-                           if (granted) {
-                               val intent = Intent(this@FatDetailActivity, LocationActivity::class.java)
-                               val extras = Bundle()
-                               extras.putInt(LocationActivity.EXTRA_TYPE, 2)
-                               extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fatLocation)
-                               extras.putString(LocationActivity.EXTRA_NAME, obj.fatName)
-                               intent.putExtras(extras)
-                               startActivity(intent)
-                           } else {
-                               finish()
+
+               if (isEnabledGPS) {
+                   if (PermissionsManager.areLocationPermissionsGranted(this@FatDetailActivity)){
+                       val intent = Intent(this@FatDetailActivity, LocationActivity::class.java)
+                       val extras = Bundle()
+                       extras.putInt(LocationActivity.EXTRA_TYPE, 2)
+                       extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fatLocation)
+                       extras.putString(LocationActivity.EXTRA_NAME, obj.fatName)
+                       intent.putExtras(extras)
+                       startActivity(intent)
+                   } else {
+                       permissionsManager = PermissionsManager(object : PermissionsListener {
+                           override fun onPermissionResult(granted: Boolean) {
+                               if (granted) {
+                                   val intent = Intent(this@FatDetailActivity, LocationActivity::class.java)
+                                   val extras = Bundle()
+                                   extras.putInt(LocationActivity.EXTRA_TYPE, 2)
+                                   extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fatLocation)
+                                   extras.putString(LocationActivity.EXTRA_NAME, obj.fatName)
+                                   intent.putExtras(extras)
+                                   startActivity(intent)
+                               } else {
+                                   finish()
+                               }
                            }
-                       }
 
-                       override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
-                           Toast.makeText(
-                               this@FatDetailActivity,
-                               "This feature need your location",
-                               Toast.LENGTH_SHORT
-                           ).show()
-                       }
+                           override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
+                               Toast.makeText(
+                                   this@FatDetailActivity,
+                                   "This feature need your location",
+                                   Toast.LENGTH_SHORT
+                               ).show()
+                           }
 
-                   })
-                   permissionsManager.requestLocationPermissions(this@FatDetailActivity)
+                       })
+                       permissionsManager.requestLocationPermissions(this@FatDetailActivity)
+                   }
+               }
+               else {
+                   fancyToast(getString(R.string.activated_the_location), FancyToast.WARNING)
                }
             }
         }
@@ -281,6 +293,20 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                 fabMenu.startAnimation(rotateClose)
             }
         }
+    }
+
+    private fun checkGPSAndNetwork() {
+        val lm = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        try {
+            isEnabledGPS = lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        } catch (ex: Exception) {
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkGPSAndNetwork()
     }
 
     companion object {

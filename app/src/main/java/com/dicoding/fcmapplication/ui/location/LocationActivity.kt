@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.ActivityLocationBinding
+import com.dicoding.fcmapplication.utils.extensions.fancyToast
+import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.visible
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
@@ -31,6 +33,7 @@ import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute
+import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Response
@@ -150,7 +153,6 @@ class LocationActivity : AppCompatActivity() {
             .getRoute(object : retrofit2.Callback<DirectionsResponse> { //6
                 override fun onFailure(call: Call<DirectionsResponse>, t: Throwable) {
                     Timber.d(t.localizedMessage)
-
                 }
 
                 override fun onResponse(
@@ -170,9 +172,16 @@ class LocationActivity : AppCompatActivity() {
 
                     }
 
-                    currentRoute = response.body()?.routes()?.first()
-                    if (currentRoute != null) {
+                    try {
+                        currentRoute = response.body()?.routes()?.first()
                         navigationMapRoute?.addRoute(currentRoute)
+                        binding.btnStartNavigation.isClickable = true
+                    } catch (e : Exception) {
+                        binding.btnStartNavigation.isClickable = true
+                        fancyToast("Route not find from your location", FancyToast.ERROR)
+                        binding.btnStartNavigation.setOnClickListener {
+                            fancyToast("Route not find from your location", FancyToast.ERROR)
+                        }
                     }
 
                 }
@@ -180,7 +189,7 @@ class LocationActivity : AppCompatActivity() {
     }
 
     private fun showNavigation() {
-        binding.btnStartNavigation.visible()
+        binding.btnStartNavigation.isClickable = false
         binding.btnStartNavigation.setOnClickListener {
             val simulateRoute = true
 

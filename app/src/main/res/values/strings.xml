@@ -93,6 +93,7 @@
     <string name="fdt_delete_confirmation">Are you sure want to delete this FDT?</string>
     <string name="fat_delete_confirmation">Are you sure want to delete this FAT?</string>
     <string name="last_updated_data">Last Updated Data</string>
+    <string name="activated_the_location">Enable location to access this feature</string>
 
 
 </resources>

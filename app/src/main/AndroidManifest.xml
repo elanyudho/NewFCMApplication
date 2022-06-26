@@ -84,6 +84,7 @@
         <activity
             android:name=".ui.splash.SplashActivity"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:theme="@style/clearScreen.blueLoch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

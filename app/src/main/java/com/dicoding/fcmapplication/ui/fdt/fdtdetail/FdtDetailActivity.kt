@@ -2,7 +2,9 @@ package com.dicoding.fcmapplication.ui.fdt.fdtdetail
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.animation.Animation
@@ -29,6 +31,7 @@ import com.mapbox.android.core.permissions.PermissionsManager
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
@@ -57,6 +60,8 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
 
     private var resultLauncher : ActivityResultLauncher<Intent>? = null
 
+    private var isEnabledGPS = false
+
     override val bindingInflater: (LayoutInflater) -> ActivityFdtDetailBinding
         get() = { ActivityFdtDetailBinding.inflate(layoutInflater) }
 
@@ -69,6 +74,8 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
         }
 
         setResultLauncher()
+
+        checkGPSAndNetwork()
 
         binding.headerFdtDetail.btnBack.setOnClickListener { onBackPressed() }
         binding.headerFdtDetail.tvTitleHeader.text = getString(R.string.fdt_profile)
@@ -202,40 +209,45 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
             }
             cvLocation.setOnClickListener {
 
-                if (PermissionsManager.areLocationPermissionsGranted(this@FdtDetailActivity)){
-                    val intent = Intent(this@FdtDetailActivity, LocationActivity::class.java)
-                    val extras = Bundle()
-                    extras.putInt(LocationActivity.EXTRA_TYPE, 1)
-                    extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fdtLocation)
-                    extras.putString(LocationActivity.EXTRA_NAME, obj.fdtName)
-                    intent.putExtras(extras)
-                    startActivity(intent)
-                } else {
-                    permissionsManager = PermissionsManager(object : PermissionsListener {
-                        override fun onPermissionResult(granted: Boolean) {
-                            if (granted) {
-                                val intent = Intent(this@FdtDetailActivity, LocationActivity::class.java)
-                                val extras = Bundle()
-                                extras.putInt(LocationActivity.EXTRA_TYPE, 1)
-                                extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fdtLocation)
-                                extras.putString(LocationActivity.EXTRA_NAME, obj.fdtName)
-                                intent.putExtras(extras)
-                                startActivity(intent)
-                            } else {
-                                finish()
+                if (isEnabledGPS) {
+                    if (PermissionsManager.areLocationPermissionsGranted(this@FdtDetailActivity)){
+                        val intent = Intent(this@FdtDetailActivity, LocationActivity::class.java)
+                        val extras = Bundle()
+                        extras.putInt(LocationActivity.EXTRA_TYPE, 1)
+                        extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fdtLocation)
+                        extras.putString(LocationActivity.EXTRA_NAME, obj.fdtName)
+                        intent.putExtras(extras)
+                        startActivity(intent)
+                    } else {
+                        permissionsManager = PermissionsManager(object : PermissionsListener {
+                            override fun onPermissionResult(granted: Boolean) {
+                                if (granted) {
+                                    val intent = Intent(this@FdtDetailActivity, LocationActivity::class.java)
+                                    val extras = Bundle()
+                                    extras.putInt(LocationActivity.EXTRA_TYPE, 1)
+                                    extras.putString(LocationActivity.EXTRA_COORDINATE, obj.fdtLocation)
+                                    extras.putString(LocationActivity.EXTRA_NAME, obj.fdtName)
+                                    intent.putExtras(extras)
+                                    startActivity(intent)
+                                } else {
+                                    finish()
+                                }
                             }
-                        }
 
-                        override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
-                            Toast.makeText(
-                                this@FdtDetailActivity,
-                                "This feature need your location",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                            override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
+                                Toast.makeText(
+                                    this@FdtDetailActivity,
+                                    "This feature need your location",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
 
-                    })
-                    permissionsManager.requestLocationPermissions(this@FdtDetailActivity)
+                        })
+                        permissionsManager.requestLocationPermissions(this@FdtDetailActivity)
+                    }
+                }
+                else {
+                    fancyToast(getString(R.string.activated_the_location), FancyToast.WARNING)
                 }
             }
         }
@@ -328,7 +340,21 @@ class FdtDetailActivity : BaseActivityBinding<ActivityFdtDetailBinding>(),
         }
     }
 
+    private fun checkGPSAndNetwork() {
+        val lm = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        try {
+            isEnabledGPS = lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        } catch (ex: Exception) {
+        }
+    }
+
     companion object {
         const val EXTRA_DETAIL_FDT = "detail fdt"
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkGPSAndNetwork()
     }
 }
