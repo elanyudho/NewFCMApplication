@@ -1,6 +1,7 @@
 package com.dicoding.fcmapplication.ui.location
 
 import android.annotation.SuppressLint
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.view.animation.BounceInterpolator
@@ -29,6 +30,8 @@ import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.Style
+import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager
+import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute
@@ -38,6 +41,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber
+import java.lang.Exception
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
@@ -55,13 +59,9 @@ class LocationActivity : AppCompatActivity() {
 
     private lateinit var mylocation: LatLng
 
-    private lateinit var permissionsManager: PermissionsManager
-
     private var navigationMapRoute: NavigationMapRoute? = null
 
     private var currentRoute: DirectionsRoute? = null
-
-    private lateinit var destination: Point
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,19 +90,29 @@ class LocationActivity : AppCompatActivity() {
         binding.mapView.getMapAsync { mapboxMap ->
             this.mapboxMap = mapboxMap
             mapboxMap.setStyle(Style.MAPBOX_STREETS) { style ->
+                showDeviceLocation()
+                showMyLocation(style)
+                setRoute()
+                showNavigation()
 
-                showMyLocation(style, mapboxMap)
+                navigationMapRoute = NavigationMapRoute(
+                    null,
+                    binding.mapView,
+                    mapboxMap,
+                    R.style.NavigationMapRoute
+                )
 
             }
         }
 
     }
 
-    private fun showPosition(long: Double, lat: Double, deviceName: String) {
-        val locationDevice = LatLng(lat, long)
+    private fun showDeviceLocation() {
+        val latLng = dataLocation.split(",")
+        val locationDevice = LatLng(latLng[0].toDouble(), latLng[1].toDouble())
         val position = CameraPosition.Builder()
-            .target(LatLng(lat, long))
-            .zoom(10.0)
+            .target(locationDevice)
+            .zoom(11.0)
             .tilt(10.0)
             .bearing(5.0)
             .build()
@@ -112,7 +122,7 @@ class LocationActivity : AppCompatActivity() {
     }
 
     @SuppressLint("MissingPermission")
-    private fun showMyLocation(style: Style, mapboxMap: MapboxMap) {
+    private fun showMyLocation(style: Style) {
         val locationComponentOptions = LocationComponentOptions.builder(this)
             .pulseEnabled(true)
             .pulseColor(Color.BLUE)
@@ -123,73 +133,70 @@ class LocationActivity : AppCompatActivity() {
             .builder(this, style)
             .locationComponentOptions(locationComponentOptions)
             .build()
-        locationComponent = mapboxMap.locationComponent
+        locationComponent = mapboxMap?.locationComponent!!
         locationComponent.activateLocationComponent(locationComponentActivationOptions)
-        locationComponent.isLocationComponentEnabled = true
-        locationComponent.cameraMode = CameraMode.TRACKING
-        locationComponent.renderMode = RenderMode.COMPASS
-        mylocation = LatLng(
-            locationComponent.lastKnownLocation?.latitude as Double,
-            locationComponent.lastKnownLocation?.longitude as Double
-        )
-        mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylocation, 12.0))
-
-        val latLng = dataLocation.split(",")
-        showPosition(latLng[1].toDouble(), latLng[0].toDouble(), deviceName)
-        val startPoint = Point.fromLngLat(mylocation.longitude, mylocation.latitude)
-        val endPoint = Point.fromLngLat(latLng[1].toDouble(), latLng[0].toDouble())
-        getRoute(startPoint, endPoint, mapboxMap)
-        destination = Point.fromLngLat(latLng[1].toDouble(), latLng[0].toDouble())
-        showNavigation()
+        try {
+            locationComponent.isLocationComponentEnabled = true
+            mylocation = LatLng(
+                locationComponent.lastKnownLocation?.latitude as Double,
+                locationComponent.lastKnownLocation?.longitude as Double
+            )
+        } catch (e : Exception) {
+            fancyToast(getString(R.string.error_unknown_error), FancyToast.ERROR)
+            mylocation = LatLng(
+                0.toDouble(),
+                0.toDouble()
+            )
+        }
 
     }
 
-    private fun getRoute(originPoint: Point, endPoint: Point, mapboxMap: MapboxMap) {
-        NavigationRoute.builder(this) //1
-            .accessToken(Mapbox.getAccessToken()!!) //2
-            .origin(originPoint) //3
-            .destination(endPoint) //4
-            .build() //5
-            .getRoute(object : retrofit2.Callback<DirectionsResponse> { //6
-                override fun onFailure(call: Call<DirectionsResponse>, t: Throwable) {
-                    Timber.d(t.localizedMessage)
-                }
+    private fun setRoute() {
+        val latLng = dataLocation.split(",")
+        val startPoint = Point.fromLngLat(mylocation.longitude, mylocation.latitude)
+        val endPoint = Point.fromLngLat(latLng[1].toDouble(), latLng[0].toDouble())
+        requestRoute(startPoint, endPoint)
+    }
 
+    private fun requestRoute(originPoint: Point, endPoint: Point) {
+        navigationMapRoute?.updateRouteVisibilityTo(false)
+        NavigationRoute.builder(this)
+            .accessToken(getString(R.string.mapbox_access_token))
+            .origin(originPoint)
+            .destination(endPoint)
+            .build()
+            .getRoute(object : retrofit2.Callback<DirectionsResponse> {
                 override fun onResponse(
                     call: Call<DirectionsResponse>,
                     response: Response<DirectionsResponse>
                 ) {
+                    when{
+                        response.body() == null -> {
+                            //fancyToast("No routes found, make sure you set the right user and access token.", FancyToast.WARNING)
+                            binding.startNavigation.gone()
+                            return
+                        }
+                        response.body()?.routes()?.size == 0 -> {
+                            fancyToast("No routes found from your location to $deviceName.", FancyToast.WARNING)
+                            binding.startNavigation.gone()
+                        }
+                        else -> {
+                            currentRoute = response.body()?.routes()?.get(0)
 
-                    if (navigationMapRoute != null) {
-                        navigationMapRoute?.updateRouteVisibilityTo(false)
-                    } else {
-                        navigationMapRoute = NavigationMapRoute(
-                            null,
-                            binding.mapView,
-                            mapboxMap,
-                            R.style.NavigationMapRoute
-                        )
+                            navigationMapRoute?.addRoute(currentRoute)
 
-                    }
-
-                    try {
-                        currentRoute = response.body()?.routes()?.first()
-                        navigationMapRoute?.addRoute(currentRoute)
-                        binding.btnStartNavigation.isClickable = true
-                    } catch (e : Exception) {
-                        binding.btnStartNavigation.isClickable = true
-                        fancyToast("Route not find from your location", FancyToast.ERROR)
-                        binding.btnStartNavigation.setOnClickListener {
-                            fancyToast("Route not find from your location", FancyToast.ERROR)
+                            binding.startNavigation.visible()
                         }
                     }
+                }
 
+                override fun onFailure(call: Call<DirectionsResponse>, t: Throwable) {
+                    Toast.makeText(this@LocationActivity, "Error : $t", Toast.LENGTH_SHORT).show()
                 }
             })
     }
 
     private fun showNavigation() {
-        binding.btnStartNavigation.isClickable = false
         binding.btnStartNavigation.setOnClickListener {
             val simulateRoute = true
 
@@ -245,8 +252,6 @@ class LocationActivity : AppCompatActivity() {
         const val EXTRA_TYPE = "type device"
 
         const val EXTRA_NAME = "name device"
-
-        private const val ICON_ID = "ICON_ID"
 
     }
 }
