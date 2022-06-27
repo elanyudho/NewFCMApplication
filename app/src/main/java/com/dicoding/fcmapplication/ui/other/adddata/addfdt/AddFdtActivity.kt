@@ -187,7 +187,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
                         fdt_activated = etActivationDate.text.toString(),
                         fdt_region = session.user?.region.toString(),
                         fdt_in_repair = isService,
-                        fdt_location = etLongitude.text.toString() + "," + etLatitude.text.toString(),
+                        fdt_location = etLatitude.text.toString() + "," + etLongitude.text.toString(),
                         fdt_note = if (etRepairNote.text.isNullOrEmpty()) {
                             "None"
                         } else {

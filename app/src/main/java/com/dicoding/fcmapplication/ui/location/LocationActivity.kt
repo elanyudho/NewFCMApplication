@@ -123,7 +123,7 @@ class LocationActivity : AppCompatActivity() {
             .builder(this, style)
             .locationComponentOptions(locationComponentOptions)
             .build()
-        locationComponent = mapboxMap?.locationComponent!!
+        locationComponent = mapboxMap.locationComponent
         locationComponent.activateLocationComponent(locationComponentActivationOptions)
         locationComponent.isLocationComponentEnabled = true
         locationComponent.cameraMode = CameraMode.TRACKING
@@ -132,7 +132,7 @@ class LocationActivity : AppCompatActivity() {
             locationComponent.lastKnownLocation?.latitude as Double,
             locationComponent.lastKnownLocation?.longitude as Double
         )
-        mapboxMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(mylocation, 12.0))
+        mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylocation, 12.0))
 
         val latLng = dataLocation.split(",")
         showPosition(latLng[1].toDouble(), latLng[0].toDouble(), deviceName)

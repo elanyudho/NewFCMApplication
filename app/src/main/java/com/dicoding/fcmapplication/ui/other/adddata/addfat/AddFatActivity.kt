@@ -205,7 +205,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
                         fat_activated = etActivationDate.text.toString(),
                         fat_region = session.user?.region.toString(),
                         fat_in_repair = isService,
-                        fat_location = etLongitude.text.toString() + "," + etLatitude.text.toString(),
+                        fat_location = etLatitude.text.toString() + "," + etLongitude.text.toString(),
                         fat_note = if (etRepairNote.text.isNullOrEmpty()) {
                             "None"
                         } else {
