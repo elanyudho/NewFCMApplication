@@ -66,6 +66,13 @@ fun Context.fancyToast(message: String,type:Int){
         .show()
 }
 
+fun Context.fancyToastLong(message: String,type:Int){
+    FancyToast.makeText(this,message,
+        2000,
+        type,false)
+        .show()
+}
+
 fun Context.toast(message: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, message, duration).show()
 }

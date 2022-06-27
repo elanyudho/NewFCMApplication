@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.fcmapplication.R
 import com.dicoding.fcmapplication.databinding.ActivityLocationBinding
 import com.dicoding.fcmapplication.utils.extensions.fancyToast
+import com.dicoding.fcmapplication.utils.extensions.fancyToastLong
 import com.dicoding.fcmapplication.utils.extensions.gone
 import com.dicoding.fcmapplication.utils.extensions.visible
 import com.mapbox.android.core.permissions.PermissionsListener
@@ -142,7 +143,7 @@ class LocationActivity : AppCompatActivity() {
                 locationComponent.lastKnownLocation?.longitude as Double
             )
         } catch (e : Exception) {
-            fancyToast(getString(R.string.error_unknown_error), FancyToast.ERROR)
+            fancyToastLong("No routes found from your location to $deviceName. Back to refresh this page", FancyToast.WARNING)
             mylocation = LatLng(
                 0.toDouble(),
                 0.toDouble()
