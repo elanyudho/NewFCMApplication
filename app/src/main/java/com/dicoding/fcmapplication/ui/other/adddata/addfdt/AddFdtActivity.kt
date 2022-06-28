@@ -50,6 +50,9 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
 
     private var isDefault = true
 
+    private var isLongitudeValid = true
+    private var isLatitudeValid = true
+
     private val coveredFatAdapter: CoveredFatAdapter by lazy { CoveredFatAdapter() }
 
     private var coveredFatList: List<FdtDetail.FatList> = mutableListOf()
@@ -127,6 +130,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
         coveredFatList: List<FdtDetail.FatList> = emptyList(),
         fdtId: String = ""
     ) {
+
         with(binding) {
 
             if (etFdtName.text.isNullOrEmpty()) {
@@ -152,7 +156,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
                 if (!etLongitude.text.matches(LongLatRegex.LONGITUDE_PATTERN)) {
                     etLongitudeInputLayout.error =
                         "Enter the longitude number with the correct format"
-                    isEmpty = true
+                    isLongitudeValid = false
                 }
             }
             if (etLatitude.text.isNullOrEmpty()) {
@@ -162,6 +166,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
                 if (!etLatitude.text.matches(LongLatRegex.LATITUDE_PATTERN)) {
                     etLatitudeInputLayout.error = "Enter the latitude number with the correct format"
                     isEmpty = true
+                    isLatitudeValid = false
                 }
             }
             if (etLoss.text.isNullOrEmpty()) {
@@ -174,7 +179,7 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
             }
 
             //check everything is valid
-            if (isEmpty) {
+            if (isEmpty || !isLatitudeValid || !isLongitudeValid) {
                 return
             } else {
                 if (purposeOpen == TO_EDIT) {
@@ -434,41 +439,50 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
             etFdtName.doAfterTextChanged {
                 etFdtNameInputLayout.error = null
                 isDefault = false
+                isEmpty = false
             }
 
             etTotalCore.doAfterTextChanged {
                 etTotalCoreInputLayout.error = null
                 isDefault = false
+                isEmpty = false
             }
 
             etCoreUsed.doAfterTextChanged {
                 etCoreUsedInputLayout.error = null
                 isDefault = false
+                isEmpty = false
             }
 
             etCoreBackup.doAfterTextChanged {
                 etCoreBackupInputLayout.error = null
                 isDefault = false
+                isEmpty = false
             }
 
             etLongitude.doAfterTextChanged {
                 etLongitudeInputLayout.error = null
                 isDefault = false
+                isEmpty = false
+                isLongitudeValid = true
             }
 
             etLatitude.doAfterTextChanged {
                 etLatitudeInputLayout.error = null
                 isDefault = false
+                isLatitudeValid = true
             }
 
             etActivationDate.doAfterTextChanged {
                 etActivationDateInputLayout.error = null
                 isDefault = false
+                isEmpty = false
             }
 
             etLoss.doAfterTextChanged {
                 etLossInputLayout.error = null
                 isDefault = false
+                isEmpty = false
             }
 
             btnSwRepair.setOnClickListener {

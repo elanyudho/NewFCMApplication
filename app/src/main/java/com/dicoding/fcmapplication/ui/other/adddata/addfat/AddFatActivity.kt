@@ -48,6 +48,9 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
 
     private var fatDetail: FatDetail? = null
 
+    private var isLongitudeValid = true
+    private var isLatitudeValid = true
+
     private var purposeOpen = ""
 
     override val bindingInflater: (LayoutInflater) -> ActivityAddFatBinding
@@ -113,7 +116,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
         with(binding) {
 
             if (etFatName.text.isNullOrEmpty()) {
-                etFatName.error = "This field is required"
+                etFatNameInputLayout.error = "This field is required"
                 isEmpty = true
             }
             if (etTotalCore.text.isNullOrEmpty()) {
@@ -134,7 +137,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             } else {
                 if (!etLongitude.text.matches(LongLatRegex.LONGITUDE_PATTERN)) {
                     etLongitudeInputLayout.error = "Enter the longitude number with the correct format"
-                    isEmpty = true
+                    isLongitudeValid = false
                 }
             }
             if (etLatitude.text.isNullOrEmpty()) {
@@ -143,7 +146,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             } else {
                 if (!etLatitude.text.matches(LongLatRegex.LATITUDE_PATTERN)) {
                     etLatitudeInputLayout.error = "Enter the latitude number with the correct format"
-                    isEmpty = true
+                    isLatitudeValid = false
                 }
             }
             if (etActivationDate.text.isNullOrEmpty()) {
@@ -169,7 +172,7 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             }
 
             //check everything is valid
-            if (isEmpty) {
+            if (isEmpty || !isLatitudeValid || !isLongitudeValid) {
                 return
             } else {
                 if(purposeOpen == TO_EDIT){
@@ -324,36 +327,45 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             etFatName.doAfterTextChanged {
                 etFatNameInputLayout.error = null
                 isDefault = false
+                isEmpty = false
             }
 
             etChooseFat.doAfterTextChanged {
                 etChooseFatInputLayout.error = null
                 isDefault = false
+                isEmpty = false
             }
 
             etTotalCore.doAfterTextChanged {
                 etTotalCoreInputLayout.error = null
                 isDefault = false
+                isEmpty = false
             }
 
             etCoreUsed.doAfterTextChanged {
                 etCoreUsedInputLayout.error = null
                 isDefault = false
+                isEmpty = false
             }
 
             etCoreBackup.doAfterTextChanged {
                 etCoreBackupInputLayout.error = null
                 isDefault = false
+                isEmpty = false
             }
 
             etLongitude.doAfterTextChanged {
                 etLongitudeInputLayout.error = null
                 isDefault = false
+                isEmpty = false
+                isLongitudeValid = true
             }
 
             etLatitude.doAfterTextChanged {
                 etLatitudeInputLayout.error = null
                 isDefault = false
+                isEmpty = false
+                isLatitudeValid = true
             }
 
             etCoveredHome.doAfterTextChanged {
@@ -364,11 +376,13 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             etActivationDate.doAfterTextChanged {
                 etActivationDateInputLayout.error = null
                 isDefault = false
+                isEmpty = false
             }
 
             etLoss.doAfterTextChanged {
                 etLossInputLayout.error = null
                 isDefault = false
+                isEmpty = false
             }
 
             btnSwRepair.setOnClickListener {
