@@ -152,9 +152,6 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             if (etActivationDate.text.isNullOrEmpty()) {
                 etActivationDateInputLayout.error = "This field is required"
                 isEmpty = true
-            }else{
-                etActivationDateInputLayout.error = null
-                isEmpty = false
             }
             if (etLoss.text.isNullOrEmpty()) {
                 etLossInputLayout.error = "This field is required"
@@ -167,8 +164,6 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
             if (etChooseFat.text.isNullOrEmpty()) {
                 etChooseFatInputLayout.error = "This field is required"
                 isEmpty = true
-            }else{
-                etChooseFat.error = null
             }
 
             //check everything is valid
