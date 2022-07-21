@@ -99,7 +99,11 @@ class AddFdtActivity : BaseActivityBinding<ActivityAddFdtBinding>(),
     override fun onChanged(state: AddFdtViewModel.AddFdtUiState?) {
         when (state) {
             is AddFdtViewModel.AddFdtUiState.SuccessPostOrPutFdtData -> {
-                fancyToast(getString(R.string.success_post_fdt), FancyToast.SUCCESS)
+                if (purposeOpen == TO_ADD) {
+                    fancyToast(getString(R.string.success_add_fdt), FancyToast.SUCCESS)
+                } else {
+                    fancyToast(getString(R.string.success_edit_fdt), FancyToast.SUCCESS)
+                }
                 setResult(Activity.RESULT_OK)
                 onBackPressed()
             }

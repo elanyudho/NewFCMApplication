@@ -96,7 +96,11 @@ class AddFatActivity : BaseActivityBinding<ActivityAddFatBinding>(),
     override fun onChanged(state: AddFatViewModel.AddFatUiState?) {
         when(state){
             is AddFatViewModel.AddFatUiState.SuccessPostOrPutFatData -> {
-                fancyToast(getString(R.string.success_post_fat), FancyToast.SUCCESS)
+                if (purposeOpen == TO_ADD) {
+                    fancyToast(getString(R.string.success_add_fat), FancyToast.SUCCESS)
+                } else {
+                    fancyToast(getString(R.string.success_edit_fat), FancyToast.SUCCESS)
+                }
                 setResult(Activity.RESULT_OK)
                 onBackPressed()
             }

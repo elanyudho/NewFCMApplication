@@ -132,7 +132,7 @@ class FatDetailActivity : BaseActivityBinding<ActivityFatDetailBinding>(),
                             binding.fabMenu.visible()
                             enable(binding.fabMenu)
                         }else{
-                            binding.fabMenu.invisible()
+                            binding.fabMenu.gone()
                             disable(binding.fabMenu)
                         }
                     }
